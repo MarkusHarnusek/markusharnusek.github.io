@@ -4,6 +4,7 @@
 - 📫 You can reach my on my linked E-Mail or on Discord (@markus_harnusek) if you prefer it.
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=MarkusHarnusek)
+![Commits](https://github-readme-stats.vercel.app/api?username=MarkusHarnusek&show_icons=true&count_private=true&theme=dark)
 
 <!---
 MarkusHarnusek/MarkusHarnusek is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
