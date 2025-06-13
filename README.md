@@ -3,7 +3,7 @@
 - 🌱 I’m currently learning TypeScript and C#.
 - 📫 You can reach my on my linked E-Mail or on Discord (@markus_harnusek) if you prefer it.
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=MarkusHarnusek)
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=MarkusHarnusek&theme=dark)
 ![Commits](https://github-readme-stats.vercel.app/api?username=MarkusHarnusek&show_icons=true&count_private=true&theme=dark)
 
 <!---
