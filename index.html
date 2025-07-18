@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nachhilfe Markus Harnúšek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="site-title">
+            <span class="accent">Nachhilfe</span> <span class="main">Markus Harnúšek</span>
+        </h1>
+        <nav class="nav-menu">
+            <button class="menu-toggle" aria-label="Menü öffnen">
+                <span class="menu-icon">&#9776;</span>
+            </button>
+        </nav>
+    </header>
+    <section class="menu-section" id="menuSection">
+        <ul class="menu-list" style="list-style: none; display: flex; flex-direction: row; gap: 1.5rem; justify-content: center; align-items: center; margin: 0; padding: 0;">
+            <li style="margin: 0;"><a href="#about">Über mich</a></li>
+            <li style="margin: 0;"><a href="#profile">Profil</a></li>
+            <li style="margin: 0;"><a href="#services">Fächer</a></li>
+            <li style="margin: 0;"><a href="#reservation">Unterricht buchen</a></li>
+            <li style="margin: 0;"><a href="#contact">Kontakt</a></li>
+        </ul>
+    </section>
+
+    <section class="hero">
+        <h2>Nachhilfe für HTL Schüler</h2>
+        <p>Es ist mir ein echtes Anliegen, mein Wissen weiterzugeben und dich beim Lernen bestmöglich zu unterstützen.
+            Ich erkläre komplexe Inhalte verständlich, gehe gezielt auf deine Fragen ein und übe mit dir auf Augenhöhe –
+            bis du den Stoff sicher beherrschst. Dabei bleibt der Unterricht entspannt und ohne unnötigen Druck.</p>
+        <a href="#contact" class="btn">Jetzt buchen</a>
+    </section>
+
+    <section id="about" class="hero">
+        <h2>Über mich</h2>
+        <p>Ich bin Markus Harnúšek, 15 Jahre alt - Schüler der 2CHIF - und biete dir Nachhilfe für die 9. Schulstufe.
+            Mein große Leidenschaft ist Softwareentwicklung als auch die Arbeit mit Hardware, genauer Mikrocontrollern,
+            PCs an sich. Weiters interessiert das Befassen mit Zahlen, komplexen Abläufen und Algorithmen. Mit meiner
+            Erfahrung und meinen Erfolgen im Geben von Nachhilfe bin ich bereit dir zu helfen, den Stoff zu erklären, zu
+            üben oder dich auf deine Prüfungen vorzubereiten.</p>
+    </section>
+
+    <section id="reservation" class="reservation">
+        <h3>Unterricht buchen</h3>
+        <form>
+            <input type="text" placeholder="Name" required>
+            <select required>
+                <option value="">Fach wählen</option>
+                <option value="Programmieren und Software Engineering">Programmieren und Software Engineering</option>
+                <option value="Angewandte Mathematik">Angewandte Mathematik</option>
+                <option value="Physik">Physik</option>
+                <option value="Rechnungswesen">Rechnungswesen</option>
+                <option value="Betriebsorganisation">Betriebsorganisation</option>
+            </select>
+            <input type="date" required>
+            <input type="time" required>
+            <button type="submit">Reservieren</button>
+        </form>
+    </section>
+
+    <section id="calendar" class="calendar-section">
+        <h3>Wochenübersicht der Nachhilfestunden</h3>
+        <div class="calendar-container">
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Uhrzeit</th>
+                        <th>Montag</th>
+                        <th>Dienstag</th>
+                        <th>Mittwoch</th>
+                        <th>Donnerstag</th>
+                        <th>Freitag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15:00</td>
+                        <td class="free">Frei</td>
+                        <td class="reserved">Reserviert</td>
+                        <td class="free">Frei</td>
+                        <td class="free">Frei</td>
+                        <td class="reserved">Reserviert</td>
+                    </tr>
+                    <tr>
+                        <td>16:00</td>
+                        <td class="reserved">Reserviert</td>
+                        <td class="free">Frei</td>
+                        <td class="free">Frei</td>
+                        <td class="reserved">Reserviert</td>
+                        <td class="free">Frei</td>
+                    </tr>
+                    <tr>
+                        <td>17:00</td>
+                        <td class="free">Frei</td>
+                        <td class="free">Frei</td>
+                        <td class="reserved">Reserviert</td>
+                        <td class="free">Frei</td>
+                        <td class="free">Frei</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    </section>
+
+    <section id="profile" class="showcase">
+        <h3>Mein Profil</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>Mein HTL Leonding Nachhilfebörse Profil</h4>
+                <p>Hier findest du mein Profil auf der HTL Leonding Nachhilfebörse, wo du weitere Informationen zu
+                    meiner Person und meinen Fächern erhältst.</p>
+                <a href="https://nachhilfe.htl-leonding.ac.at/tutors/markus-harnusek" class="btn">Zum Profil</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="showcase">
+        <h3>Meine Fächer</h3>
+        <div class="cards">
+            <div class="card">
+                <h4>Programmieren und Software Engineering</h4>
+                <p>Programmieren ist meine Leidenschaft. Seit kleinauf beschäftige ich mich mit Softwareentwicklung und
+                    bringe dir die Konzepte verständlich näher.</p>
+            </div>
+            <div class="card">
+                <h4>Angewandte Mathematik</h4>
+                <p>Zahlen faszinieren mich seit jeher. Ich helfe dir, mathematische Konzepte - ob Mengenlehre, Lineare
+                    Algebra oder Gleichungen - zu verstehen und anzuwenden.</p>
+            </div>
+            <div class="card">
+                <h4>Physik</h4>
+                <p>Physik ist die Grundlage für viele technische Fächer. Ich unterstütze dich dabei, die Theorie zu
+                    verstehen und sie in praktischen Anwendungen und Aufgaben umzusetzen um dich bestmöglich auf die
+                    Prüfungen vorzubereiten.</p>
+            </div>
+            <div class="card">
+                <h4>Rechnungswesen</h4>
+                <p>Rechnungswesen ist ein wichtiges Fach für die wirtschaftliche Ausbildung. Ob einfache
+                    Haushaltsbücher, über Belege, bis hin zur doppelten Buchhaltung, helfe ich dir beim Lernen.</p>
+            </div>
+            <div class="card">
+                <h4>Betriebsorganisation</h4>
+                <p>Betriebsorganisation ist entscheidend für das Verständnis von Unternehmensstrukturen. Ich unterstütze
+                    dich dabei, die Abläufe - Von den Grundlagen bis zu komplexeren Themen wie Arbeitsverträgen - zu
+                    verstehen.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h3>Kontakt aufnehmen</h3>
+        <form>
+            <input type="text" placeholder="Name" required>
+            <input type="email" placeholder="E-Mail" required>
+            <textarea placeholder="Nachricht" required></textarea>
+            <button type="submit">Absenden</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Nachhilfe Markus Harnúšek</p>
+        <div class="links">
+            <a href="https://nachhilfe.htl-leonding.ac.at/tutors" title="Nachhilfe HTL Leonding">Nachhilfe HTL Leonding</a>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
