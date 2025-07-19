@@ -1,19 +1,84 @@
+/* Light/Dark mode switch styles */
+.mode-switch {
+  position: absolute;
+  right: 2vw;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--modal-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+  transition: background 0.4s cubic-bezier(0.4, 0.2, 0.2, 1), color 0.4s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.4s;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mode-switch:hover {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.15);
+}
+
+.mode-switch .icon {
+  display: inline-block;
+  font-size: 1.3em;
+  transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1), color 0.4s;
+}
+.light-mode .mode-switch .icon {
+  transform: rotate(180deg) scale(1.2);
+  color: #fbbf24;
+}
+.mode-switch .icon {
+  color: #6366f1;
+}
+
 /* Define CSS variables for colors and gradients */
+
 :root {
-  --primary-color: #6366f1; /* Main accent color */
-  --secondary-color: #7c3aed; /* Secondary accent color */
-  --background-color: #18181b; /* Main background color */
-  --text-color: #e5e7eb; /* Main text color */
-  --modal-bg: #23232a; /* Modal and section background */
-  --accent-gradient: linear-gradient(-68deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* Logo accent gradient */
-  --title-accent-gradient: linear-gradient(90deg, var(--primary-color) 60%, var(--secondary-color) 100%); /* Site title accent gradient */
-  --hero-bg: rgba(99, 102, 241, 0.04); /* Hero background */
-  --hero-shadow: 0 6px 32px rgba(124, 58, 237, 0.18), 0 2px 8px rgba(99, 102, 241, 0.10); /* Hero shadow */
-  --border-color: #a78bfa; /* Border color for hero */
-  --modal-shadow: 0 4px 24px rgba(99, 102, 241, 0.18); /* Modal shadow */
-  --warning-bg: #f59e42; /* Warning background */
-  --error-color: #ef4444; /* Error/red color */
-  --success-color: #22c55e; /* Success/green color */
+  --primary-color: #6366f1;
+  --secondary-color: #7c3aed;
+  --background-color: #18181b;
+  --text-color: #e5e7eb;
+  --modal-bg: #23232a;
+  --gradient-bg: linear-gradient(47deg, #353556 40%, #516eac, 100%);
+  --accent-gradient: linear-gradient(-68deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  --title-accent-gradient: linear-gradient(90deg, var(--primary-color) 60%, var(--secondary-color) 100%);
+  --hero-bg: rgba(99, 102, 241, 0.04);
+  --hero-shadow: 0 6px 32px rgba(124, 58, 237, 0.18), 0 2px 8px rgba(99, 102, 241, 0.10);
+  --border-color: #a78bfa;
+  --modal-shadow: 0 4px 24px rgba(99, 102, 241, 0.18);
+  --warning-bg: #f59e42;
+  --error-color: #ef4444;
+  --success-color: #22c55e;
+}
+
+.light-mode {
+  --primary-color: #2563eb;
+  --secondary-color: #60a5fa;
+  --background-color: #f3f4f6;
+  --text-color: #18181b;
+  --modal-bg: #fff;
+  --gradient-bg: linear-gradient(47deg, #d3d3df 40%, #2a3c62, 100%);
+  --accent-gradient: linear-gradient(-68deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  --title-accent-gradient: linear-gradient(90deg, var(--primary-color) 60%, var(--secondary-color) 100%);
+  --hero-bg: rgba(37, 99, 235, 0.04);
+  --hero-shadow: 0 6px 32px rgba(96, 165, 250, 0.18), 0 2px 8px rgba(37, 99, 235, 0.10);
+  --border-color: #2563eb;
+  --modal-shadow: 0 4px 24px rgba(37, 99, 235, 0.18);
+  --warning-bg: #fde68a;
+  --error-color: #ef4444;
+  --success-color: #22c55e;
+}
+
+body, .modal-bg, .header, .menu-section, .reservation, .calendar-section, .contact, footer {
+  transition: background 0.3s, color 0.3s;
 }
 
 /* Reset and global styles */
@@ -174,7 +239,7 @@ header {
   width: 32px;
   height: 32px;
   position: absolute;
-  right: 2vw;
+  right: 15vw;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -235,7 +300,7 @@ header {
   width: 96vw;
   max-width: 900px;
   margin: 0 auto;
-  background: linear-gradient(47deg, #22222f 50%, var(--background-color) 100%);
+  background: var(--gradient-bg);
   border-radius: 1rem;
   box-shadow: 0 4px 24px rgba(99, 102, 241, 0.12);
   padding: 0.5rem 2rem;
@@ -511,7 +576,7 @@ header {
 
 /* Calendar section */
 .calendar-section {
-  background: linear-gradient(47deg, #22222f 50%, var(--background-color) 100%);
+  background: var(--gradient-bg);
   border-radius: 1rem;
   box-shadow: 0 4px 24px rgba(99, 102, 241, 0.12);
   padding: 2rem 2vw;
