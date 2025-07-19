@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
+  const menuToggle = document.querySelector('.menu-toggle');
+  const menuIcon = document.querySelector('.menu-icon');
+
+  if (menuToggle && menuIcon) {
+    menuToggle.addEventListener('click', function () {
+      menuToggle.classList.toggle('open');
+      menuIcon.classList.toggle('rotated');
+    });
+  }
+});document.addEventListener('DOMContentLoaded', function () {
     const menuToggle = document.querySelector('.menu-toggle');
     const menuSection = document.getElementById('menuSection');
     const menuIcon = document.querySelector('.menu-icon');
