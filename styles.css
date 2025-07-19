@@ -101,15 +101,14 @@
     background: linear-gradient(47deg, #22222f 50%, #18181b 100%);
     border-radius: 1rem;
     box-shadow: 0 4px 24px rgba(99, 102, 241, 0.12);
-    border: 2px solid #6366f1;
-    padding: 0.5rem 2vm;
+    padding: 0.5rem 2rem;
     opacity: 0;
     z-index: 10;
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     transition:
         opacity 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
-        height 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
+        max-height 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
         margin 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
     display: flex;
     visibility: hidden;
@@ -118,7 +117,7 @@
 
 .menu-section.open {
     opacity: 1;
-    height: auto;
+    max-height: 400px;
     margin: 3rem auto 0 auto;
     visibility: visible;
     pointer-events: auto;
@@ -126,7 +125,7 @@
 
 .menu-section.collapsing {
     opacity: 0;
-    height: 0;
+    max-height: 0;
     margin: 0 auto;
     visibility: visible;
     pointer-events: none;

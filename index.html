@@ -11,7 +11,17 @@
 </head>
 
 <body>
-    <div id="wip-warning" style="position: fixed; top: 0; left: 0; right: 0; background: #f59e42; color: #18181b; font-weight: 600; text-align: center; padding: 1rem 0; z-index: 9999; box-shadow: 0 2px 8px rgba(99,102,241,0.08); font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;">
+    <div id="consent-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(24,24,27,0.92); z-index: 20000; display: flex; align-items: center; justify-content: center;">
+        <div style="background: #23232a; border-radius: 1rem; box-shadow: 0 4px 24px rgba(99,102,241,0.18); padding: 2.5rem 2rem; max-width: 420px; width: 90vw; text-align: center; color: #e5e7eb; font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;">
+            <h2 style="color:#6366f1; margin-bottom:1rem;">Willkommen bei Nachhilfe Markus Harnúšek</h2>
+            <p style="margin-bottom:1.2rem;">Vielen Dank für Ihr Interesse an meinem Nachhilfeangebot. Um die Website nutzen zu können, bestätigen Sie bitte, dass Sie die <a href="impressum.html" style="color:#6366f1;text-decoration:underline;">rechtlichen Hinweise</a> sowie die <a href="datenschutz.html" style="color:#6366f1;text-decoration:underline;">Datenschutzerklärung</a> gelesen und akzeptiert haben. Die bereitgestellten Inhalte und Informationen werden mit größter Sorgfalt veröffentlicht. Für technische Fehler oder etwaige Datenlecks kann jedoch keine Haftung übernommen werden.</p>
+            <div style="display:flex; gap:1rem; justify-content:center;">
+                <button id="consent-accept" style="background:#6366f1; color:#fff; border:none; border-radius:0.5rem; padding:0.7rem 2rem; font-size:1rem; font-weight:600; cursor:pointer;">Bestätigen</button>
+                <button id="consent-decline" style="background:#ef4444; color:#fff; border:none; border-radius:0.5rem; padding:0.7rem 2rem; font-size:1rem; font-weight:600; cursor:pointer;">Ablehnen</button>
+            </div>
+        </div>
+    </div>
+    <div id="wip-warning" style="position: fixed; top: 56px; left: 0; right: 0; background: #f59e42; color: #18181b; font-weight: 600; text-align: center; padding: 1rem 0; z-index: 9999; box-shadow: 0 2px 8px rgba(99,102,241,0.08); font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;">
         ⚠️ Diese Website ist noch in Arbeit. Inhalte und Funktionen können sich ändern!
         <button onclick="document.getElementById('wip-warning').style.display='none'" style="margin-left:2rem; background:#18181b; color:#fff; border:none; border-radius:0.5rem; padding:0.5rem 1rem; cursor:pointer;">Hinweis schließen</button>
     </div>
@@ -177,8 +187,32 @@
         <p>&copy; 2025 Nachhilfe Markus Harnúšek</p>
         <div class="links">
             <a href="https://nachhilfe.htl-leonding.ac.at/tutors" title="Nachhilfe HTL Leonding">Nachhilfe HTL Leonding</a>
+            <a href="https://markusharnusek.github.io/Tutoring/" title="Nachhilfe Markus Harnúšek">Nachhilfe Markus Harnúšek</a>
+            <a href="impressum.html" title="Impressum">Impressum</a>
+            <a href="datenschutz.html" title="Datenschutzerklärung">Datenschutzerklärung</a>
         </div>
     </footer>
     <script src="script.js"></script>
+    <script>
+        // Consent modal logic
+        const modal = document.getElementById('consent-modal');
+        const acceptBtn = document.getElementById('consent-accept');
+        const declineBtn = document.getElementById('consent-decline');
+        if (!localStorage.getItem('siteConsent')) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } else {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        acceptBtn.onclick = function() {
+            localStorage.setItem('siteConsent', 'true');
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+        declineBtn.onclick = function() {
+            window.location.href = 'https://www.google.com';
+        };
+    </script>
 </body>
 </html>
