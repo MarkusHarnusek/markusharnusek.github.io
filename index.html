@@ -37,8 +37,9 @@
     <section class="menu-section" id="menuSection">
         <ul class="menu-list">
             <li><a href="#about">Über mich</a></li>
-            <li><a href="#reservation">Unterricht buchen</a></li>
+            <li><a href="buchen.html">Unterricht buchen</a></li>
             <li><a href="#calendar">Wochenübersicht</a></li>
+            <li><a href="wochen.html">Kalendar</a></li>
             <li><a href="#profile">Profil</a></li>
             <li><a href="#services">Fächer</a></li>
             <li><a href="#contact">Kontakt</a></li>
@@ -50,7 +51,7 @@
         <p class="hero-desc">Es ist mir ein echtes Anliegen, mein Wissen weiterzugeben und dich beim Lernen bestmöglich zu unterstützen.
             Ich erkläre komplexe Inhalte verständlich, gehe gezielt auf deine Fragen ein und übe mit dir auf Augenhöhe –
             bis du den Stoff sicher beherrschst. Dabei bleibt der Unterricht entspannt und ohne unnötigen Druck.</p>
-        <a href="#contact" class="btn">Jetzt buchen</a>
+        <a href="buchen.html" class="btn">Jetzt buchen</a>
     </section>
 
     <section id="about" class="hero">
@@ -62,22 +63,10 @@
             üben oder dich auf deine Prüfungen vorzubereiten.</p>
     </section>
 
-    <section id="reservation" class="reservation">
+    <section id="reservation" class="reservation reservation-redirect">
         <h3>Unterricht buchen</h3>
-        <form>
-            <input type="text" placeholder="Name" required>
-            <select required>
-                <option value="">Fach wählen</option>
-                <option value="Programmieren und Software Engineering">Programmieren und Software Engineering</option>
-                <option value="Angewandte Mathematik">Angewandte Mathematik</option>
-                <option value="Physik">Physik</option>
-                <option value="Rechnungswesen">Rechnungswesen</option>
-                <option value="Betriebsorganisation">Betriebsorganisation</option>
-            </select>
-            <input type="date" required>
-            <input type="time" required>
-            <button type="submit">Reservieren</button>
-        </form>
+        <p class="reservation-desc">Du möchtest eine Nachhilfestunde reservieren? Klicke auf den Button, um zum Buchungsformular zu gelangen.</p>
+        <a href="buchen.html" class="btn">Zum Buchungsformular</a>
     </section>
 
     <section id="calendar" class="calendar-section">
@@ -121,6 +110,10 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="calendar-link">
+            <p class="calendar-desc">Du möchtest die Nachhilfestunden für andere Wochen sehen? Klicke auf den Button, um zum Kalendar zu gelangen.</p>
+            <a href="wochen.html" class="btn">Kalendar anzeigen</a>
         </div>
     </section>
     </section>

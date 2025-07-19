@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unterricht buchen | Nachhilfe Markus Harnúšek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 class="logo"><span class="accent">Nachhilfe</span> Markus Harnúšek</h1>
+        <nav class="nav-menu">
+            <button class="menu-toggle" aria-label="Menü öffnen">
+                <span class="menu-icon">&#9776;</span>
+            </button>
+            <button class="mode-switch" aria-label="Toggle light/dark mode">🌙 / ☀️</button>
+        </nav>
+    </header>
+    <section class="reservation">
+        <h3>Unterricht buchen</h3>
+        <form>
+            <input type="text" placeholder="Name" required>
+            <select required>
+                <option value="">Fach wählen</option>
+                <option value="Programmieren und Software Engineering">Programmieren und Software Engineering</option>
+                <option value="Angewandte Mathematik">Angewandte Mathematik</option>
+                <option value="Physik">Physik</option>
+                <option value="Rechnungswesen">Rechnungswesen</option>
+                <option value="Betriebsorganisation">Betriebsorganisation</option>
+            </select>
+            <input type="date" required>
+            <input type="time" required>
+            <button type="submit">Reservieren</button>
+        </form>
+    </section>
+    <footer>
+        <p>&copy; 2025 Nachhilfe Markus Harnúšek</p>
+        <div class="links">
+            <a href="index.html" title="Startseite">Startseite</a>
+            <a href="impressum.html" title="Impressum">Impressum</a>
+            <a href="datenschutz.html" title="Datenschutzerklärung">Datenschutzerklärung</a>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
