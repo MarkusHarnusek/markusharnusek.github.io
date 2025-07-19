@@ -1,19 +1,24 @@
 // Light/Dark mode toggle
 document.addEventListener('DOMContentLoaded', function () {
-  const modeSwitch = document.querySelector('.mode-switch');
-  modeSwitch?.addEventListener('click', function () {
-    document.body.classList.toggle('light-mode');
-    // Optionally, save preference to localStorage
-    if (document.body.classList.contains('light-mode')) {
-      localStorage.setItem('theme', 'light');
-    } else {
-      localStorage.setItem('theme', 'dark');
-    }
-  });
-
-  // On load, set theme from localStorage
-  if (localStorage.getItem('theme') === 'light') {
+  // Apply theme from localStorage on all pages
+  const theme = localStorage.getItem('theme');
+  if (theme === 'light') {
     document.body.classList.add('light-mode');
+  } else {
+    document.body.classList.remove('light-mode');
+  }
+
+  // Listen for mode switch button
+  const modeSwitch = document.querySelector('.mode-switch');
+  if (modeSwitch) {
+    modeSwitch.addEventListener('click', function () {
+      document.body.classList.toggle('light-mode');
+      if (document.body.classList.contains('light-mode')) {
+        localStorage.setItem('theme', 'light');
+      } else {
+        localStorage.setItem('theme', 'dark');
+      }
+    });
   }
 });
 document.addEventListener('DOMContentLoaded', function () {
