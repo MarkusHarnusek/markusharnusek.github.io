@@ -28,9 +28,10 @@
     <section class="menu-section" id="menuSection">
         <ul class="menu-list" style="list-style: none; display: flex; flex-direction: row; gap: 1.5rem; justify-content: center; align-items: center; margin: 0; padding: 0;">
             <li style="margin: 0;"><a href="#about">Über mich</a></li>
+            <li style="margin: 0;"><a href="#reservation">Unterricht buchen</a></li>
+            <li style ="margin: 0;"><a href="#calendar">Wochenübersicht</a></li>
             <li style="margin: 0;"><a href="#profile">Profil</a></li>
             <li style="margin: 0;"><a href="#services">Fächer</a></li>
-            <li style="margin: 0;"><a href="#reservation">Unterricht buchen</a></li>
             <li style="margin: 0;"><a href="#contact">Kontakt</a></li>
         </ul>
     </section>
@@ -162,10 +163,12 @@
 
     <section id="contact" class="contact">
         <h3>Kontakt aufnehmen</h3>
-        <form>
-            <input type="text" placeholder="Name" required>
-            <input type="email" placeholder="E-Mail" required>
-            <textarea placeholder="Nachricht" required></textarea>
+        <form id="contactForm">
+            <input type="text" name="FIRST_NAME" placeholder="Vorname" required>
+            <input type="text" name="LAST_NAME" placeholder="Nachname" required>
+            <input type="email" name="EMAIL" placeholder="E-Mail" required>
+            <input type="text" name="CLASS" placeholder="Klasse" required>
+            <textarea name="MESSAGE" placeholder="Nachricht" required></textarea>
             <button type="submit">Absenden</button>
         </form>
     </section>

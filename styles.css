@@ -1,4 +1,3 @@
-/* Calendar Section Styles */
 .calendar-section {
     background: linear-gradient(47deg, #22222f 50%, #18181b 100%);
     border-radius: 1rem;
@@ -92,40 +91,43 @@
     transform: scaleY(1.2);
 }
 
-/* Nav fly-in/fly-out animation */
 .menu-section {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 96vw;
+    max-width: 900px;
+    margin: 0 auto;
     background: linear-gradient(47deg, #22222f 50%, #18181b 100%);
     border-radius: 1rem;
     box-shadow: 0 4px 24px rgba(99, 102, 241, 0.12);
-    padding: 0.5rem 2vw;
-    max-width: 900px;
-    margin: 2rem auto 0 auto;
+    border: 2px solid #6366f1;
+    padding: 0.5rem 2vm;
     opacity: 0;
-    transform: translateY(-40px) scale(0.98);
-    max-height: 0;
-    margin-bottom: 0;
+    z-index: 10;
+    height: 0;
+    overflow: hidden;
     transition:
-        opacity 0.4s cubic-bezier(0.4, 0.2, 0.2, 1),
-        transform 0.4s cubic-bezier(0.4, 0.2, 0.2, 1),
-        max-height 0.4s cubic-bezier(0.4, 0.2, 0.2, 1),
-        margin-bottom 0.4s cubic-bezier(0.4, 0.2, 0.2, 1);
+        opacity 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
+        height 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
+        margin 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
     display: flex;
     visibility: hidden;
     pointer-events: none;
 }
+
 .menu-section.open {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    max-height: 1000px;
-    margin-bottom: 2.5rem;
+    height: auto;
+    margin: 3rem auto 0 auto;
     visibility: visible;
     pointer-events: auto;
 }
+
 .menu-section.collapsing {
     opacity: 0;
-    transform: translateY(-40px) scale(0.98);
-    max-height: 0;
-    margin-bottom: 0;
+    height: 0;
+    margin: 0 auto;
     visibility: visible;
     pointer-events: none;
 }
@@ -178,8 +180,6 @@
 .menu-toggle.open .bar:nth-child(2) {
     transform: scaleY(1.2);
 }
-
-/* Remove duplicate .menu-section block. Use only the animated version above. */
 
 .menu-toggle {
     display: inline-flex;
@@ -242,13 +242,14 @@ to {
 .menu-list {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 1.2rem;
     margin: 0;
     padding: 0;
     list-style: none;
     width: 100%;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .menu-list li {
@@ -273,7 +274,8 @@ to {
 
 @media (max-width: 700px) {
     .menu-section {
-        max-width: 100%;
+        max-width: 100vw;
+        left: 50%;
         border-radius: 0.5rem;
         padding: 0.5rem 0.5vw;
     }
@@ -370,6 +372,7 @@ body {
     font-family: 'Montserrat', 'Inter', 'Segoe UI', Arial, sans-serif;
     margin: 0;
     min-height: 100vh;
+    min-width: 80vw;
 }
 
 header {
