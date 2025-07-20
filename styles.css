@@ -726,12 +726,36 @@ footer {
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.3s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 
 .btn:hover {
   background: #4338ca;
   box-shadow: 0 6px 24px rgba(99, 102, 241, 0.3);
+  transform: translateY(-4px) scale(1.04);
+}
+
+/* Animations for section transitions */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero,
+#about.hero,
+.menu-section,
+.calendar-section,
+.reservation,
+.showcase {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0.2, 0.2, 1) forwards;
 }
 
 /* Form styles */
