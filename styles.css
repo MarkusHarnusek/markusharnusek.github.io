@@ -30,10 +30,12 @@
   font-size: 1.3em;
   transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1), color 0.4s;
 }
+
 .light-mode .mode-switch .icon {
   transform: rotate(180deg) scale(1.2);
   color: #fbbf24;
 }
+
 .mode-switch .icon {
   color: #6366f1;
 }
@@ -74,7 +76,14 @@
   --success-color: #22c55e;
 }
 
-body, .modal-bg, .header, .menu-section, .reservation, .calendar-section, .contact, footer {
+body,
+.modal-bg,
+.header,
+.menu-section,
+.reservation,
+.calendar-section,
+.contact,
+footer {
   transition: background 0.3s, color 0.3s;
 }
 
@@ -83,7 +92,9 @@ html {
   font-size: 16px;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -201,7 +212,9 @@ header {
   margin: 0;
   transition: color 0.2s;
 }
-.logo a:hover, .logo a:focus {
+
+.logo a:hover,
+.logo a:focus {
   color: var(--primary-color);
   text-decoration: none;
 }
@@ -228,12 +241,11 @@ header {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(90deg);
   }
 }
-
-
 
 .menu-icon.rotating {
   animation: nav-rotate 2.5s ease-in-out infinite alternate;
@@ -633,6 +645,23 @@ header {
   text-decoration: line-through;
 }
 
+.description-bar {
+  text-align: center;
+  background: var(--modal-bg);
+  color: var(--text-color);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.description-bar:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+}
+
 .contact {
   padding: 3rem 2vw;
   background: var(--background-color);
@@ -716,6 +745,7 @@ footer {
 .links a:hover {
   color: #2380c2;
 }
+
 .btn {
   display: inline-block;
   background: var(--primary-color);
@@ -741,6 +771,7 @@ footer {
     opacity: 0;
     transform: translateY(40px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
