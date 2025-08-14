@@ -3,7 +3,7 @@
 - 🌱 I currently use mostly C# but also C++, TypeScript and Python.
 - 📫 You can reach my on my linked E-Mail or on Discord (@markus_harnusek) if you prefer it.
 
-[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=MarkusHarnusek&layout=compact&theme=dark&cache_seconds=1800)](https://github.com/MarkusHarnusek)![Commits](https://github-readme-stats.vercel.app/api?username=MarkusHarnusek&show_icons=true&count_private=true&theme=dark)
+[![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=MarkusHarnusek&layout=compact&theme=dark&cache_seconds=1800)](https://github.com/MarkusHarnusek)
 [![GitHub Commit Stats](https://github-readme-stats.vercel.app/api?username=MarkusHarnusek&show_icons=true&count_private=true&theme=dark&cache_seconds=1800)](https://github.com/MarkusHarnusek)
 
 <!---
