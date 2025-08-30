@@ -110,6 +110,11 @@
                 tbody.innerHTML += `<tr><td>${15+i}:00</td>` + row.map((cell, idx) => `<td class="${cell === 'Frei' ? 'free' : 'reserved'}">${cell}</td>`).join('') + '</tr>';
             });
         });
+        // Ensure the table is dynamically populated with mock lessons on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            const mockLessons = generateMockLessons();
+            updateWeekTable(mockLessons);
+        });
     </script>
 </body>
 </html>
