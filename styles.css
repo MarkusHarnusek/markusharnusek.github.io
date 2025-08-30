@@ -698,6 +698,14 @@ transition: transform 0.2s, box-shadow 0.2s;
   outline: 2px solid var(--primary-color);
 }
 
+.contact input:invalid:focus {
+  outline: 2px solid var(--error-color);
+}
+
+.contact input:valid:focus  {
+  outline: 2px solid var(--success-color);
+}
+
 .contact button {
   background: var(--primary-color);
   color: #fff;

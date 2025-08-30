@@ -70,4 +70,34 @@ document.addEventListener('DOMContentLoaded', function () {
             closeMenu();
         }
     });
+
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {
+                FIRST_NAME: formData.get('FIRST_NAME'),
+                LAST_NAME: formData.get('LAST_NAME'),
+                EMAIL: formData.get('EMAIL'),
+                CLASS: formData.get('CLASS'),
+                MESSAGE: formData.get('MESSAGE')
+            };
+            try {
+                const response = await fetch('http://<Backend-ip>/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Nachricht gesendet!');
+                    this.reset();
+                } else {
+                    alert('Fehler beim Senden der Nachricht.');
+                }
+            } catch (error) {
+                alert('Verbindung zum Server fehlgeschlagen.');
+            }
+        });
+    }
 });
