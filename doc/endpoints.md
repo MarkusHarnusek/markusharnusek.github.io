@@ -9,3 +9,5 @@ This file contains a documentation on all the endpoints used for communication w
 ## API
 
  - `/api/lessons` is used to get lesson data. It also needs the `WEEK` parameter to specify the week being requested.
+ - `/api/statuses` is used to get statuses to sync with possible logic changes without needing to change the frontend.
+ - `/api/subjects` is used to get the list of lessons being teached.
