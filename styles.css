@@ -963,3 +963,8 @@ textarea {
     font-size: 1rem;
   }
 }
+
+.error-text {
+  color: var(--error-color);
+  font-weight: bold;
+}

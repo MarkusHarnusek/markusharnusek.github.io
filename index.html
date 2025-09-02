@@ -122,41 +122,10 @@
         <div class="description-bar">
             Hier findest du eine Übersicht über die Fächer, in denen ich Nachhilfe anbiete, sowie den jeweiligen Lehrer den ich im jeweiligen Fach hatte.
         </div>
-        <div class="cards">
-            <!-- TODO Remove when implementing new script.js to assignSubjects() -->
+        <div class="cards" id="subject-cards">
 
-            <div class="card">
-                <h4>Programmieren und Software Engineering</h4>
-                <p><strong>KERN Adrian</strong></p>
-                <p>Programmieren ist meine Leidenschaft. Seit kleinauf beschäftige ich mich mit Softwareentwicklung und
-                    bringe dir die Konzepte verständlich näher.</p>
-            </div>
-            <div class="card">
-                <h4>Angewandte Mathematik</h4>
-                <p><strong>POVACZ Katharina</strong></p>
-                <p>Zahlen faszinieren mich seit jeher. Ich helfe dir, mathematische Konzepte - ob Mengenlehre, Lineare
-                    Algebra oder Gleichungen - zu verstehen und anzuwenden.</p>
-            </div>
-            <div class="card">
-                <h4>Physik</h4>
-                <p><strong>GRUBER Markus</strong></p>
-                <p>Physik ist die Grundlage für viele technische Fächer. Ich unterstütze dich dabei, die Theorie zu
-                    verstehen und sie in praktischen Anwendungen und Aufgaben umzusetzen um dich bestmöglich auf die
-                    Prüfungen vorzubereiten.</p>
-            </div>
-            <div class="card">
-                <h4>Rechnungswesen</h4>
-                <p><strong>ARZT Miriam</strong></p>
-                <p>Rechnungswesen ist ein wichtiges Fach für die wirtschaftliche Ausbildung. Ob einfache
-                    Haushaltsbücher, über Belege, bis hin zur doppelten Buchhaltung, helfe ich dir beim Lernen.</p>
-            </div>
-            <div class="card">
-                <h4>Betriebsorganisation</h4>
-                <p><strong>ARZT Miriam</strong></p>
-                <p>Betriebsorganisation ist entscheidend für das Verständnis von Unternehmensstrukturen. Ich unterstütze
-                    dich dabei, die Abläufe - Von den Grundlagen bis zu komplexeren Themen wie Arbeitsverträgen - zu
-                    verstehen.</p>
-            </div>
+            <!-- Cards will be loaded dynamically -->
+        
         </div>
     </section>
 
@@ -182,7 +151,7 @@
             <a href="datenschutz.html" title="Datenschutzerklärung">Datenschutzerklärung</a>
         </div>
     </footer>
-    <script src="script.js"></script>
+    <script src="script-new.js"></script>
     <script>
         const modal = document.getElementById('consent-modal');
         const acceptBtn = document.getElementById('consent-accept');
