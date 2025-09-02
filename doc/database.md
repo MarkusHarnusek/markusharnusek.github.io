@@ -61,6 +61,13 @@ This document contains documentation on the schemes of the database and the "rea
         time DATETIEM NOT NULL
     );
 
+### Start Times
+
+    CREATE TABLE START_TIME (
+        id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,
+        time TEXT NOT NULL
+    );
+
 ## Read-only default inserts
 
 ### Subject
@@ -77,3 +84,16 @@ This document contains documentation on the schemes of the database and the "rea
     INSERT INTO STATUS("free")
     INSERT INTO STATUS("pending")
     INSERT INTO STATUS("accepted")
+
+### Start Times
+
+    INSERT INTO START_TIME "08:00"
+    INSERT INTO START_TIME "08:55"
+    INSERT INTO START_TIME "10:00"
+    INSERT INTO START_TIME "10:55"
+    INSERT INTO START_TIME "11:50"
+    INSERT INTO START_TIME "12:45"
+    INSERT INTO START_TIME "13:40"
+    INSERT INTO START_TIME "14:35"
+    INSERT INTO START_TIME "15:30"
+    INSERT INTO START_TIME "16:25"
