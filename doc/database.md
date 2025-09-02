@@ -6,7 +6,8 @@ This document contains documentation on the schemes of the database and the "rea
         id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,
         name TEXT NOT NULL,
         short TEXT NOT NULL,
-        teacher TEXT NOT NULL
+        teacher TEXT NOT NULL,
+        description TEXT NOT NULL
     );
 
 ### Student
