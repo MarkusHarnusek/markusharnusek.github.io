@@ -5,31 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wochenübersicht</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:,"> <!-- Placeholder favicon to avoid 404 errors -->
 </head>
 <body>
     <header>
         <h1 class="logo"><a href="index.html"><span class="accent">Nachhilfe</span> Markus Harnúšek</a></h1>
         <nav class="nav-menu">
-            <button class="menu-toggle" aria-label="Menü öffnen">
-                <span class="menu-icon">&#9776;</span>
-            </button>
-            <button class="mode-switch" aria-label="Toggle light/dark mode">🌙 / ☀️</button>
+            <button class="mode-switch" id="mode-switch" aria-label="Toggle light/dark mode">🌙 / ☀️</button>
         </nav>
     </header>
     <section class="calendar-section">
         <h3>Wochenübersicht der Nachhilfestunden</h3>
         <p>Hier kannst du die Nachhilfestunden für verschiedene Wochen einsehen. Wähle eine Woche aus:</p>
         <form class="week-select-form" style="margin-bottom: 1rem;">
-            <label for="week">Woche wählen:</label>
-            <select id="week" name="week">
-                <option value="aktuell">Aktuelle Woche</option>
-                <option value="kw30">KW 30 (21.07. - 25.07.)</option>
-                <option value="kw31">KW 31 (28.07. - 01.08.)</option>
-                <option value="kw32">KW 32 (04.08. - 08.08.)</option>
+            <label for="calendar-week-select">Woche wählen:</label>
+            <select id="calendar-week-select" name="week">
+
+                <!-- Week selection options will be automatically populated here -->
             </select>
         </form>
         <div class="calendar-container">
-            <table class="calendar-table">
+            <table class="calendar-table" id="calendar-table-threeWeeks">
                 <thead>
                     <tr>
                         <th>Uhrzeit</th>
@@ -78,43 +74,5 @@
         </div>
     </footer>
     <script src="script.js"></script>
-    <script>
-        // Dummy data for demonstration
-        const weekData = {
-            aktuell: [
-                ["Frei", "Reserviert", "Frei", "Frei", "Reserviert"],
-                ["Reserviert", "Frei", "Frei", "Reserviert", "Frei"],
-                ["Frei", "Frei", "Reserviert", "Frei", "Frei"]
-            ],
-            kw30: [
-                ["Reserviert", "Frei", "Frei", "Reserviert", "Frei"],
-                ["Frei", "Reserviert", "Frei", "Frei", "Reserviert"],
-                ["Reserviert", "Frei", "Frei", "Reserviert", "Frei"]
-            ],
-            kw31: [
-                ["Frei", "Frei", "Reserviert", "Frei", "Reserviert"],
-                ["Reserviert", "Reserviert", "Frei", "Frei", "Frei"],
-                ["Frei", "Reserviert", "Frei", "Reserviert", "Frei"]
-            ],
-            kw32: [
-                ["Frei", "Frei", "Frei", "Reserviert", "Reserviert"],
-                ["Reserviert", "Frei", "Reserviert", "Frei", "Frei"],
-                ["Frei", "Reserviert", "Frei", "Frei", "Reserviert"]
-            ]
-        };
-        document.getElementById('week').addEventListener('change', function() {
-            const selected = this.value;
-            const tbody = document.getElementById('calendar-body');
-            tbody.innerHTML = '';
-            weekData[selected].forEach((row, i) => {
-                tbody.innerHTML += `<tr><td>${15+i}:00</td>` + row.map((cell, idx) => `<td class="${cell === 'Frei' ? 'free' : 'reserved'}">${cell}</td>`).join('') + '</tr>';
-            });
-        });
-        // Ensure the table is dynamically populated with mock lessons on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const mockLessons = generateMockLessons();
-            updateWeekTable(mockLessons);
-        });
-    </script>
 </body>
 </html>

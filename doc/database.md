@@ -31,11 +31,12 @@ This document contains documentation on the schemes of the database and the "rea
 
     CREATE TABLE LESSON (
         id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,
-        start_time DATETIME NOT NULL,
-        end_time DATETIME NOT NULL,
+        date DATETIME NOT NULL,
+        start_time_id INTEGER,
         subject_id INTEGER,
         student_id INTEGER,
         status_id INTEGER,
+        FOREIGN KEY (start_time_id) REFERENCES START_TIME(id), 
         FOREIGN KEY (subject_id) REFERENCES SUBJECT(id),
         FOREIGN KEY (student_id) REFERENCES STUDENT(id),
         FOREIGN KEY (status_id) REFERENCES STATUS(id)
