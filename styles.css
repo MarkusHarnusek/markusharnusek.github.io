@@ -1,3 +1,14 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
 .mode-switch {
   position: absolute;
   right: 2vw;
@@ -393,7 +404,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
+  min-height: 40vh;
 }
 
 .hero h2,
@@ -666,13 +677,14 @@ header {
 .description-bar {
   text-align: center;
   background: var(--modal-bg);
+  max-width: 40rem;
   color: var(--text-color);
   padding: 1rem;
   border-radius: 1rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
   font-size: 1.1rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .description-bar:hover {
