@@ -80,7 +80,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Determine current page
     currentPage = window.location.pathname;
 
-    await console.log(getClientIp());
+    let ip = await getClientIp();
+    console.log(ip);
 
     // Fetch data from the backend and assign the subjects to the list of subjects being taught
     await getBackendData();
@@ -390,15 +391,18 @@ function getUserTimeout() {
 // Gets the current client ip address
 async function getClientIp() {
     try {
-        const response = await fetch("https://ipinfo.io/json");
-        if (!response.ok) {
-            throw new Error("Failed to fetch public IP address");
-        }
+        const response = await fetch("https://api64.ipify.org?format=json");
         const data = await response.json();
-        return data.ip; // This will return the public IP address
+        return data.ip;
     } catch (error) {
-        console.error("Error fetching public IP address:", error);
-        return "unknown"; // Fallback value
+        console.warn("Unable to obtain IPv6, falling back to IPv4:", error);
+        try {
+            const response = await fetch("https://api.ipify.org?format=json");
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.error("Error fetching public IP:", error);
+        }
     }
 }
 
