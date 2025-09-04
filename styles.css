@@ -85,6 +85,7 @@ body,
 .reservation,
 .calendar-section,
 .contact,
+.lesson-request-form,
 footer {
   transition: background 0.3s, color 0.3s;
 }
@@ -574,6 +575,15 @@ header {
 .reservation input:focus,
 .reservation select:focus {
   outline: 2px solid var(--primary-color);
+}
+
+
+.reservation input:invalid:focus {
+  outline: 2px solid var(--error-color);
+}
+
+.reservation input:valid:focus  {
+  outline: 2px solid var(--success-color);
 }
 
 .reservation button {

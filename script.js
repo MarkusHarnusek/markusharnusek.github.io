@@ -1,7 +1,6 @@
 // The following classes are those sent to the server containing user requests
 class LessonRequest {
     constructor(
-        id,
         first_name,
         last_name,
         email,
@@ -10,7 +9,6 @@ class LessonRequest {
         start_time_id,
         ip
     ) {
-        this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
@@ -52,9 +50,10 @@ class Status {
 }
 
 class Lesson {
-    constructor(id, end_time, subject_id, student_id, status_id) {
+    constructor(id, start_time_id, date, subject_id, student_id, status_id) {
         this.id = id;
-        this.start_time_id = end_time;
+        this.start_time_id = start_time_id;
+        this.date = date;
         this.subject_id = subject_id;
         this.student_id = student_id;
         this.status_id = status_id;
@@ -81,6 +80,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Determine current page
     currentPage = window.location.pathname;
 
+    await console.log(getClientIp());
+
     // Fetch data from the backend and assign the subjects to the list of subjects being taught
     await getBackendData();
 
@@ -94,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             getWeekNumber = getISOWeek() + i;
         }
 
-        next3WeeksLessons.push(getLessons(getWeekNumber));
+        await next3WeeksLessons.push(getLessons(getWeekNumber));
     }
 
     // Get the current weeks lessons and assign them to the thisWeeksLessons list
@@ -189,25 +190,100 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (contactForm) {
             contactForm.addEventListener("submit", async function (e) {
                 // Check if user is timed out
-                if (getUserTimeout()) {
-                    return;
-                }
+                if (!getUserTimeout()) {
+                    e.preventDefault();
 
+                    // Get form data
+                    const formData = new FormData(this);
+                    const data = {
+                        first_name: formData.get("FIRST_NAME"),
+                        last_name: formData.get("LAST_NAME"),
+                        email: formData.get("EMAIL"),
+                        student_class: formData.get("CLASS"),
+                        message: formData.get("MESSAGE"),
+                    };
+
+                    // Get client ip address
+                    let clientIp;
+                    await getClientIp()
+                        .then((ip) => {
+                            clientIp = ip;
+                        })
+                        .catch((error) => {
+                            clientIp = "unknown";
+                            console.warn(
+                                "Could not determine client IP address:",
+                                error
+                            );
+                        });
+
+                    // Create contact request
+                    const contactRequest = new ContactRequest(
+                        (first_name = data.first_name),
+                        (last_name = data.last_name),
+                        (email = data.email),
+                        (student_class = data.student_class),
+                        (message = data.message),
+                        (ip_address = clientIp)
+                    );
+
+                    // Send contact request
+                    try {
+                        const response = await fetch(
+                            "https://<backend-ip>/contact",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(contactRequest),
+                            }
+                        );
+
+                        if (response.ok) {
+                            alert("Nachricht gesendet.");
+                            this.reset();
+                        } else {
+                            console.error(
+                                "Error sending contact request:",
+                                response.statusText
+                            );
+                            alert(
+                                "Es gibt ein Problem beim Senden deiner Anfrage. Bitte versuche es später erneut."
+                            );
+                        }
+                    } catch (error) {
+                        console.error("Error sending contact request:", error);
+                        alert(
+                            "Es gibt ein Problem beim Senden deiner Anfrage. Bitte versuche es später erneut."
+                        );
+                    }
+                }
+            });
+        }
+    } else if (currentPage.endsWith("buchen.html")) {
+        const form = document.getElementById("lesson-request-form");
+        if (form) {
+            form.addEventListener("submit", async function (e) {
                 e.preventDefault();
 
-                // Get form data
-                const formData = new FormData(this);
-                const data = {
-                    first_name: formData.get("FIRST_NAME"),
-                    last_name: formData.get("LAST_NAME"),
-                    email: formData.get("EMAIL"),
-                    student_class: formData.get("CLASS"),
-                    message: formData.get("MESSAGE"),
-                };
+                // Check if user is timed out
+                if (!getUserTimeout()) {
+                    const formdata = new FormData(this);
+                    const data = {
+                        first_name: formdata.get("FIRST_NAME"),
+                        last_name: formdata.get("LAST_NAME"),
+                        email: formdata.get("EMAIL"),
+                        student_class: formdata.get("CLASS"),
+                        subject: formdata.get("SUBJECT"),
+                        date: formdata.get("DATE"),
+                        time: formdata.get("TIME"),
+                    };
+                }
 
                 // Get client ip address
-                clientIp;
-                getClientIp()
+                let clientIp;
+                await getClientIp()
                     .then((ip) => {
                         clientIp = ip;
                     })
@@ -219,35 +295,36 @@ document.addEventListener("DOMContentLoaded", async function () {
                         );
                     });
 
-                // Create contact request
-                const contactRequest = new ContactRequest(
-                    (first_name = data.first_name),
-                    (last_name = data.last_name),
-                    (email = data.email),
-                    (student_class = data.student_class),
-                    (message = data.message),
-                    (ip_address = clientIp)
+                // Form lesson request
+                const lessonRequest = new LessonRequest(
+                    data.first_name,
+                    data.last_name,
+                    data.email,
+                    data.subject,
+                    data.date,
+                    data.time,
+                    clientIp
                 );
 
-                // Send contact request
+                // Send lesson request
                 try {
                     const response = await fetch(
-                        "https://<backend-ip>/contact",
+                        "https://<backend-ip>/lesson",
                         {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify(contactRequest),
+                            body: JSON.stringify(lessonRequest),
                         }
                     );
 
                     if (response.ok) {
-                        alert("Nachricht gesendet.");
+                        alert("Anfrage gesendet.");
                         this.reset();
                     } else {
                         console.error(
-                            "Error sending contact request:",
+                            "Error sending lesson request:",
                             response.statusText
                         );
                         alert(
@@ -262,7 +339,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             });
         }
-    } else if (currentPage.endsWith("buchen.html")) {
     } else if (currentPage.endsWith("wochen.html")) {
         // Full calendar page
         populateCalendar(getISOWeek());
@@ -313,35 +389,17 @@ function getUserTimeout() {
 
 // Gets the current client ip address
 async function getClientIp() {
-    return new Promise((resolve, reject) => {
-        const peerConnection = new RTCPeerConnection();
-        const noop = () => {};
-
-        // Gater ICE candidates
-        peerConnection.onicecandidate = (event) => {
-            if (event.candidate) {
-                const candidate = event.candidate.candidate;
-                const ipRegex = /([0-9]{1,3}\.){3}[0-9]{1,3}/;
-                const ipMatch = candidate.match(ipRegex);
-
-                if (ipMatch) {
-                    resolve(ipMatch[0]);
-                    peerConnection.close();
-                }
-            }
-        };
-
-        peerConnection.onicecandidateerror = (error) => {
-            reject(error);
-        };
-
-        // Create a data channel to trigger ICE gathering
-        peerConnection.createDataChannel("dummyChannel");
-        peerConnection
-            .createOffer()
-            .then((offer) => peerConnection.setLocalDescription(offer))
-            .catch(noop);
-    });
+    try {
+        const response = await fetch("https://ipinfo.io/json");
+        if (!response.ok) {
+            throw new Error("Failed to fetch public IP address");
+        }
+        const data = await response.json();
+        return data.ip; // This will return the public IP address
+    } catch (error) {
+        console.error("Error fetching public IP address:", error);
+        return "unknown"; // Fallback value
+    }
 }
 
 async function getLessons(week) {
@@ -670,4 +728,83 @@ function getWeekStartAndEndDates(weekId, year = new Date().getFullYear()) {
     endDate.setDate(startDate.getDate() + 6);
 
     return `(${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()})`;
+}
+
+// Returns an arrays of all days on which there are lessons in the next three weeks
+function getLessonDays(lessons) {
+    if (lessons && Array.isArray(lessons) && lessons.length > 0) {
+        return [
+            ...lessons.map((lesson) =>
+                new Date(lesson.date).toLocaleDateString()
+            ),
+        ];
+    }
+}
+
+function populateLessonRequestForm() {
+    const form = document.getElementById("lesson-request-form");
+    if (form) {
+        lessons = getLessonDays(next3WeeksLessons);
+        if (lessons && Array.isArray(lessons) && lessons.length > 0) {
+            // Populate the date picker with available lesson dates
+            const datePicker = form.querySelector("#lesson-request-form-date");
+            lessons.forEach((date) => {
+                const option = document.createElement("option");
+                option.value = date;
+                option.textContent = date;
+                datePicker.appendChild(option);
+            });
+        }
+
+        const subjectPicker = form.querySelector(
+            "#lesson-request-form-subject"
+        );
+        if (subjectPicker) {
+            if (
+                !subjectsAvailable ||
+                !subjects ||
+                Array.isArray(subjects) ||
+                subjects.length === 0
+            ) {
+                const option = document.createElement("option");
+                option.value = "";
+                option.textContent = "Keine Fächer verfügbar";
+                option.classList.add("error-text");
+                subjectPicker.appendChild(option);
+            } else {
+                Object.keys(subjects).forEach((subjectId) => {
+                    const option = document.createElement("option");
+                    option.value = subjectId;
+                    option.textContent = subjects[subjectId].name;
+                    subjectPicker.appendChild(option);
+                });
+            }
+        }
+
+        const timePicker = form.querySelector("#lesson-request-form-time");
+        if (timePicker) {
+            const datePicker = document.querySelector(
+                "#lesson-request-form-date"
+            );
+            if (datePicker && datePicker.value) {
+                const date = new Date(datePicker.value);
+
+                if (
+                    next3WeeksLessons &&
+                    lessonsAvailable &&
+                    Array.isArray(next3WeeksLessons) &&
+                    next3WeeksLessons.length > 0
+                ) {
+                    next3WeeksLessons.forEach((lesson) => {
+                        if (lesson.date === date) {
+                            const option = document.createElement("option");
+                            option.value = lesson.start_time;
+                            option.textContent = lesson.start_time;
+                            timePicker.appendChild(option);
+                        }
+                    });
+                }
+            }
+        }
+    }
 }

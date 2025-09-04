@@ -5,6 +5,7 @@ This file contains a documentation on all the endpoints used for communication w
 ## General
 
  - `/contact` is used to send contact requests.
+ - `/lesson`is used to send contact requests.
 
 ## API
 

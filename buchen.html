@@ -23,27 +23,15 @@
             <input type="text" name="LAST_NAME" placeholder="Nachname" required>
             <input type="email" name="EMAIL" placeholder="E-Mail" pattern="[a-z]\.[a-z]+@students\.htl-leonding\.ac\.at" required>
             <input type="text" name="CLASS" placeholder="Klasse" pattern="[0-9][A-Za-z]{4}" required>
-            <select required id="lesson-request-form-subject" aria-placeholder="Fach wählen">
-                    <option value="Programmieren und Software Engineering">Programmieren und Software Engineering</option>
-                    <option value="Angewandte Mathematik">Angewandte Mathematik</option>
-                    <option value="Physik">Physik</option>
-                    <option value="Rechnungswesen">Rechnungswesen</option>
-                    <option value="Betriebsorganisation">Betriebsorganisation</option>
+            <select required id="lesson-request-form-subject" name="SUBJECT" aria-placeholder="Fach wählen">
             </select>
-            <select required id="lesson-request-form-date" aria-placeholder="Datum wählen">
-                <option value="">Datum wählen</option>
-                <option value="2025-01-01">01.01.2025</option>
-                <option value="2025-01-02">02.01.2025</option>
-                <option value="2025-01-03">03.01.2025</option>
+            <select required id="lesson-request-form-date" name="DATE" aria-placeholder="Datum wählen">
             </select>
-            <select required id="lesson-request-form-time" aria-placeholder="Uhrzeit wählen">
-                <option value="">Uhrzeit wählen</option>
-                <option value="15:00">15:00</option>
-                <option value="16:00">16:00</option>
-                <option value="17:00">17:00</option>
+            <select required id="lesson-request-form-time" name="TIME" aria-placeholder="Uhrzeit wählen">
             </select>
             <button type="submit">Anfrage senden</button>
         </form>
+        <p>Um sicherzustellen, dass ich deine Anfrage bearbeiten kann, achte bitte darauf, dass du deine <strong>Schul-EMail-Adresse</strong> verwendest.</p>
     </section>
     <footer>
         <p>&copy; 2025 Nachhilfe Markus Harnúšek</p>
