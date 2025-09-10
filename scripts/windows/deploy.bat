@@ -3,8 +3,8 @@
 :: Define source and target directories
 set WEBSITE_SOURCE=website
 set DEPLOYMENT_TARGET=deployment
-set BACKEND_SOURCE=backend
-set BACKEND_RUNTIME_TARGET=backend-runtime
+set BACKEND_SOURCE=server
+set BACKEND_RUNTIME_TARGET=server-runtime
 
 :: Create the deployment folder if it doesn't exist
 if not exist "%DEPLOYMENT_TARGET%" (
@@ -33,10 +33,10 @@ if not exist "%BACKEND_RUNTIME_TARGET%" (
 )
 
 :: Copy backend contents to the backend-runtime folder
-if exist "%BACKEND_SOURCE%" (
-    xcopy "%BACKEND_SOURCE%\*" "%BACKEND_RUNTIME_TARGET%\" /E /H /C /Q
+if exist "%BACKEND_SOURCE%\bin\Debug\net9.0" (
+    for %%F in ("%BACKEND_SOURCE%\bin\Debug\net9.0\*.exe" "%BACKEND_SOURCE%\bin\Debug\net9.0\*.dll" "%BACKEND_SOURCE%\bin\Debug\net9.0\*.runtimeconfig.json") do copy "%%F" "%BACKEND_RUNTIME_TARGET%\"
 ) else (
-    echo Backend source folder not found. Please ensure the "%BACKEND_SOURCE%" folder exists.
+    echo Backend source folder not found. Please ensure the "%BACKEND_SOURCE%\bin\Debug\net9.0" folder exists.
     exit /b 1
 )
 

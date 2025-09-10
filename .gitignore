@@ -1,2 +1,6 @@
 deployment/
-backend-runtime/
+server-runtime/
+.vs/
+bin
+obj
+*.sln

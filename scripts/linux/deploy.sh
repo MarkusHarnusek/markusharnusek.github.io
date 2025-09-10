@@ -4,8 +4,8 @@
 # Define source and target directories
 WEBSITE_SOURCE="website"
 DEPLOYMENT_TARGET="deployment"
-BACKEND_SOURCE="backend"
-BACKEND_RUNTIME_TARGET="backend-runtime"
+BACKEND_SOURCE="server"
+BACKEND_RUNTIME_TARGET="server-runtime"
 
 # Create the deployment folder if it doesn't exist
 if [ ! -d "$DEPLOYMENT_TARGET" ]; then
@@ -32,10 +32,10 @@ else
 fi
 
 # Copy backend contents to the backend-runtime folder
-if [ -d "$BACKEND_SOURCE" ]; then
-    cp -r "$BACKEND_SOURCE/"* "$BACKEND_RUNTIME_TARGET/"
+if [ -d "$BACKEND_SOURCE/bin/Debug/net9.0" ]; then
+    find "$BACKEND_SOURCE/bin/Debug/net9.0" -type f \( -name "*.exe" -o -name "*.dll" -o -name "*.runtimeconfig.json" \) -exec cp {} "$BACKEND_RUNTIME_TARGET/" \;
 else
-    echo "Backend source folder not found. Please ensure the '$BACKEND_SOURCE' folder exists."
+    echo "Backend source folder not found. Please ensure the '$BACKEND_SOURCE/bin/Debug/net9.0' folder exists."
     exit 1
 fi
 
