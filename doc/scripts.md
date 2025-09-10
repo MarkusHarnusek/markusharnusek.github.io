@@ -35,3 +35,7 @@ Navigate to the `scripts\windows` directory and execute the script:
 ### Deploy
 
 The `deploy` script is used to copy the website and backend files into separate deployment folders, creating a static deployed state of the project. This allows for a clear separation between the development and deployment environments. The script can be used for both the initial setup and for updating the deployment state.
+
+### Create database
+
+The `create_db` script is used to create the sqlite3 database, create all necessary tables and fill it with default values.
