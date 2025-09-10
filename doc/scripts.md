@@ -2,23 +2,36 @@
 
 ## General
 
-The Tutoring Platform includes a few shell scripts to help set up the deployment structure and save time. There are scripts for both `windows` and `linux`.
+The Tutoring Platform includes a collection of shell scripts designed to streamline the setup and deployment processes. These scripts are available for both Windows and Linux environments, ensuring compatibility and ease of use.
 
-## How to run the scripts
+## How to Run the Scripts
 
 ### Linux
 
-On __Linux__ navigate to the root directory of the project and ensure the script is executable by changing it's permissions using `chmod +x ./scripts/linux/<script-name>.sh`. Then run the script using `./scripts/linux/<script-name>.sh`.
+On **Linux**, navigate to the root directory of the project and ensure the script is executable by modifying its permissions using the following command:
+```bash
+chmod +x ./scripts/linux/<script-name>.sh
+```
+Then, execute the script using:
+```bash
+./scripts/linux/<script-name>.sh
+```
 
 ### Windows
 
-Navigate to `scripts\windows`:
+Navigate to the `scripts\windows` directory and execute the script:
 
- - Using __PowerShell__ execute the script by using `.\<script-name>.bat`.
- - Using the __Command Prompt__ execute the script by using `<script-name>.bat`.
+- Using **PowerShell**:
+  ```powershell
+  .\<script-name>.bat
+  ```
+- Using the **Command Prompt**:
+  ```cmd
+  <script-name>.bat
+  ```
 
 ## Scripts
 
-### Setup deployment
+### Deploy
 
-The `setup_deployment` script is used to copy the website and backend files into seperate deployment folders to have a static deployed state of the project and be able to have a seperate branch used for development. It can be used not only for the inital setup but also for pushing a new deployment state.
+The `deploy` script is used to copy the website and backend files into separate deployment folders, creating a static deployed state of the project. This allows for a clear separation between the development and deployment environments. The script can be used for both the initial setup and for updating the deployment state.
