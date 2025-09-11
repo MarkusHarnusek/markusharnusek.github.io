@@ -7,6 +7,7 @@ class LessonRequest {
         subject,
         date,
         start_time_id,
+        student_class,
         ip
     ) {
         this.first_name = first_name;
@@ -15,6 +16,7 @@ class LessonRequest {
         this.subject = subject;
         this.date = date;
         this.start_time_id = start_time_id;
+        this.student_class = student_class;
         this.ip = ip;
     }
 }
@@ -304,6 +306,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     data.subject,
                     data.date,
                     data.time,
+                    data.student_class,
                     clientIp
                 );
 
