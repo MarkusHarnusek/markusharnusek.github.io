@@ -1,7 +1,7 @@
 deployment/
 server-runtime/
 .vs/
-bin
-obj
+bin/
+obj/
 *.sln
 *.db
