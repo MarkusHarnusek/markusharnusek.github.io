@@ -22,7 +22,7 @@ namespace server
             }
             catch (Exception e)
             {
-                Util.Log($"An error occured while obtaining public IPv4 address: {e.Message.ToString()}", LogLevel.Fatal);
+                Util.Log($"An error occured while obtaining public IPv4 address: {e.Message}", LogLevel.Fatal);
                 Environment.Exit(1);
             }
 
