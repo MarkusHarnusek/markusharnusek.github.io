@@ -4,3 +4,4 @@ server-runtime/
 bin
 obj
 *.sln
+*.db

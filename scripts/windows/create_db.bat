@@ -8,7 +8,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: Database file name
-set DB_FILE=school.db
+set DB_FILE=..\\..\\tutoring.db
 
 :: Remove existing database file if it exists
 if exist "%DB_FILE%" (
@@ -18,7 +18,7 @@ if exist "%DB_FILE%" (
 :: Create and populate the database
 echo -- Create Tables> temp.sql
 echo CREATE TABLE SUBJECT (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     name TEXT NOT NULL,>> temp.sql
 echo     short TEXT NOT NULL,>> temp.sql
 echo     teacher TEXT NOT NULL,>> temp.sql
@@ -26,7 +26,7 @@ echo     description TEXT NOT NULL>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE STUDENT (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     first_name TEXT NOT NULL,>> temp.sql
 echo     last_name TEXT NOT NULL,>> temp.sql
 echo     student_class TEXT,>> temp.sql
@@ -34,12 +34,12 @@ echo     email_address TEXT NOT NULL UNIQUE>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE STATUS (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     name TEXT NOT NULL>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE LESSON (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     date DATETIME NOT NULL,>> temp.sql
 echo     start_time_id INTEGER,>> temp.sql
 echo     subject_id INTEGER,>> temp.sql
@@ -52,7 +52,7 @@ echo     FOREIGN KEY (status_id) REFERENCES STATUS(id)>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE MESSAGE (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     student_id INTEGER,>> temp.sql
 echo     lesson_id INTEGER,>> temp.sql
 echo     title TEXT,>> temp.sql
@@ -62,13 +62,13 @@ echo     FOREIGN KEY (lesson_id) REFERENCES LESSON(id)>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE REQUEST (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     ip TEXT NOT NULL,>> temp.sql
 echo     time DATETIME NOT NULL>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE START_TIME (>> temp.sql
-echo     id INTEGER PRIMARY KEY UNIQUE AUTOINCREMENT,>> temp.sql
+echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     time TEXT NOT NULL>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
