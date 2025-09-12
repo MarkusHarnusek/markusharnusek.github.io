@@ -46,22 +46,24 @@
                 LogLevel.Info => "[INFO]     ",
                 LogLevel.Warning => "[WARNING]  ",
                 LogLevel.Error => "[ERROR]    ",
+                LogLevel.Fatal => "[FATAL]    ",
                 LogLevel.Ok => "[OK]       ",
                 _ => ""
             };
 
             Console.ForegroundColor = level switch
             {
-                LogLevel.Debug => ConsoleColor.Gray,
+                LogLevel.Debug => ConsoleColor.Blue,
                 LogLevel.Info => ConsoleColor.White,
                 LogLevel.Warning => ConsoleColor.Yellow,
                 LogLevel.Error => ConsoleColor.Red,
                 LogLevel.Fatal => ConsoleColor.DarkRed,
-                LogLevel.Ok => ConsoleColor.Green,
-                _ => ConsoleColor.White
+                LogLevel.Ok => ConsoleColor.White,
+                _ => ConsoleColor.Gray
             };
-            
+
             Console.WriteLine($"{prefix}{DateTime.Now:HH:mm:ss} {message}");
+            Console.ResetColor();
         }
     }
 }
