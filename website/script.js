@@ -35,10 +35,10 @@ class ContactRequest {
 
 // The following classes are those being obtained from the server in order to display the current data
 class Subject {
-    constructor(id, name, short, teacher, description) {
+    constructor(id, name, shortcut, teacher, description) {
         this.id = id;
         this.name = name;
-        this.short = short;
+        this.shortcut = shortcut;
         this.teacher = teacher;
         this.description = description;
     }
@@ -52,14 +52,31 @@ class Status {
 }
 
 class Lesson {
-    constructor(id, start_time_id, date, subject_id, student_id, status_id) {
+    constructor(id, start_time, date, subject, student, status) {
         this.id = id;
-        this.start_time_id = start_time_id;
+        this.start_time = start_time;
         this.date = date;
-        this.subject_id = subject_id;
-        this.student_id = student_id;
-        this.status_id = status_id;
+        this.subject = subject;
+        this.student = student_id;
+        this.status = status_id;
         this.ip = ip;
+    }
+}
+
+class StartTime {
+    constructor (id, time) {
+        this.id = id;
+        this.time = time;
+    }
+}
+
+class Student {
+    constructor(id, first_name, last_name, student_class, email_address) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.student_class = student_class;
+        this.email_address = email_address;
     }
 }
 
