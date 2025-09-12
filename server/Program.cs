@@ -11,7 +11,7 @@
             Util.Log($"Server's IP Address: {ip}", LogLevel.Ok);
 
             // Check if server is behind Nat
-            if (Network.IsBehindNat().Result)  {
+            if (await Network.IsBehindNat())  {
                 Util.Log("The server is behind a NAT. This may cause issues with clients connecting.", LogLevel.Warning);
             }
 

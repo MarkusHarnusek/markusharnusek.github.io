@@ -19,7 +19,7 @@ namespace server
             // Try to obtain the IPv6 address
             try
             {
-                return await httpClient.GetStringAsync("https://api64.ipify.org");
+                return await httpClient.GetStringAsync("https://api.ipify.org");
             }
             catch (Exception e)
             {
