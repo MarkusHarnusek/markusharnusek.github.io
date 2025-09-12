@@ -4,10 +4,14 @@
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("--- Tutoring Server Started ---");
-            Console.WriteLine(AppContext.BaseDirectory);
+            Util.Log($"Server started at: {Environment.CurrentDirectory}", LogLevel.Ok);
+
+            // Get the server's public IP address
             string publicIp = await Network.GetPublicIpAsync();
-            Util.Log($"Public IP Address: {publicIp}", LogLevel.Ok);
+            Util.Log($"Server public IP Address: {publicIp}", LogLevel.Ok);
+
+            // Initialize the database
+            Database database = new Database();
         }
     }
 }
