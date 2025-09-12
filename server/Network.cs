@@ -1,4 +1,5 @@
-       
+using System.Net;
+
 namespace server
 {
     /// <summary>
@@ -27,6 +28,27 @@ namespace server
             }
 
             return string.Empty;
+        }
+
+        public static async Task<bool> IsBehindNat()
+        {
+            // Get local ip address
+            string localIp = string.Empty;
+
+            foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+            {
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    localIp = ip.ToString();
+                    break;
+                }
+            }
+
+            // Get public ip address
+            string publicIp = await GetPublicIpAsync();
+
+            bool isPrivate = localIp.StartsWith("10.") || localIp.StartsWith("192.168.") || (localIp.StartsWith("172.") && int.Parse(localIp.Split('.')[1]) is >= 16 and <= 31);
+            return isPrivate && localIp != publicIp;
         }
     }
 }
