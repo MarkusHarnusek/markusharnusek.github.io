@@ -1,4 +1,6 @@
-﻿namespace server
+﻿using Microsoft.Data.Sqlite;
+
+namespace server
 {
     /// <summary>
     /// Handles database interactions for the tutoring system.
@@ -35,6 +37,11 @@
         public List<StartTime> start_times { get; }
 
         /// <summary>
+        /// The SQLite connection to the database.
+        /// </summary>
+        private SqliteConnection? connection;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Database"/> class.
         /// </summary>
         public Database()
@@ -58,7 +65,9 @@
         /// <returns></returns>
         public async Task RefreshData()
         {
-
+            DatabaseExistAction();
+            await ConnectToDatabase();
+            
         }
 
         /// <summary>
@@ -84,6 +93,39 @@
         private bool CheckIfDatabaseExists()
         {
             return File.Exists(Path.Combine(Environment.CurrentDirectory, "tutoring.db"));
+        }
+
+        /// <summary>
+        /// Connects to the SQLite database.
+        /// </summary>
+        /// <returns></returns>
+        private async Task ConnectToDatabase()
+        {
+            if (connection == null)
+            {
+                connection = new SqliteConnection("Data Source=tutoring.db");
+                await connection.OpenAsync();
+                Util.Log("Connected to the database.", LogLevel.Ok);
+            }
+
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                await connection.OpenAsync();
+                Util.Log("Reconnected to the database.", LogLevel.Ok);
+            }
+        }
+
+        /// <summary>
+        /// Disconnects from the SQLite database.
+        /// </summary>
+        /// <returns></returns>
+        private async Task DisconnectFromDatabase()
+        {
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                await connection.CloseAsync();
+                Util.Log("Disconnected from the database.", LogLevel.Ok);
+            }
         }
     }
 }
