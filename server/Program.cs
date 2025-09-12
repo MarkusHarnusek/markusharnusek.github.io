@@ -6,9 +6,14 @@
         {
             Util.Log($"Server started at: {Environment.CurrentDirectory}", LogLevel.Ok);
 
-            // Get the server's public IP address
-            string publicIp = await Network.GetPublicIpAsync();
-            Util.Log($"Server public IP Address: {publicIp}", LogLevel.Ok);
+            // Get the server's IP address
+            string ip = await Network.GetIpAsync();
+            Util.Log($"Server's IP Address: {ip}", LogLevel.Ok);
+
+            // Check if server is behind Nat
+            if (Network.IsBehindNat().Result)  {
+                Util.Log("The server is behind a NAT. This may cause issues with clients connecting.", LogLevel.Warning);
+            }
 
             // Initialize the database
             Database database = new Database();

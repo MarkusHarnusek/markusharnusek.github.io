@@ -11,7 +11,7 @@ namespace server
         /// Gets the public IPv6 address and falls back to returning the public IPv4 address
         /// </summary>
         /// <returns>An IPv6 or IPv4 address</returns>
-        public static async Task<string> GetPublicIpAsync()
+        public static async Task<string> GetIpAsync()
         {
             using var httpClient = new HttpClient();
             httpClient.Timeout = TimeSpan.FromSeconds(3);
@@ -23,7 +23,7 @@ namespace server
             }
             catch (Exception e)
             {
-                Util.Log($"An error occured while obtaining public IPv4 address: {e.Message}", LogLevel.Fatal);
+                Util.Log($"An error occured while obtaining IP address: {e.Message}", LogLevel.Fatal);
                 Environment.Exit(1);
             }
 
@@ -45,7 +45,7 @@ namespace server
             }
 
             // Get public ip address
-            string publicIp = await GetPublicIpAsync();
+            string publicIp = await GetIpAsync();
 
             bool isPrivate = localIp.StartsWith("10.") || localIp.StartsWith("192.168.") || (localIp.StartsWith("172.") && int.Parse(localIp.Split('.')[1]) is >= 16 and <= 31);
             return isPrivate && localIp != publicIp;
