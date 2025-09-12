@@ -392,13 +392,13 @@ header {
 
 .hero,
 #about.hero {
-  border: 1npx solid var(--border-color);
+  border: 1px solid var(--border-color);
   box-shadow: var(--hero-shadow);
   background: var(--hero-bg);
   border-radius: 1rem;
   max-width: 700px;
   margin: 3rem auto;
-  padding: 2rem 2vw;
+  padding: 20rem 2vw;
   text-align: center;
   display: flex;
   flex-direction: column;
