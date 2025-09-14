@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     // Send contact request
                     try {
                         const response = await fetch(
-                            "https://<backend-ip>/contact",
+                            "https://localhost:8443 /contact",
                             {
                                 method: "POST",
                                 headers: {
@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // Send lesson request
                 try {
                     const response = await fetch(
-                        "https://<backend-ip>/lesson",
+                        "https://localhost:8443/lesson",
                         {
                             method: "POST",
                             headers: {
@@ -430,7 +430,7 @@ async function getLessons(week) {
     // Fetch current lesson data
     try {
         const response = await fetch(
-            `https://<backend-ip>/api/lessons?WEEK=${week}`,
+            `https://localhost:8443/api/lessons?WEEK=${week}`,
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -470,7 +470,7 @@ async function getBackendData() {
     try {
         // Fetch statues
         const statusResponse = await fetch(
-            "https://<backend-ip>/api/statuses",
+            "https://localhost:8443/api/statuses",
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -495,7 +495,7 @@ async function getBackendData() {
 
         // Repeat for subjects
         const subjectResponse = await fetch(
-            "https://<backend-ip>/api/subjects",
+            "https://localhost:8443/api/subjects",
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -525,7 +525,7 @@ async function getBackendData() {
 
         // Repeat for lessons start times
         const timeResponse = await fetch(
-            "https://<backend-ip>/api/start_times",
+            "https://localhost:8443/api/start_times",
             {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
