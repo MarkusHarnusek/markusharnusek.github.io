@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     // Send contact request
                     try {
                         const response = await fetch(
-                            "https://localhost:8443 /contact",
+                            "https://localhost:8443/contact",
                             {
                                 method: "POST",
                                 headers: {
@@ -541,7 +541,7 @@ async function getBackendData() {
             const timeBody = await timeResponse.json();
 
             lessonStartTimes = timeBody.map(
-                (time) => new LessonStartTime(time.id, time.start_time)
+                (time) => new StartTime(time.id, time.start_time)
             );
         }
     } catch (error) {
@@ -614,7 +614,7 @@ function getWeeksInYear(year = new Date().getFullYear()) {
 
 // Used to populate current week's calendar on index.html
 function populateIndexCalendar(lessons) {
-    const calendarBody = document.querySelector("index-calendar-table");
+    const calendarBody = document.querySelector(".index-calendar-table");
 
     if (!calendarBody) {
         console.warn(

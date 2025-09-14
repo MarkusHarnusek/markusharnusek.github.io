@@ -10,14 +10,6 @@ namespace server
     public class Database
     {
         /// <summary>
-        /// A list of all lesson requests in the system.
-        /// </summary>
-        public List<LessonRequest> lesson_requests { get; }
-        /// <summary>
-        /// A list of all contact requests in the system.
-        /// </summary>
-        public List<ContactRequest> contact_requests { get; }
-        /// <summary>
         /// A list of all lessons in the system.
         /// </summary>
         public List<Lesson> lessons { get; }
@@ -37,6 +29,14 @@ namespace server
         /// A list of all start times in the system.
         /// </summary>
         public List<StartTime> start_times { get; }
+        /// <summary>
+        /// A list of all messages in the system.
+        /// </summary>
+        public List<Message> messages { get; }
+        /// <summary>
+        /// A list of all requests in the system.
+        /// </summary>
+        public List<Request> requests { get; }
 
         /// <summary>
         /// A list containing all the above lists for easy iteration.
@@ -54,23 +54,23 @@ namespace server
         public Database()
         {
             // Initialize empty lists for each entity type
-            lesson_requests = new List<LessonRequest>();
-            contact_requests = new List<ContactRequest>();
             lessons = new List<Lesson>();
             students = new List<Student>();
             subjects = new List<Subject>();
             statuses = new List<Status>();
             start_times = new List<StartTime>();
+            messages = new List<Message>();
+            requests = new List<Request>();
 
             tables = new List<IList>()
             {
-                lesson_requests,
-                contact_requests,
                 lessons,
                 students,
                 subjects,
                 statuses,
-                start_times
+                start_times,
+                messages,
+                requests
             };
 
             // Check if the database exists
@@ -164,6 +164,84 @@ namespace server
                 Util.Log("Disconnected from the database.", LogLevel.Ok);
             }
         }
+
+        #region  Data Insertion Methods
+
+        /// <summary>
+        /// Inserts a new student into the database.
+        /// </summary>
+        /// <param name="student">The student object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertStudent(Student student)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO STUDENT (first_name, last_name, class, email_address) VALUES ($first_name, $last_name, $class, $email_address)";
+            cmd.Parameters.AddWithValue("$first_name", student.first_name);
+            cmd.Parameters.AddWithValue("$last_name", student.last_name);
+            cmd.Parameters.AddWithValue("$class", student.student_class);
+            cmd.Parameters.AddWithValue("$email_address", student.email_address);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Inserts a new lesson into the database.
+        /// </summary>
+        /// <param name="lesson">The lesson object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertLesson(Lesson lesson)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO LESSON (start_time, date, subject_id, student_id, status_id) VALUES ($start_time, $date, $subject_id, $student_id, $status_id)";
+            cmd.Parameters.AddWithValue("$start_time", lesson.start_time);
+            cmd.Parameters.AddWithValue("$date", lesson.date.ToString("yyyy-MM-dd"));
+            cmd.Parameters.AddWithValue("$subject_id", lesson.subject.id);
+            cmd.Parameters.AddWithValue("$student_id", lesson.student.id);
+            cmd.Parameters.AddWithValue("$status_id", lesson.status.id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Inserts a new message into the database.
+        /// </summary>
+        /// <param name="message">The message object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertMessage(Message message)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO MESSAGE (student_id, lesson_id, title, body) VALUES ($student_id, $lesson_id, $title, $body)";
+            cmd.Parameters.AddWithValue("$student_id", message.student.id);
+            if (message.lesson != null)
+            {
+                cmd.Parameters.AddWithValue("$lesson_id", message.lesson.id);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("$lesson_id", DBNull.Value);
+            }
+            cmd.Parameters.AddWithValue("$title", message.title);
+            cmd.Parameters.AddWithValue("$body", message.body);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Inserts a new request into the database.
+        /// </summary>
+        /// <param name="request">The request object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertRequest(Request request)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO REQUEST (ip, timestamp) VALUES ($ip, $timestamp)";
+            cmd.Parameters.AddWithValue("$ip", request.ip);
+            cmd.Parameters.AddWithValue("$timestamp", request.timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        #endregion
 
         #region  Data Retrieval Methods
 
@@ -315,6 +393,74 @@ namespace server
                     string image = reader.GetString(4);
 
                     subjects.Add(new Subject(id, name, description, level, image));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all messages from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadMessages()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM MESSAGE";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    int studentId = reader.GetInt32(1);
+                    int? lessonId = reader.IsDBNull(2) ? null : reader.GetInt32(2);
+                    string title = reader.GetString(3);
+                    string body = reader.GetString(4);
+
+                    var student = students.Find(s => s.id == studentId) ?? new Student(-1, "unknown", "unknown", "unknown", "unknown");
+                    if (student.id == -1)
+                    {
+                        Util.Log($"Student with ID {studentId} not found for message ID {id}.", LogLevel.Error);
+                    }
+
+                    Lesson? lesson = null;
+                    if (lessonId.HasValue)
+                    {
+                        lesson = lessons.Find(l => l.id == lessonId.Value);
+                        if (lesson == null)
+                        {
+                            Util.Log($"Lesson with ID {lessonId.Value} not found for message ID {id}.", LogLevel.Error);
+                        }
+                    }
+
+                    messages.Add(new Message(id, student, lesson, title, body));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all requests from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadRequests()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM REQUEST";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    string ip = reader.GetString(1);
+                    string timestampStr = reader.GetString(2);
+
+                    if (!DateTime.TryParse(timestampStr, out DateTime timestamp))
+                    {
+                        Util.Log($"Invalid timestamp format for request ID {id}. Expected format is YYYY-MM-DD HH:MM:SS.", LogLevel.Error);
+                        timestamp = DateTime.MinValue;
+                    }
+
+                    requests.Add(new Request(id, ip, timestamp));
                 }
             }
         }

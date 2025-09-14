@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
 
@@ -51,6 +52,18 @@ namespace server
             string path = context.Request.Url != null ? context.Request.Url.AbsolutePath.ToLower() : string.Empty;
             string method = context.Request.HttpMethod;
 
+            // Add CORS headers to every response
+            context.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            context.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+
+            if (method == "OPTIONS")
+            {
+                context.Response.StatusCode = 204;
+                context.Response.OutputStream.Close();
+                return;
+            }
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
 
@@ -91,6 +104,67 @@ namespace server
                             await JsonSerializer.SerializeAsync(context.Response.OutputStream, _database.lessons);
                         }
                         Util.Log($"Sent lessons data to {context.Request.RemoteEndPoint}", LogLevel.Ok);
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 404;
+                        await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Not found\"}"));
+                        Util.Log($"Unknown endpoint {path} requested by {context.Request.RemoteEndPoint}", LogLevel.Warning);
+                    }
+                }
+                else if (method == "POST")
+                {
+                    Util.Log($"Received POST request for {path} from {context.Request.RemoteEndPoint}", LogLevel.Ok);
+
+                    if (path == "/contact")
+                    {
+                        using var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding);
+                        string body = await reader.ReadToEndAsync();
+                        var contactRequest = JsonSerializer.Deserialize<ContactRequest>(body);
+
+                        if (contactRequest != null)
+                        {
+                            await _database.LoadData();
+                            await _database.InsertRequest(new Request(-1, context.Request.RemoteEndPoint?.Address.ToString() ?? "unknown", DateTime.UtcNow));
+
+                            if (_database.requests.Count(r => r.ip == context.Request.RemoteEndPoint?.Address.ToString() && (DateTime.UtcNow - r.timestamp).TotalMinutes < 1) > 5 ||
+                                _database.requests.Count(r => r.ip == context.Request.RemoteEndPoint?.Address.ToString() && (DateTime.UtcNow - r.timestamp).TotalHours < 1) > 20)
+                            {
+                                context.Response.StatusCode = 429;
+                                await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Too many requests. Please wait before sending another message.\"}"));
+                                Util.Log($"Rate limit exceeded for {context.Request.RemoteEndPoint}", LogLevel.Warning);
+                                return;
+                            }
+
+                            if (!_database.students.Any(s => s.email_address == contactRequest.email))
+                            {
+                                await _database.InsertStudent(new Student(-1, contactRequest.first_name, contactRequest.last_name, contactRequest.student_class, contactRequest.email));
+                            }
+
+                            var student = _database.students.Find(s => s.email_address == contactRequest.email);
+                            await _database.InsertMessage(new Message(-1, student!, null, contactRequest.title, contactRequest.body));
+                            context.Response.StatusCode = 200;
+
+                            // TODO: Send email notification to admin
+
+                            var smptClient = new SmtpClient("smtp.example.com")
+                            {
+                                Port = 587,
+                                Credentials = new NetworkCredential("username", "password"),
+                                EnableSsl = true,
+                            };
+
+                            var
+
+                            await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"status\":\"Message received\"}"));
+                            Util.Log($"Contact request from {context.Request.RemoteEndPoint}", LogLevel.Ok);
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = 400;
+                            await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Invalid request body\"}"));
+                            Util.Log($"Invalid contact request from {context.Request.RemoteEndPoint}", LogLevel.Warning);
+                        }
                     }
                     else
                     {
