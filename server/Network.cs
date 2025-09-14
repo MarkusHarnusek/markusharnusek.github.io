@@ -16,7 +16,7 @@ namespace server
             using var httpClient = new HttpClient();
             httpClient.Timeout = TimeSpan.FromSeconds(3);
 
-            // Try to obtain the IPv6 address
+            // Try to obtain the address
             try
             {
                 return await httpClient.GetStringAsync("https://api.ipify.org");

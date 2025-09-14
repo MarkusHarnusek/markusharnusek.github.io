@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Collections;
+using System.Data.Common;
 
 namespace server
 {
@@ -37,6 +39,11 @@ namespace server
         public List<StartTime> start_times { get; }
 
         /// <summary>
+        /// A list containing all the above lists for easy iteration.
+        /// </summary>
+        public List<IList> tables;
+
+        /// <summary>
         /// The SQLite connection to the database.
         /// </summary>
         private SqliteConnection? connection;
@@ -55,19 +62,41 @@ namespace server
             statuses = new List<Status>();
             start_times = new List<StartTime>();
 
+            tables = new List<IList>()
+            {
+                lesson_requests,
+                contact_requests,
+                lessons,
+                students,
+                subjects,
+                statuses,
+                start_times
+            };
+
             // Check if the database exists
             DatabaseExistAction();
         }
 
         /// <summary>
-        /// Refreshes the data from the database.
+        /// Loads the data from the database.
         /// </summary>
         /// <returns></returns>
-        public async Task RefreshData()
+        public async Task LoadData()
         {
             DatabaseExistAction();
             await ConnectToDatabase();
-            
+            ClearData();
+        }
+
+        /// <summary>
+        /// Clears all data from the in-memory lists.  
+        /// </summary>
+        private void ClearData()
+        {
+            foreach (var table in tables)
+            {
+                table.Clear();
+            }
         }
 
         /// <summary>
@@ -127,5 +156,161 @@ namespace server
                 Util.Log("Disconnected from the database.", LogLevel.Ok);
             }
         }
+
+        #region  Data Retrieval Methods
+
+        /// <summary>
+        /// Loads all lessons from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadLessons()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM LESSON";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    int startTimeId = reader.GetInt32(1);
+                    string dateStr = reader.GetString(2);
+                    int subjectId = reader.GetInt32(3);
+                    int studentId = reader.GetInt32(4);
+                    int statusId;
+
+                    // Try to parse status as int, fallback to -1 if not possible
+                    if (!int.TryParse(reader.GetValue(5).ToString(), out statusId))
+                    {
+                        Util.Log($"Invalid status format for lesson ID {id}.", LogLevel.Error);
+                        statusId = -1;
+                    }
+
+                    var startTime = start_times.Find(st => st.id == startTimeId) ?? new StartTime(-1, "unknown");
+                    if (startTime.id == -1)
+                    {
+                        Util.Log($"Start time with ID {startTimeId} not found for lesson ID {id}.", LogLevel.Error);
+                    }
+
+                    if (!DateTime.TryParse(dateStr, out DateTime date))
+                    {
+                        Util.Log($"Invalid date format for lesson ID {id}. Expected format is YYYY-MM-DD.", LogLevel.Error);
+                        date = DateTime.MinValue;
+                    }
+
+                    var subject = subjects.Find(s => s.id == subjectId) ?? new Subject(-1, "unknown", "unknown", "unknown", "unknown");
+                    if (subject.id == -1)
+                    {
+                        Util.Log($"Subject with ID {subjectId} not found for lesson ID {id}.", LogLevel.Error);
+                    }
+
+                    var student = students.Find(s => s.id == studentId) ?? new Student(-1, "unknown", "unknown", "unknown", "unknown");
+                    if (student.id == -1)
+                    {
+                        Util.Log($"Student with ID {studentId} not found for lesson ID {id}.", LogLevel.Error);
+                    }
+
+                    var status = statuses.Find(s => s.id == statusId) ?? new Status(-1, "unknown");
+                    if (status.id == -1)
+                    {
+                        Util.Log($"Status with ID {statusId} not found for lesson ID {id}.", LogLevel.Error);
+                    }
+
+                    lessons.Add(new Lesson(id, startTime, date, subject, student, status));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all start times from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadStartTimes()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM START_TIME";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    string time = reader.GetString(1);
+
+                    start_times.Add(new StartTime(id, time));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all statuses from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadStatuses()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM STATUS";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    string name = reader.GetString(1);
+
+                    statuses.Add(new Status(id, name));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all students from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadStudents()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM STUDENT";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    string first_name = reader.GetString(1);
+                    string last_name = reader.GetString(2);
+                    string student_class = reader.GetString(3);
+                    string email_address = reader.GetString(4);
+
+                    students.Add(new Student(id, first_name, last_name, student_class, email_address));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads all subjects from the database into the in-memory list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadSubjects()
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "SELECT * FROM SUBJECT";
+
+            using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    int id = reader.GetInt32(0);
+                    string name = reader.GetString(1);
+                    string description = reader.GetString(2);
+                    string level = reader.GetString(3);
+                    string image = reader.GetString(4);
+
+                    subjects.Add(new Subject(id, name, description, level, image));
+                }
+            }
+        }
+        
+        #endregion
     }
 }
