@@ -86,6 +86,14 @@ namespace server
             DatabaseExistAction();
             await ConnectToDatabase();
             ClearData();
+
+            await LoadStartTimes();
+            await LoadStatuses();
+            await LoadSubjects();
+            await LoadStudents();
+            await LoadLessons();
+            await DisconnectFromDatabase();
+            Util.Log("Data loaded from the database.", LogLevel.Ok);
         }
 
         /// <summary>
@@ -310,7 +318,7 @@ namespace server
                 }
             }
         }
-        
+
         #endregion
     }
 }

@@ -42,7 +42,7 @@
         {
             string prefix = level switch
             {
-                LogLevel.Debug => "[DEBUG]     ",
+                LogLevel.Debug => "[DEBUG]    ",
                 LogLevel.Info => "[INFO]     ",
                 LogLevel.Warning => "[WARNING]  ",
                 LogLevel.Error => "[ERROR]    ",
