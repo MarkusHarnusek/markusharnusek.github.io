@@ -8,8 +8,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: Database file name
-set HOME_DIR=..\\..\\
-set DB_FILE=%HOME_DIR%\server\tutoring.db
+set DB_FILE=server\tutoring.db
 
 :: Remove existing database file if it exists
 if exist "%DB_FILE%" (

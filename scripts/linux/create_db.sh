@@ -8,8 +8,7 @@ then
 fi
 
 # Database file name
-HOME_DIR="../../"
-DB_FILE="${HOME_DIR}/server/tutoring.db"
+DB_FILE="server/tutoring.db"
 
 # Remove existing database file if it exists
 if [ -f "$DB_FILE" ]; then
