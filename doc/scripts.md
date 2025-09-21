@@ -6,6 +6,8 @@ The Tutoring Platform includes a collection of shell scripts designed to streaml
 
 ## How to Run the Scripts
 
+To ensure the scripts will work properly, they **need** to be run in the base directory `Tutoring-Platform`
+
 ### Linux
 
 On **Linux**, navigate to the root directory of the project and ensure the script is executable by modifying its permissions using the following command:
