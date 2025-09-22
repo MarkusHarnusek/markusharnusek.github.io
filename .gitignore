@@ -1,13 +1,13 @@
 deployment/
-backend-runtime/
+server-runtime/
 .vs/
 bin/
 obj/
 *.sln
 *.db
 server/smtp_pwd.txt
-backend-runtime/smtp_pwd.txt
+server-runtime/smtp_pwd.txt
 server/smtp_usr.txt
-backend-runtime/smtp_usr.txt
+server-runtime/smtp_usr.txt
 server/smtp_dom.txt
-backend-runtime/smtp_dom.txt
+server-runtime/smtp_dom.txt
