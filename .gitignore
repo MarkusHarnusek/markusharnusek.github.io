@@ -5,7 +5,7 @@ bin/
 obj/
 *.sln
 *.db
-*.cer
+certificate.cer
 server/smtp_pwd.txt
 server-runtime/smtp_pwd.txt
 server/smtp_usr.txt
