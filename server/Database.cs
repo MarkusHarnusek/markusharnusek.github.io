@@ -92,7 +92,8 @@ namespace server
             await LoadSubjects();
             await LoadStudents();
             await LoadLessons();
-            await DisconnectFromDatabase();
+            await LoadMessages();
+            await LoadRequests();
             Util.Log("Data loaded from the database.", LogLevel.Ok);
         }
 

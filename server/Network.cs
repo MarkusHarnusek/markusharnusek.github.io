@@ -18,11 +18,15 @@ namespace server
         /// The database instance for data access
         /// </summary>
         private readonly Database _database;
+        /// <summary>
+        /// The list of rate limits per IP address
+        /// </summary>
+        private Dictionary<string, (int count, DateTime reset)> _rateLimits = new Dictionary<string, (int count, DateTime reset)>();
 
         /// <summary>
         /// Initializes a new instance of the Network class
         /// </summary>
-        /// <param name="prefixes">The prefixes for the HTTP listener</param>
+        /// <param name="prefixes">The prefixes for the HTTP l2istener</param>
         /// <param name="database">The database instance for data access</param>
         /// <exception cref="ArgumentException"></exception>
         public Network(string[] prefixes, Database database)
@@ -49,7 +53,7 @@ namespace server
 
             // Assign database
             _database = database;
-            Util.Log("HTTP server initialized.", LogLevel.Ok);
+            Util.Log("HTTPS server initialized.", LogLevel.Ok);
         }
 
         /// <summary>
@@ -60,12 +64,13 @@ namespace server
         {
             // Start the listener
             _httpListener.Start();
-            Util.Log("HTTP server started.", LogLevel.Ok);
+            Util.Log("HTTPS server started.", LogLevel.Ok);
 
             // Listen for incoming requests
             while (true)
             {
                 // Wait for a client request
+                await _database.LoadData();
                 var context = await _httpListener.GetContextAsync();
                 _ = Task.Run(() => HandleRequest(context));
             }
@@ -78,9 +83,51 @@ namespace server
         /// <returns></returns>
         private async Task HandleRequest(HttpListenerContext context)
         {
+            // Method wide student object
+            Student student;
+            ContactRequest contactRequest = null!;
+
+            // Rate limiting check
+            string ip = context.Request.RemoteEndPoint?.Address.ToString() ?? "unknown";
+            DateTime now = DateTime.UtcNow;
+            int limit = 5; // requests per minute
+            TimeSpan window = TimeSpan.FromMinutes(1);
+
+
             Util.Log($"Received {context.Request.HttpMethod} request for {context.Request.Url} from {context.Request.RemoteEndPoint}", LogLevel.Ok);
             string path = context.Request.Url != null ? context.Request.Url.AbsolutePath.ToLower() : string.Empty;
             string method = context.Request.HttpMethod;
+
+            if (method == "POST")
+            {
+                if (_rateLimits.TryGetValue(ip, out var entry))
+                {
+                    if (now > entry.reset)
+                    {
+                        // Window expired, reset count and window
+                        _rateLimits[ip] = (1, now.Add(window));
+                    }
+                    else
+                    {
+                        if (entry.count >= limit)
+                        {
+                            context.Response.StatusCode = 429;
+                            await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Too many requests. Please wait before sending another message.\"}"));
+                            Util.Log($"Rate limit exceeded for {ip}", LogLevel.Warning);
+                            return;
+                        }
+                        else
+                        {
+                            _rateLimits[ip] = (entry.count + 1, entry.reset);
+                        }
+                    }
+                }
+                else
+                {
+                    // First request from this IP
+                    _rateLimits[ip] = (1, now.Add(window));
+                }
+            }
 
             // Add CORS headers to every response
             context.Response.AddHeader("Access-Control-Allow-Origin", "*");
@@ -155,29 +202,10 @@ namespace server
                     {
                         using var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding);
                         string body = await reader.ReadToEndAsync();
-                        var contactRequest = JsonSerializer.Deserialize<ContactRequest>(body);
+                        contactRequest = JsonSerializer.Deserialize<ContactRequest>(body) ?? new ContactRequest("unknown", "unknown", "unknown", "unknown", "unknown", "unknown", "unknown");
 
                         if (contactRequest != null)
                         {
-                            await _database.LoadData();
-                            await _database.InsertRequest(new Request(-1, context.Request.RemoteEndPoint?.Address.ToString() ?? "unknown", DateTime.UtcNow));
-
-                            if (_database.requests.Count(r => r.ip == context.Request.RemoteEndPoint?.Address.ToString() && (DateTime.UtcNow - r.timestamp).TotalMinutes < 1) > 5 ||
-                                _database.requests.Count(r => r.ip == context.Request.RemoteEndPoint?.Address.ToString() && (DateTime.UtcNow - r.timestamp).TotalHours < 1) > 20)
-                            {
-                                context.Response.StatusCode = 429;
-                                await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Too many requests. Please wait before sending another message.\"}"));
-                                Util.Log($"Rate limit exceeded for {context.Request.RemoteEndPoint}", LogLevel.Warning);
-                                return;
-                            }
-
-                            if (!_database.students.Any(s => s.email_address == contactRequest.email))
-                            {
-                                await _database.InsertStudent(new Student(-1, contactRequest.first_name, contactRequest.last_name, contactRequest.student_class, contactRequest.email));
-                            }
-
-                            var student = _database.students.Find(s => s.email_address == contactRequest.email);
-                            await _database.InsertMessage(new Message(-1, student!, null, contactRequest.title, contactRequest.body));
                             context.Response.StatusCode = 200;
 
                             string smtpDomain = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_dom.txt"));
@@ -269,6 +297,43 @@ namespace server
             }
             finally
             {
+                if (method == "POST")
+                {
+                    // Log the contact request to the database
+                    if (path == "/contact" && contactRequest != null)
+                    {
+                        try
+                        {
+                            if (!_database.students.Any(s => s.email_address == contactRequest.email))
+                            {
+                                student = new Student(-1, contactRequest.first_name, contactRequest.last_name, contactRequest.student_class, contactRequest.email);
+                                await _database.InsertStudent(student);
+                                await _database.InsertMessage(new Message(-1, student, null, contactRequest.title, contactRequest.body));
+                            }
+                            else
+                            {
+                                student = _database.students.Find(s => s.email_address == contactRequest.email) ?? null!;
+                                await _database.InsertMessage(new Message(-1, student!, null, contactRequest.title, contactRequest.body));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Util.Log($"Error logging request: {ex}", LogLevel.Error);
+                        }
+                    }
+                }
+
+                // Log valid requests
+                try
+                {
+                    await _database.InsertRequest(new Request(-1, ip, DateTime.UtcNow));
+                    Util.Log($"Logged request from {ip}", LogLevel.Ok);
+                }
+                catch (Exception ex)
+                {
+                    Util.Log($"Error logging request: {ex}", LogLevel.Error);
+                }
+
                 try
                 {
                     context.Response.OutputStream.Close();
