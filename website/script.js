@@ -94,6 +94,9 @@ let subjectsAvailable = true;
 // Variable to see which page is open
 let currentPage;
 
+// Server ip address
+const serverIP = "https://localhost:8443";
+
 document.addEventListener("DOMContentLoaded", async function () {
     // Set up and fetch data
     // Determine current page
