@@ -12,3 +12,6 @@ server/smtp_usr.txt
 server-runtime/smtp_usr.txt
 server/smtp_dom.txt
 server-runtime/smtp_dom.txt
+server/admin_email.txt
+server-runtime/admin_email.txt
+example-lesson-requests.json
