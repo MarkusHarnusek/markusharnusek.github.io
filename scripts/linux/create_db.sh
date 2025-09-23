@@ -20,7 +20,7 @@ sqlite3 "$DB_FILE" <<EOF
 -- Create Tables
 CREATE TABLE SUBJECT (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+       name TEXT NOT NULL,
     short TEXT NOT NULL,
     teacher TEXT NOT NULL,
     description TEXT NOT NULL
@@ -41,8 +41,8 @@ CREATE TABLE STATUS (
 
 CREATE TABLE LESSON (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    date DATETIME NOT NULL,
     start_time_id INTEGER,
+    date DATETIME NOT NULL,
     subject_id INTEGER,
     student_id INTEGER,
     status_id INTEGER,

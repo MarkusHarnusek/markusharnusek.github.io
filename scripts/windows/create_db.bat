@@ -40,8 +40,8 @@ echo );>> temp.sql
 echo.>> temp.sql
 echo CREATE TABLE LESSON (>> temp.sql
 echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
-echo     date DATETIME NOT NULL,>> temp.sql
 echo     start_time_id INTEGER,>> temp.sql
+echo     date DATETIME NOT NULL,>> temp.sql
 echo     subject_id INTEGER,>> temp.sql
 echo     student_id INTEGER,>> temp.sql
 echo     status_id INTEGER,>> temp.sql
