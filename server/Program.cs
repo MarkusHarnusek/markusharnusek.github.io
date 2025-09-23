@@ -20,9 +20,6 @@
             Database database = new Database();
 
             await database.LoadData();
-            await database.InsertLesson(new Lesson(-1, database.start_times[0], DateTime.UtcNow.Date, database.subjects[0], database.students[0], database.statuses[2]));
-
-            // await database.InsertLesson(new Lesson(-1, database.start_times[0], DateTime.UtcNow.Date, database.subjects[0], new Student(-1, "unknown", "unknown", "unknown", "unknown"), database.statuses[2]));
 
             // Initialize the HTTP server
             var network = new Network([ $"https://localhost:8443/" ], database);
