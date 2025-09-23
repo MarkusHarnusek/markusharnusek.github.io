@@ -175,7 +175,7 @@ namespace server
         /// <returns></returns>
         public async Task InsertStudent(Student student)
         {
-            await ConnectToDatabase();
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "INSERT INTO STUDENT (first_name, last_name, student_class, email_address) VALUES ($first_name, $last_name, $student_class, $email_address)";
             cmd.Parameters.AddWithValue("$first_name", student.first_name);
@@ -184,7 +184,6 @@ namespace server
             cmd.Parameters.AddWithValue("$email_address", student.email_address);
 
             await cmd.ExecuteNonQueryAsync();
-            await DisconnectFromDatabase();
         }
 
         /// <summary>
@@ -194,17 +193,16 @@ namespace server
         /// <returns></returns>
         public async Task InsertLesson(Lesson lesson)
         {
-            await ConnectToDatabase();
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
-            cmd.CommandText = "INSERT INTO LESSON (start_time, date, subject_id, student_id, status_id) VALUES ($start_time, $date, $subject_id, $student_id, $status_id)";
-            cmd.Parameters.AddWithValue("$start_time", lesson.start_time);
+            cmd.CommandText = "INSERT INTO LESSON (start_time_id, date, subject_id, student_id, status_id) VALUES ($start_time_id, $date, $subject_id, $student_id, $status_id)";
+            cmd.Parameters.AddWithValue("$start_time_id", lesson.start_time.id);
             cmd.Parameters.AddWithValue("$date", lesson.date.ToString("yyyy-MM-dd"));
             cmd.Parameters.AddWithValue("$subject_id", lesson.subject.id);
             cmd.Parameters.AddWithValue("$student_id", lesson.student.id);
             cmd.Parameters.AddWithValue("$status_id", lesson.status.id);
 
             await cmd.ExecuteNonQueryAsync();
-            await DisconnectFromDatabase();
         }
 
         /// <summary>
@@ -214,7 +212,7 @@ namespace server
         /// <returns></returns>
         public async Task InsertMessage(Message message)
         {
-            await ConnectToDatabase();
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "INSERT INTO MESSAGE (student_id, lesson_id, title, body) VALUES ($student_id, $lesson_id, $title, $body)";
             cmd.Parameters.AddWithValue("$student_id", message.student.id);
@@ -230,7 +228,6 @@ namespace server
             cmd.Parameters.AddWithValue("$body", message.body);
 
             await cmd.ExecuteNonQueryAsync();
-            await DisconnectFromDatabase();
         }
 
         /// <summary>
@@ -240,14 +237,13 @@ namespace server
         /// <returns></returns>
         public async Task InsertRequest(Request request)
         {
-            await ConnectToDatabase();
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "INSERT INTO REQUEST (ip, time) VALUES ($ip, $time)";
             cmd.Parameters.AddWithValue("$ip", request.ip);
             cmd.Parameters.AddWithValue("$time", request.timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
 
             await cmd.ExecuteNonQueryAsync();
-            await DisconnectFromDatabase();
         }
 
         #endregion
@@ -260,6 +256,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadLessons()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM LESSON";
 
@@ -322,6 +319,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadStartTimes()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM START_TIME";
 
@@ -343,6 +341,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadStatuses()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM STATUS";
 
@@ -364,6 +363,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadStudents()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM STUDENT";
 
@@ -388,6 +388,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadSubjects()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM SUBJECT";
 
@@ -412,6 +413,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadMessages()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM MESSAGE";
 
@@ -452,6 +454,7 @@ namespace server
         /// <returns></returns>
         private async Task LoadRequests()
         {
+            // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "SELECT * FROM REQUEST";
 

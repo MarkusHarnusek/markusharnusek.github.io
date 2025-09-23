@@ -70,9 +70,9 @@ namespace server
             while (true)
             {
                 // Wait for a client request
-                await _database.LoadData();
                 var context = await _httpListener.GetContextAsync();
-                _ = Task.Run(() => HandleRequest(context));
+                //_ = Task.Run(() => HandleRequest(context));
+                await HandleRequest(context);
             }
         }
 
@@ -257,7 +257,7 @@ namespace server
                             }
                             catch (Exception ex)
                             {
-                                Util.Log($"Error logging request: {ex}", LogLevel.Error);
+                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
                                 return;
                             }
 
@@ -299,6 +299,8 @@ namespace server
             {
                 if (method == "POST")
                 {
+                    await _database.LoadData();
+
                     // Log the contact request to the database
                     if (path == "/contact" && contactRequest != null)
                     {
@@ -318,20 +320,9 @@ namespace server
                         }
                         catch (Exception ex)
                         {
-                            Util.Log($"Error logging request: {ex}", LogLevel.Error);
+                            Util.Log($"Error when processing student contact data: {ex}", LogLevel.Error);
                         }
                     }
-                }
-
-                // Log valid requests
-                try
-                {
-                    await _database.InsertRequest(new Request(-1, ip, DateTime.UtcNow));
-                    Util.Log($"Logged request from {ip}", LogLevel.Ok);
-                }
-                catch (Exception ex)
-                {
-                    Util.Log($"Error logging request: {ex}", LogLevel.Error);
                 }
 
                 try
