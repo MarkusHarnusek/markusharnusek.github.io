@@ -52,19 +52,18 @@ class Status {
 }
 
 class Lesson {
-    constructor(id, start_time, date, subject, student, status) {
+    constructor(id, StartTime, date, Subject, Student, Status) {
         this.id = id;
-        this.start_time = start_time;
+        this.start_time = StartTime;
         this.date = date;
-        this.subject = subject;
-        this.student = student_id;
-        this.status = status_id;
-        this.ip = ip;
+        this.subject = Subject;
+        this.student = Student;
+        this.status = Status;
     }
 }
 
 class StartTime {
-    constructor (id, time) {
+    constructor(id, time) {
         this.id = id;
         this.time = time;
     }
@@ -118,11 +117,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             getWeekNumber = getISOWeek() + i;
         }
 
-        await next3WeeksLessons.push(getLessons(getWeekNumber));
+        const lessons = await getLessons(getWeekNumber);
+        next3WeeksLessons.push(lessons);
     }
 
-    // Get the current weeks lessons and assign them to the thisWeeksLessons list
+    next3WeeksLessons.forEach((lesson) => {
+        console.log(lesson);
+    });
+
+    // Get the current weeks lessons and assign them to the thisWeeksLessons list;
     thisWeeksLessons = await getLessons(getISOWeek());
+    console.log("This weeks lessons", thisWeeksLessons); // DEBUG
 
     // Toggeling functionality for themes
     // Apply the theme from teh local storage for all pages
@@ -432,6 +437,7 @@ async function getClientIp() {
 async function getLessons(week) {
     // Fetch current lesson data
     try {
+        console.log(`Fetching lessons for week ${week}`); // DEBUG
         const response = await fetch(
             `${serverLocation}/api/lessons?WEEK=${week}`,
             {
@@ -449,16 +455,18 @@ async function getLessons(week) {
         // Get lesson body
         const body = await response.json();
 
+        console.log("Fetched lessons:", body); // DEBUG
+
         // Deserialize body into lesson objects
         return body.map(
             (lesson) =>
                 new Lesson(
                     lesson.id,
                     lesson.start_time,
-                    lesson.end_time,
-                    lesson.subject_id,
-                    lesson.student_id,
-                    lesson.status_id
+                    lesson.date,
+                    lesson.subject,
+                    lesson.student,
+                    lesson.status
                 )
         );
     } catch (error) {
@@ -472,13 +480,10 @@ async function getBackendData() {
     // Fetch currnet statuses and subjects to populate the UI
     try {
         // Fetch statues
-        const statusResponse = await fetch(
-            `${serverLocation}/api/statuses`,
-            {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+        const statusResponse = await fetch(`${serverLocation}/api/statuses`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
 
         // Error handling should the response fail
         if (!statusResponse.ok) {
@@ -497,13 +502,10 @@ async function getBackendData() {
         }
 
         // Repeat for subjects
-        const subjectResponse = await fetch(
-            `${serverLocation}/api/subjects`,
-            {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+        const subjectResponse = await fetch(`${serverLocation}/api/subjects`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
 
         if (!subjectResponse.ok) {
             console.error(
@@ -527,13 +529,10 @@ async function getBackendData() {
         }
 
         // Repeat for lessons start times
-        const timeResponse = await fetch(
-            `${serverLocation}/api/start_times`,
-            {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }
-        );
+        const timeResponse = await fetch(`${serverLocation}/api/start_times`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
 
         if (!timeResponse.ok) {
             console.error(
@@ -544,8 +543,10 @@ async function getBackendData() {
             const timeBody = await timeResponse.json();
 
             lessonStartTimes = timeBody.map(
-                (time) => new StartTime(time.id, time.start_time)
+                (time) => new StartTime(time.id, time.time)
             );
+
+            console.log(lessonStartTimes); // DEBUG
         }
     } catch (error) {
         console.error("Error fetching subjects or statuses:", error);
@@ -617,7 +618,7 @@ function getWeeksInYear(year = new Date().getFullYear()) {
 
 // Used to populate current week's calendar on index.html
 function populateIndexCalendar(lessons) {
-    const calendarBody = document.querySelector(".index-calendar-table");
+    const calendarBody = document.getElementById("index-calendar-table");
 
     if (!calendarBody) {
         console.warn(
@@ -637,11 +638,21 @@ function populateIndexCalendar(lessons) {
     calendarBody.innerHTML = "";
 
     // Group lessons by weekdays
-    const days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+    const days = [
+        "Uhrzeit",
+        "Montag",
+        "Dienstag",
+        "Mittwoch",
+        "Donnerstag",
+        "Freitag",
+    ];
     const lessonsByDay = {};
 
     days.forEach((day) => {
         lessonsByDay[day] = [];
+        const column = document.createElement("th");
+        column.textContent = day;
+        calendarBody.appendChild(column);
     });
 
     lessons.forEach((lesson) => {
@@ -651,31 +662,47 @@ function populateIndexCalendar(lessons) {
         }
     });
 
-    // Populate the calendar
-    for (let i = 0; i < start_times.length; i++) {
+    for (let i = 0; i < lessonStartTimes.length; i++) {
         const row = document.createElement("tr");
+        calendarBody.appendChild(row);
 
-        // Add time column
-        const timeCell = document.createElement("td");
-        timeCell.textContent = start_times[i].time;
-        row.appendChild(timeCell);
-
-        // Add lesson columns for each day
-        days.forEach((day) => {
+        for (let j = 0; j < days.length; j++) {
+            console.log(`Day: ${days[j]}`); // DEBUG
             const cell = document.createElement("td");
-            const lesson = lessonsByDay[day].find((lesson) => {
-                const startTime = new Date(lesson.start_time);
-                return startTime.getHours() === start_times[i].hour;
-            });
 
-            if (lesson) {
-                cell.textContent = subjects[lesson.subject_id].name;
-                cell.classList.add("lesson-cell");
+            if (j === 0) {
+                cell.textContent = lessonStartTimes[i].time;
+            } else {
+                thisWeeksLessons[days[j]].forEach((lesson) => {
+                    console.log(lesson); // DEBUG
+                    if (
+                        lesson.date ===
+                            addDaysToDate(
+                                getWeekStartAndEndDates(getISOWeek())
+                                    .split(" - ")[0]
+                                    .slice(1),
+                                j - 1
+                            ) &&
+                        lesson.start_time === lessonStartTimes[i].time
+                    ) {
+                        console.log(
+                            `Adding lesson: ${subjects[lesson.subject.id].name}`
+                        ); // DEBUG
+                    }
+                });
             }
 
             row.appendChild(cell);
-        });
+        }
     }
+}
+
+// Add days to date
+function addDaysToDate(date, days) {
+    let previous = Date.parse(date);
+    let newDate = new Date(previous);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate.toISOString().split("T")[0];
 }
 
 // Function to populate the calendar on the calendar page
