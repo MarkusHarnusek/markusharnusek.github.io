@@ -127,7 +127,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Get the current weeks lessons and assign them to the thisWeeksLessons list;
     thisWeeksLessons = await getLessons(getISOWeek());
-    console.log("This weeks lessons", thisWeeksLessons); // DEBUG
 
     // Toggeling functionality for themes
     // Apply the theme from teh local storage for all pages
@@ -437,7 +436,6 @@ async function getClientIp() {
 async function getLessons(week) {
     // Fetch current lesson data
     try {
-        console.log(`Fetching lessons for week ${week}`); // DEBUG
         const response = await fetch(
             `${serverLocation}/api/lessons?WEEK=${week}`,
             {
@@ -454,8 +452,6 @@ async function getLessons(week) {
 
         // Get lesson body
         const body = await response.json();
-
-        console.log("Fetched lessons:", body); // DEBUG
 
         // Deserialize body into lesson objects
         return body.map(
@@ -545,8 +541,6 @@ async function getBackendData() {
             lessonStartTimes = timeBody.map(
                 (time) => new StartTime(time.id, time.time)
             );
-
-            console.log(lessonStartTimes); // DEBUG
         }
     } catch (error) {
         console.error("Error fetching subjects or statuses:", error);
@@ -638,14 +632,15 @@ function populateIndexCalendar(lessons) {
     calendarBody.innerHTML = "";
 
     // Group lessons by weekdays
-    const days = [
-        "Uhrzeit",
+    const weekdays = [
         "Montag",
         "Dienstag",
         "Mittwoch",
         "Donnerstag",
         "Freitag",
     ];
+    const days = ["Uhrzeit", ...weekdays];
+
     const lessonsByDay = {};
 
     days.forEach((day) => {
@@ -655,10 +650,12 @@ function populateIndexCalendar(lessons) {
         calendarBody.appendChild(column);
     });
 
+    days.forEach((day) => (lessonsByDay[day] = []));
+
     lessons.forEach((lesson) => {
-        const dayIndex = new Date(lesson.start_time).getDay();
+        const dayIndex = new Date(lesson.date).getDay();
         if (dayIndex >= 1 && dayIndex <= 5) {
-            lessonsByDay[days[dayIndex - 1]].push(lesson);
+            lessonsByDay[weekdays[dayIndex - 1]].push(lesson);
         }
     });
 
@@ -667,31 +664,38 @@ function populateIndexCalendar(lessons) {
         calendarBody.appendChild(row);
 
         for (let j = 0; j < days.length; j++) {
-            console.log(`Day: ${days[j]}`); // DEBUG
             const cell = document.createElement("td");
-
             if (j === 0) {
                 cell.textContent = lessonStartTimes[i].time;
             } else {
-                thisWeeksLessons[days[j]].forEach((lesson) => {
-                    console.log(lesson); // DEBUG
-                    if (
-                        lesson.date ===
-                            addDaysToDate(
-                                getWeekStartAndEndDates(getISOWeek())
-                                    .split(" - ")[0]
-                                    .slice(1),
-                                j - 1
-                            ) &&
-                        lesson.start_time === lessonStartTimes[i].time
-                    ) {
-                        console.log(
-                            `Adding lesson: ${subjects[lesson.subject.id].name}`
-                        ); // DEBUG
-                    }
-                });
-            }
+                const columnDate = addDaysToDate(
+                    getWeekStartAndEndDates(getISOWeek())
+                        .split(" - ")[0]
+                        .slice(1),
+                    j - 1
+                );
+                const lesson = lessons.find(
+                    (l) =>
+                        l.date.split("T")[0] === columnDate &&
+                        l.start_time.time === lessonStartTimes[i].time
+                );
+                if (lesson) {
+                    switch (lesson.status.id) {
+                        case 1:
+                        case 2:
+                            cell.textContent = "frei";
+                            cell.classList.add("free")
+                            break;
 
+                        case 3:
+                            cell.textContent = "belegt";
+                            cell.classList.add("accepted")
+                            break;
+                    }
+
+                    cell.classList.add("lesson-cell");
+                }
+            }
             row.appendChild(cell);
         }
     }
