@@ -86,6 +86,7 @@ namespace server
             // Method wide student object
             Student student;
             ContactRequest contactRequest = null!;
+            LessonRequest lessonRequest = null!;
 
             // Rate limiting check
             string ip = context.Request.RemoteEndPoint?.Address.ToString() ?? "unknown";
@@ -233,8 +234,8 @@ namespace server
                             var userEmail = new MailMessage
                             {
                                 From = new MailAddress(smtpUser),
-                                Subject = "Wir haben Deine Nachricht erhalten",
-                                Body = $"Hey {contactRequest.first_name} {contactRequest.last_name},\n\nvielen Dank für Deine Nachricht. Wir werden uns so schnell wie möglich bei Dir melden.\n\nMit freundlichen Grüßen,\nDein Nachhilfe-Team ",
+                                Subject = "Ich habe Deine Nachricht erhalten",
+                                Body = $"Hey {contactRequest.first_name} {contactRequest.last_name},\n\nvielen Dank für Deine Nachricht. Ich werde mich so schnell wie möglich bei Dir melden.\n\nMit freundlichen Grüßen,\nMarkus Harnusek",
                             };
                             userEmail.To.Add(contactRequest.email);
 
@@ -285,6 +286,82 @@ namespace server
                             Util.Log($"Invalid contact request from {context.Request.RemoteEndPoint}", LogLevel.Warning);
                         }
                     }
+                    else if (path == "/request-lesson")
+                    {
+                        using var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding);
+                        string body = await reader.ReadToEndAsync();
+                        lessonRequest = JsonSerializer.Deserialize<LessonRequest>(body) ?? new LessonRequest("unknown", "unknown", "unknown", "unknown", DateTime.Now.Date, _database.start_times[0], "unknown", "unknown");
+
+                        if (lessonRequest != null)
+                        {
+                            context.Response.StatusCode = 200;
+
+                            string smtpDomain = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_dom.txt"));
+                            string smtpUser = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_usr.txt"));
+                            string smtpPassword = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_pwd.txt"));
+                            string adminEmailAddress = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "admin_email.txt"));
+
+                            var smtpClient = new SmtpClient(smtpDomain)
+                            {
+                                Port = 587,
+                                Credentials = new NetworkCredential(smtpUser, smtpPassword),
+                                EnableSsl = true,
+                            };
+
+                            var userEmail = new MailMessage
+                            {
+                                From = new MailAddress(smtpUser),
+                                Subject = "Ich habe Deine Anfrage erhalten",
+                                Body = $"Hey {lessonRequest.first_name} {lessonRequest.last_name},\n\nvielen Dank für Deine Anfrage. Ich werde mich so schnell wie möglich bei Dir melden.\n\nMit freundlichen Grüßen,\nMarkus Harnusek",
+                            };
+                            userEmail.To.Add(lessonRequest.email);
+
+
+                            var adminEmail = new MailMessage
+                            {
+                                From = new MailAddress(smtpUser),
+                                Subject = "New lesson request message",
+                                Body = $"A new lesson request has been received from {lessonRequest.first_name} {lessonRequest.last_name} ({lessonRequest.email}).\n",
+                            };
+                            adminEmail.To.Add(adminEmailAddress);
+
+                            try
+                            {
+                                await smtpClient.SendMailAsync(userEmail);
+                                Util.Log("Confirmation email sent.", LogLevel.Ok);
+                            }
+                            catch (Exception ex)
+                            {
+                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                context.Response.StatusCode = 500;
+                                await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Email sending failed: " + ex.Message + "\"}"));
+                                return;
+                            }
+
+                            try
+                            {
+                                await smtpClient.SendMailAsync(adminEmail);
+                                Util.Log("Admin notification email sent.", LogLevel.Ok);
+                            }
+                            catch (Exception ex)
+                            {
+                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                return;
+                            }
+
+
+                            context.Response.StatusCode = 200;
+                            await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"status\":\"Message received\"}"));
+                            Util.Log($"Lesson request from {context.Request.RemoteEndPoint}", LogLevel.Ok);
+                            return;
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = 400;
+                            await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Invalid request body\"}"));
+                            Util.Log($"Invalid lesson request from {context.Request.RemoteEndPoint}", LogLevel.Warning);
+                        }
+                    }
                     else
                     {
                         context.Response.StatusCode = 404;
@@ -331,6 +408,31 @@ namespace server
                         catch (Exception ex)
                         {
                             Util.Log($"Error when processing student contact data: {ex}", LogLevel.Error);
+                        }
+                    }
+                    else
+                    {
+                        // Log the lesson request to the database
+                        if (path == "/lesson-request" && lessonRequest != null)
+                        {
+                            try
+                            {
+                                if (!_database.students.Any(s => s.email_address == lessonRequest.email))
+                                {
+                                    student = new Student(-1, lessonRequest.first_name, lessonRequest.last_name, lessonRequest.student_class, lessonRequest.email);
+                                    await _database.InsertStudent(student);
+                                    await _database.InsertLesson(new Lesson(-1, lessonRequest.start_time, lessonRequest.date, _database.subjects.Find(sub => sub.name == lessonRequest.subject) ?? _database.subjects[0], student, _database.statuses[0]));
+                                }
+                                else
+                                {
+                                    student = _database.students.Find(s => s.email_address == lessonRequest.email) ?? null!;
+                                    await _database.InsertLesson(new Lesson(-1, lessonRequest.start_time, lessonRequest.date, _database.subjects.Find(sub => sub.name == lessonRequest.subject) ?? _database.subjects[0], student!, _database.statuses[0]));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Util.Log($"Error when processing student lesson request data: {ex}", LogLevel.Error);
+                            }
                         }
                     }
                 }
