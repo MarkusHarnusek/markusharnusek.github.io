@@ -327,7 +327,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         dateSelect.addEventListener("change", function () {
             // Populate lesson times based on selected date
-            const timeSelect = document.getElementById("lesson-request-form-time");
+            const timeSelect = document.getElementById(
+                "lesson-request-form-time"
+            );
             if (timeSelect) {
                 next3WeeksLessons.forEach((weekLessons) => {
                     weekLessons.forEach((lesson) => {
@@ -348,7 +350,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     });
                 });
             }
-    });
+        });
 
         if (form) {
             form.addEventListener("submit", async function (e) {
@@ -356,7 +358,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 // Check if user is timed out
                 if (!getUserTimeout()) {
-                    const formdata = new FormData(this);
+                    const formdata = new FormData(form);
                     const data = {
                         first_name: formdata.get("FIRST_NAME"),
                         last_name: formdata.get("LAST_NAME"),
@@ -366,64 +368,64 @@ document.addEventListener("DOMContentLoaded", async function () {
                         date: formdata.get("DATE"),
                         time: formdata.get("TIME"),
                     };
-                }
 
-                // Get client ip address
-                let clientIp;
-                await getClientIp()
-                    .then((ip) => {
-                        clientIp = ip;
-                    })
-                    .catch((error) => {
-                        clientIp = "unknown";
-                        console.warn(
-                            "Could not determine client IP address:",
-                            error
-                        );
-                    });
+                    // Get client ip address
+                    let clientIp;
+                    await getClientIp()
+                        .then((ip) => {
+                            clientIp = ip;
+                        })
+                        .catch((error) => {
+                            clientIp = "unknown";
+                            console.warn(
+                                "Could not determine client IP address:",
+                                error
+                            );
+                        });
 
-                // Form lesson request
-                const lessonRequest = new LessonRequest(
-                    data.first_name,
-                    data.last_name,
-                    data.email,
-                    data.subject,
-                    data.date,
-                    data.time,
-                    data.student_class,
-                    clientIp
-                );
-
-                // Send lesson request
-                try {
-                    const response = await fetch(
-                        `${serverLocation}/request-lesson`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(lessonRequest),
-                        }
+                    // Form lesson request
+                    const lessonRequest = new LessonRequest(
+                        data.first_name,
+                        data.last_name,
+                        data.email,
+                        data.subject,
+                        data.date,
+                        data.time,
+                        data.student_class,
+                        clientIp
                     );
 
-                    if (response.ok) {
-                        alert("Anfrage gesendet.");
-                        this.reset();
-                    } else {
-                        console.error(
-                            "Error sending lesson request:",
-                            response.statusText
+                    // Send lesson request
+                    try {
+                        const response = await fetch(
+                            `${serverLocation}/request-lesson`,
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify(lessonRequest),
+                            }
                         );
+
+                        if (response.ok) {
+                            alert("Anfrage gesendet.");
+                            this.reset();
+                        } else {
+                            console.error(
+                                "Error sending lesson request:",
+                                response.statusText
+                            );
+                            alert(
+                                "Es gibt ein Problem beim Senden deiner Anfrage. Bitte versuche es später erneut."
+                            );
+                        }
+                    } catch (error) {
+                        console.error("Error sending contact request:", error);
                         alert(
                             "Es gibt ein Problem beim Senden deiner Anfrage. Bitte versuche es später erneut."
                         );
                     }
-                } catch (error) {
-                    console.error("Error sending contact request:", error);
-                    alert(
-                        "Es gibt ein Problem beim Senden deiner Anfrage. Bitte versuche es später erneut."
-                    );
                 }
             });
         }
