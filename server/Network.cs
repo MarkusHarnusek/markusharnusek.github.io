@@ -171,14 +171,24 @@ namespace server
                     }
                     else if (path == "/api/lessons")
                     {
-                        // Optional: filter by week if query param is present
                         var weekParam = context.Request.QueryString["WEEK"];
                         if (int.TryParse(weekParam, out int week))
                         {
                             var lessons = _database.lessons
                                 .Where(l => System.Globalization.ISOWeek.GetWeekOfYear(l.date) == week)
                                 .ToList();
-                            await JsonSerializer.SerializeAsync(context.Response.OutputStream, lessons);
+
+                            // Filter out sensitive data
+                            var filteredLessons = lessons.Select(lesson => new Lesson(
+                                    lesson.id,
+                                    lesson.start_time,
+                                    lesson.date,
+                                    new Subject(-1, "filtered", "filtered", "filtered", "filtered"), // Remove sensitive subject info
+                                    new Student(-1, "filtered", "filtered", "filtered", "filtered"), // Remove sensitive student data
+                                    lesson.status
+                                )).ToList();
+
+                            await JsonSerializer.SerializeAsync(context.Response.OutputStream, filteredLessons);
                         }
                         else
                         {
