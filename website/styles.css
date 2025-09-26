@@ -361,7 +361,7 @@ header {
     padding: 0.5rem 2rem;
     opacity: 0;
     z-index: 10;
-    max-height: 0;
+    padding: 0 2vw;
     padding: 1rem 0;
     overflow: hidden;
     transition: opacity 0.5s cubic-bezier(0.4, 0.2, 0.2, 1),
@@ -375,6 +375,7 @@ header {
 .menu-section.open {
     opacity: 1;
     max-height: 400px;
+    padding-bottom: 5rem;
     margin: 3rem auto 0 auto;
     visibility: visible;
     pointer-events: auto;
