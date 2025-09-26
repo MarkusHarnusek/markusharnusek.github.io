@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const getStartEnd = getWeekStartAndEndDates(getWeekNumber);
             let newStartEnd = "";
 
-            getStartEnd.split('').forEach((char) => {
+            getStartEnd.split("").forEach((char) => {
                 if (char === "/") {
                     newStartEnd += ".";
                 } else {
@@ -398,7 +398,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
 
             weekOption.value = getWeekNumber;
-            weekOption.textContent = `Woche ${getWeekNumber} ${newStartEnd.replace(" - ", " bis ")}`;
+            weekOption.textContent = `Woche ${getWeekNumber} ${newStartEnd.replace(
+                " - ",
+                " bis "
+            )}`;
             weekSelect.appendChild(weekOption);
         }
 
@@ -570,34 +573,34 @@ function assignSubjects() {
 
     if (!cardsContainer) {
         console.warn("No cards container found");
-    }
+    } else {
+        if (!subjectsAvailable) {
+            console.warn("No subjects available");
 
-    if (!subjectsAvailable) {
-        console.warn("No subjects available");
+            if (!currentPage.endsWith("index.html")) {
+                return;
+            }
 
-        if (!currentPage.endsWith("index.html")) {
+            const noSubjectsWarning = document.createElement("div");
+            noSubjectsWarning.classList.add("card");
+            noSubjectsWarning.innerHTML = `<p class="error-text"><strong>Momentan sind keine Fächer verfügbar.</strong></p>`;
+            cardsContainer.appendChild(noSubjectsWarning);
             return;
         }
 
-        const noSubjectsWarning = document.createElement("div");
-        noSubjectsWarning.classList.add("card");
-        noSubjectsWarning.innerHTML = `<p class="error-text"><strong>Momentan sind keine Fächer verfügbar.</strong></p>`;
-        cardsContainer.appendChild(noSubjectsWarning);
-        return;
-    }
+        subjects.forEach((subject) => {
+            const card = document.createElement("div");
+            card.classList.add("card");
 
-    subjects.forEach((subject) => {
-        const card = document.createElement("div");
-        card.classList.add("card");
-
-        card.innerHTML = `
+            card.innerHTML = `
         <h4>${subject.name}</h4>
         <p><strong>${subject.teacher}</strong></p>
         <p>${subject.description}</p>
     `;
 
-        cardsContainer.appendChild(card);
-    });
+            cardsContainer.appendChild(card);
+        });
+    }
 }
 
 // Helper method to get the current calendar week
@@ -744,45 +747,62 @@ function populateCalendar(week) {
     // Clear calendar body
     calendarBody.innerHTML = "";
 
-    // Group lessons by weekdays
-    const days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-    const lessonsByDay = {};
+    // Setup weekdays and header
+    const weekdays = [
+        "Montag",
+        "Dienstag",
+        "Mittwoch",
+        "Donnerstag",
+        "Freitag",
+    ];
+    const days = ["Uhrzeit", ...weekdays];
 
+    const headerRow = document.createElement("tr");
     days.forEach((day) => {
-        lessonsByDay[day] = [];
+        const th = document.createElement("th");
+        th.textContent = day;
+        headerRow.appendChild(th);
     });
+    calendarBody.appendChild(headerRow);
 
-    lessons.forEach((lesson) => {
-        const dayIndex = new Date(lesson.start_time).getDay();
-        if (dayIndex >= 1 && dayIndex <= 5) {
-            lessonsByDay[days[dayIndex - 1]].push(lesson);
-        }
-    });
-
-    // Populate the calendar
-    for (let i = 0; i < start_times.length; i++) {
+    // Populate rows for each time slot
+    for (let i = 0; i < lessonStartTimes.length; i++) {
         const row = document.createElement("tr");
+        calendarBody.appendChild(row);
 
-        // Add time column
-        const timeCell = document.createElement("td");
-        timeCell.textContent = start_times[i].time;
-        row.appendChild(timeCell);
-
-        // Add lesson columns for each day
-        days.forEach((day) => {
+        for (let j = 0; j < days.length; j++) {
             const cell = document.createElement("td");
-            const lesson = lessonsByDay[day].find((lesson) => {
-                const startTime = new Date(lesson.start_time);
-                return startTime.getHours() === start_times[i].hour;
-            });
-
-            if (lesson) {
-                cell.textContent = subjects[lesson.subject_id].name;
-                cell.classList.add("lesson-cell");
+            if (j === 0) {
+                cell.textContent = lessonStartTimes[i].time;
+            } else {
+                // Calculate the date for this column (weekday)
+                const columnDate = addDaysToDate(
+                    getWeekStartAndEndDates(week).split(" - ")[0].slice(1),
+                    j - 1
+                );
+                // Find lesson matching this date and time
+                const lesson = lessons.find(
+                    (l) =>
+                        l.date.split("T")[0] === columnDate &&
+                        l.start_time.time === lessonStartTimes[i].time
+                );
+                if (lesson) {
+                    switch (lesson.status.id) {
+                        case 1:
+                        case 2:
+                            cell.textContent = "frei";
+                            cell.classList.add("free");
+                            break;
+                        case 3:
+                            cell.textContent = "belegt";
+                            cell.classList.add("accepted");
+                            break;
+                    }
+                    cell.classList.add("lesson-cell");
+                }
             }
-
             row.appendChild(cell);
-        });
+        }
     }
 }
 
