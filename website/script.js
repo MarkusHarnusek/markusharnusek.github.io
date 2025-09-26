@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     let clientIp;
                     await getClientIp()
                         .then((ip) => {
-                            clientIp = ip;
+                            clientIp = ip;  
                         })
                         .catch((error) => {
                             clientIp = "unknown";

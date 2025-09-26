@@ -44,6 +44,23 @@ namespace server
         public List<IList> tables;
 
         /// <summary>
+        /// The SMTP domain for sending emails.
+        /// </summary>
+        public string smtp_dom { get; }
+        /// <summary>
+        /// The SMTP user for sending emails.
+        /// </summary>
+        public string smtp_usr { get; }
+        /// <summary>
+        /// The SMTP password for sending emails.
+        /// </summary>
+        public string smtp_pwd { get; }
+        /// <summary>
+        /// The admin email address for receiving notifications.
+        /// </summary>
+        public string admin_email { get; }
+
+        /// <summary>
         /// The SQLite connection to the database.
         /// </summary>
         private SqliteConnection? connection;

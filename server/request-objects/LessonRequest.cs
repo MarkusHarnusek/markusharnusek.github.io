@@ -30,6 +30,10 @@ public class LessonRequest
     /// </summary>
     public StartTime start_time { get; }
     /// <summary>
+    /// The class of the student making the lesson request.
+    /// </summary>
+    public string student_class { get; }
+    /// <summary>
     /// The IP address of the user making the lesson request.
     /// </summary>
     public string ip { get; }
@@ -44,7 +48,7 @@ public class LessonRequest
     /// <param name="date">The date of the lesson request.</param>
     /// <param name="start_time">The start time of the lesson request.</param>
     /// <param name="ip">The IP address of the user making the lesson request.</param>
-    public LessonRequest(string first_name, string last_name, string email, string subject, DateTime date, StartTime start_time, string ip)
+    public LessonRequest(string first_name, string last_name, string email, string subject, DateTime date, StartTime start_time, string student_class, string ip)
     {
         this.first_name = first_name;
         this.last_name = last_name;
@@ -52,6 +56,7 @@ public class LessonRequest
         this.subject = subject;
         this.date = date;
         this.start_time = start_time;
+        this.student_class = student_class;
         this.ip = ip;
     }
 }
