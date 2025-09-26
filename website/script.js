@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     currentPage = window.location.pathname;
 
     let ip = await getClientIp();
-    console.log(ip);
 
     // Fetch data from the backend and assign the subjects to the list of subjects being taught
     await getBackendData();
@@ -120,10 +119,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         const lessons = await getLessons(getWeekNumber);
         next3WeeksLessons.push(lessons);
     }
-
-    next3WeeksLessons.forEach((lesson) => {
-        console.log(lesson);
-    });
 
     // Get the current weeks lessons and assign them to the thisWeeksLessons list;
     thisWeeksLessons = await getLessons(getISOWeek());
@@ -290,6 +285,71 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     } else if (currentPage.endsWith("buchen.html")) {
         const form = document.getElementById("lesson-request-form");
+
+        // Populate subject selection
+        const subjectSelect = document.getElementById(
+            "lesson-request-form-subject"
+        );
+        if (subjectSelect) {
+            subjects.forEach((subject) => {
+                const option = document.createElement("option");
+                option.value = subject.id;
+                option.textContent = subject.name;
+                subjectSelect.appendChild(option);
+            });
+        }
+
+        let lessonDays = [];
+        // Populate lesson dates
+        const dateSelect = document.getElementById("lesson-request-form-date");
+        if (dateSelect) {
+            next3WeeksLessons.forEach((weekLessons) => {
+                weekLessons.forEach((lesson) => {
+                    if (lesson) {
+                        if (lesson.status.id == 1 || lesson.status.id == 2) {
+                            const date = lesson.date.split("T")[0];
+                            lessonDays.push(date);
+                        }
+                    }
+                });
+            });
+
+            lessonDays.forEach((date) => {
+                const option = document.createElement("option");
+                let dateParts = date.split("-");
+                let dateString = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+
+                option.value = date;
+                option.textContent = dateString;
+                dateSelect.appendChild(option);
+            });
+        }
+
+        dateSelect.addEventListener("change", function () {
+            // Populate lesson times based on selected date
+            const timeSelect = document.getElementById("lesson-request-form-time");
+            if (timeSelect) {
+                next3WeeksLessons.forEach((weekLessons) => {
+                    weekLessons.forEach((lesson) => {
+                        if (
+                            lesson &&
+                            (lesson.status.id == 1 || lesson.status.id == 2)
+                        ) {
+                            if (
+                                dateSelect &&
+                                dateSelect.value === lesson.date.split("T")[0]
+                            ) {
+                                const option = document.createElement("option");
+                                option.value = lesson.start_time.id;
+                                option.textContent = lesson.start_time.time;
+                                timeSelect.appendChild(option);
+                            }
+                        }
+                    });
+                });
+            }
+    });
+
         if (form) {
             form.addEventListener("submit", async function (e) {
                 e.preventDefault();
@@ -371,8 +431,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Full calendar page
         populateCalendar(getISOWeek());
 
-        console.log("Populating calendar for week " + getISOWeek());
-
         const weekSelect = document.getElementById("calendar-week-select");
 
         // Add the next three weeks to the selection
@@ -406,7 +464,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         if (weekSelect) {
-            console.log("Adding event listener to week select");
             weekSelect.addEventListener("change", function () {
                 const selectedWeek = this.value;
 
@@ -572,7 +629,6 @@ function assignSubjects() {
     const cardsContainer = document.getElementById("subject-cards");
 
     if (!cardsContainer) {
-        console.warn("No cards container found");
     } else {
         if (!subjectsAvailable) {
             console.warn("No subjects available");

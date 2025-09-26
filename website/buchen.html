@@ -24,10 +24,22 @@
             <input type="email" name="EMAIL" placeholder="E-Mail" pattern="[a-z]\.[a-z]+@students\.htl-leonding\.ac\.at" required>
             <input type="text" name="CLASS" placeholder="Klasse" pattern="[0-9][A-Za-z]{4}" required>
             <select required id="lesson-request-form-subject" name="SUBJECT" aria-placeholder="Fach wählen">
+                <option value="" disabled selected>Fach wählen</option>
+
+                <!-- Dynamically populated options will go here -->
+
             </select>
             <select required id="lesson-request-form-date" name="DATE" aria-placeholder="Datum wählen">
+                <option value="" disabled selected>Datum wählen</option>
+
+                <!-- Dynamically populated options will go here -->
+
             </select>
             <select required id="lesson-request-form-time" name="TIME" aria-placeholder="Uhrzeit wählen">
+                <option value="" disabled selected>Stunde wählen</option>
+            
+                <!-- Dynamically populated options will go here -->
+            
             </select>
             <button type="submit">Anfrage senden</button>
         </form>
