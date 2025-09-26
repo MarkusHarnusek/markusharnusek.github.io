@@ -370,6 +370,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     } else if (currentPage.endsWith("wochen.html")) {
         // Full calendar page
         populateCalendar(getISOWeek());
+
+        console.log("Populating calendar for week " + getISOWeek());
+
         const weekSelect = document.getElementById("calendar-week-select");
 
         // Add the next three weeks to the selection
@@ -383,14 +386,24 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
             const weekOption = document.createElement("option");
+            const getStartEnd = getWeekStartAndEndDates(getWeekNumber);
+            let newStartEnd = "";
+
+            getStartEnd.split('').forEach((char) => {
+                if (char === "/") {
+                    newStartEnd += ".";
+                } else {
+                    newStartEnd += char;
+                }
+            });
+
             weekOption.value = getWeekNumber;
-            weekOption.textContent = `Woche ${getWeekNumber} ${getWeekStartAndEndDates(
-                getWeekNumber
-            )}`;
+            weekOption.textContent = `Woche ${getWeekNumber} ${newStartEnd.replace(" - ", " bis ")}`;
             weekSelect.appendChild(weekOption);
         }
 
         if (weekSelect) {
+            console.log("Adding event listener to week select");
             weekSelect.addEventListener("change", function () {
                 const selectedWeek = this.value;
 
@@ -684,12 +697,12 @@ function populateIndexCalendar(lessons) {
                         case 1:
                         case 2:
                             cell.textContent = "frei";
-                            cell.classList.add("free")
+                            cell.classList.add("free");
                             break;
 
                         case 3:
                             cell.textContent = "belegt";
-                            cell.classList.add("accepted")
+                            cell.classList.add("accepted");
                             break;
                     }
 
