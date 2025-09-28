@@ -40,4 +40,9 @@ The `deploy` script is used to copy the website and backend files into separate 
 
 ### Create database
 
-The `create_db` script is used to create the sqlite3 database, create all necessary tables and fill it with default values.
+The `create_db` script is used to create the sqlite3 database and create all necessary tables.
+
+### Create config
+
+The `create_cfg` script is used to create the server side config file with premade example values.
+Note that on windows, this script needs to first be saved with UTF-8 **without BOM** before each execution and **needs to be run in the command prompt** (not through the Visual Studio Code Command Prompt but the actual window and also can't be invoked to run in command prompt from a PowerShell)
