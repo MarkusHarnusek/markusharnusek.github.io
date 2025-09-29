@@ -79,6 +79,11 @@ namespace server
             messages = new List<Message>();
             requests = new List<Request>();
 
+            smtp_dom = "";
+            smtp_pwd = "";
+            smtp_usr = "";
+            admin_email = "";
+
             tables = new List<IList>()
             {
                 lessons,
