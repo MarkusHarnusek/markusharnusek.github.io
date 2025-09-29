@@ -16,3 +16,6 @@ server/admin_email.txt
 server-runtime/admin_email.txt
 example-lesson-requests.json
 .prettierrc
+server/config.json
+server-runtime/config.json
+config-backup.json

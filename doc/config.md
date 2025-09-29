@@ -6,7 +6,7 @@ The configuration for the Tutoring Platform is found in the `server/config.json`
 
 The config file can be created using the `create_cfg` script found in the `script` directory.
 
-## Configuration settings
+## Configuration the behavior
 
 This part contains an explanation for each setting in the config file.
 The config file is spilt into multiple parts to keep the file structured.
