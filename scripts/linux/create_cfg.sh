@@ -11,80 +11,62 @@ fi
 
 cat > $CFG_FILE << EOL
 {
-    "smtp": {
-        "domain": "smtp.example.com",
-        "user": "user@example.com",
-        "password": "password"
+  "smtp": {
+    "domain": "smtp.example.com",
+    "user": "user@example.com",
+    "password": "password"
+  },
+  "notification": {
+    "admin_email": "admin@example.com",
+    "enable_notifications": true,
+    "enable_admin_notifications": true,
+    "contact_response": {
+      "user_subject": "User Subject",
+      "admin_message": "Admin Message",
+      "user_body": "User Body",
+      "admin_subject": "Admin Subject"
     },
-    "notifications": {
-        "admin_email": "admin@example.com",
-        "enable_notifications": true,
-        "enable_admin_notifications": true,
-        "contact_request": {
-            "user_subject": "Thank you for your request",
-            "admin_subject": "New contact request message",
-            "user_body": "We have received your request and will get back to you shortly.",
-            "admin_body": "You have received a new contact request. Please check the admin panel for details."
-        },
-        "lesson_request": {
-            "user_subject": "Thank you for your lesson request",
-            "admin_subject": "New lesson request message",
-            "user_body": "We have received your lesson request and will get back to you shortly.",
-            "admin_body": "You have received a new lesson request. Please check the admin panel for details."
-        }
+    "lesson_request_response": {
+      "user_subject": "Lesson Request Subject",
+      "admin_message": "Lesson Request Admin Message",
+      "user_body": "Lesson Request User Body",
+      "admin_subject": "Lesson Request Admin Subject"
     },
-    "lesson_start_times": {
-        "0": "08:00",
-        "1": "08:55",
-        "2": "10:00",
-        "3": "10:55",
-        "4": "11:50",
-        "5": "12:45",
-        "6": "13:40",
-        "7": "14:35",
-        "8": "15:30",
-        "9": "16:25"
-    },
-    "subjects" : {
-        "0": {
-            "name": "Mathematics",
-            "short_cut": "MATH",
-            "description": "Mathematics is the study of numbers, shapes, and patterns."
-        },
-        "1": {
-            "name": "Physics",
-            "short_cut": "PHYS",
-            "description": "Physics is the study of matter, energy, and the fundamental forces of nature."
-        },
-        "2": {
-            "name": "Chemistry",
-            "short_cut": "CHEM",
-            "description": "Chemistry is the study of substances, their properties, and how they interact."
-        },
-        "3": {
-            "name": "Biology",
-            "short_cut": "BIO",
-            "description": "Biology is the study of living organisms and their interactions with the environment."
-        },
-        "4": {
-            "name": "English",
-            "short_cut": "ENG",
-            "description": "English is the study of the English language, literature, and communication skills."
-        },
-        "5": {
-            "name": "History",      
-            "short_cut": "HIST",
-            "description": "History is the study of past events, particularly in human affairs."
-        },
-        "6": {
-            "name": "Geography",
-            "short_cut": "GEO",
-            "description": "Geography is the study of places and the relationships between people and their environments."
-        },
-        "7": {
-            "name": "Computer Science",
-            "short_cut": "CS",
-            "description": "Computer Science is the study of computers and computational systems."
-        }
+    "lesson_acceptance_response": {
+      "user_subject": "Lesson Acceptance Subject",
+      "admin_message": "Lesson Acceptance Admin Message",
+      "user_body": "Lesson Acceptance User Body",
+      "admin_subject": "Lesson Acceptance Admin Subject"
     }
+  },
+  "startTimes": [
+    {
+      "id": 1,
+      "time": "09:00"
+    },
+    {
+      "id": 2,
+      "time": "10:00"
+    },
+    {
+      "id": 3,
+      "time": "11:00"
+    }
+  ],
+  "subjects": [
+    {
+      "id": 1,
+      "name": "Mathematics",
+      "shortcut": "MATH",
+      "teacher": "John Doe",
+      "description": "Math is just numbers and letters."
+    },
+    {
+      "id": 2,
+      "name": "Physics",
+      "shortcut": "PHY",
+      "teacher": "John Doe",
+      "description": "Physics is when you drop an apple."
+    }
+  ]
 }
