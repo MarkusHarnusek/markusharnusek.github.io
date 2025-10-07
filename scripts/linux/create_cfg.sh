@@ -16,6 +16,11 @@ cat > $CFG_FILE << EOL
     "user": "user@example.com",
     "password": "password"
   },
+  "https": {
+    "enabled": true,
+    "certificate-path": "./certs/dev-cert.pem",
+    "key-path": "./certs/dev-key.pem"
+  },
   "notification": {
     "admin_email": "admin@example.com",
     "enable_notifications": true,

@@ -12,6 +12,10 @@ public class Config
     /// SMTP settings for email notifications.
     /// </summary>
     public Smtp smtp { get; }
+    /// <summary> 
+    /// HTTPS settings for secure connections.
+    /// </summary>
+    public Https https { get; }
     /// <summary>
     /// Notification settings for the application.
     /// </summary>
@@ -32,9 +36,10 @@ public class Config
     /// <param name="notification">Notification settings for the application.</param>
     /// <param name="startTimes">Lesson start times configuration.</param>
     /// <param name="subjects">Array of subjects with their configurations.</param>
-    public Config(Smtp smtp, Notification notification, List<StartTime> startTimes, List<Subject> subjects)
+    public Config(Smtp smtp, Https https, Notification notification, List<StartTime> startTimes, List<Subject> subjects)
     {
         this.smtp = smtp;
+        this.https = https;
         this.notification = notification;
         this.startTimes = startTimes;
         this.subjects = subjects;

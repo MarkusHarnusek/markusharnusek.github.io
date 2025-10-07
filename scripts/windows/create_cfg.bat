@@ -21,6 +21,11 @@ echo     "domain": "smtp.example.com",
 echo     "user": "user@example.com",
 echo     "password": "password"
 echo   },
+echo   "https": {
+echo     "enabled": true,
+echo     "certificate-path": "./certs/dev-cert.pem",
+echo     "key-path": "./certs/dev-key.pem"
+echo   },
 echo   "notification": {
 echo     "admin_email": "admin@example.com",
 echo     "enable_notifications": true,
