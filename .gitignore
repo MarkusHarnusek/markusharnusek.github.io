@@ -20,4 +20,5 @@ example-lesson-requests.json
 server/config.json
 server-runtime/config.json
 config-backup.json
-certs/
+server/certs/
+server-runtime/certs/

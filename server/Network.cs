@@ -544,6 +544,10 @@ namespace server
                             resolved += requestData.start_time.time;
                             break;
 
+                        case '7':
+                            resolved += requestData.subject;
+                            break;
+
                         default:
                             Util.Log($"Unknown configuration reference ${input[i]}.", LogLevel.Warning);
                             break;

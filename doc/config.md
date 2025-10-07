@@ -68,3 +68,4 @@ Notifications can be configured to use references. References start with the cha
  - `$4`: The body of the contact request.
  - `$5`: The date of the requested lesson in the format `dd.mm.yyyy`.
  - `$6`: The start time string of the requested lesson.
+ - `$7`: The subject (name) requested by the user
