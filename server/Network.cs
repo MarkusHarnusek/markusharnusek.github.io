@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
+using SQLitePCL;
 
 namespace server
 {
@@ -60,7 +61,7 @@ namespace server
         /// Starts the HTTP server and begins listening for incoming requests
         /// </summary>
         /// <returns></returns>
-        public async Task StartAsync()
+        public async Task StartAsync(Config config)
         {
             // Start the listener
             _httpListener.Start();
@@ -72,7 +73,7 @@ namespace server
                 // Wait for a client request
                 var context = await _httpListener.GetContextAsync();
                 //_ = Task.Run(() => HandleRequest(context));
-                await HandleRequest(context);
+                await HandleRequest(context, config);
             }
         }
 
@@ -81,7 +82,7 @@ namespace server
         /// </summary>
         /// <param name="context">The HTTP listener context</param>
         /// <returns></returns>
-        private async Task HandleRequest(HttpListenerContext context)
+        private async Task HandleRequest(HttpListenerContext context, Config config)
         {
             // Method wide student object
             Student student;
@@ -209,6 +210,11 @@ namespace server
                 {
                     Util.Log($"Received POST request for {path} from {context.Request.RemoteEndPoint}", LogLevel.Ok);
 
+                    string smtpDomain = config.smtp.domain; ;
+                    string smtpUser = config.smtp.user;
+                    string smtpPassword = config.smtp.password;
+                    string adminEmailAddress = config.notification.admin_email;
+
                     if (path == "/contact")
                     {
                         using var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding);
@@ -219,59 +225,58 @@ namespace server
                         {
                             context.Response.StatusCode = 200;
 
-                            string smtpDomain = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_dom.txt"));
-                            string smtpUser = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_usr.txt"));
-                            string smtpPassword = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_pwd.txt"));
-                            string adminEmailAddress = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "admin_email.txt"));
-
-                            var smtpClient = new SmtpClient(smtpDomain)
+                            if (config.notification.enable_notifications)
                             {
-                                Port = 587,
-                                Credentials = new NetworkCredential(smtpUser, smtpPassword),
-                                EnableSsl = true,
-                            };
+                                var smtpClient = new SmtpClient(smtpDomain)
+                                {
+                                    Port = 587,
+                                    Credentials = new NetworkCredential(smtpUser, smtpPassword),
+                                    EnableSsl = true,
+                                };
 
-                            var userEmail = new MailMessage
-                            {
-                                From = new MailAddress(smtpUser),
-                                Subject = "Ich habe Deine Nachricht erhalten",
-                                Body = $"Hey {contactRequest.first_name} {contactRequest.last_name},\n\nvielen Dank für Deine Nachricht. Ich werde mich so schnell wie möglich bei Dir melden.\n\nMit freundlichen Grüßen,\nMarkus Harnusek",
-                            };
-                            userEmail.To.Add(contactRequest.email);
+                                var userEmail = new MailMessage
+                                {
+                                    From = new MailAddress(smtpUser),
+                                    Subject = ResolveConfigReferences(config.notification.contact_response.user_subject, new RequestData(contactRequest, null!, _database)),
+                                    Body = ResolveConfigReferences(config.notification.contact_response.user_body, new RequestData(contactRequest, null!, _database)),
+                                };
+                                userEmail.To.Add(contactRequest.email);
 
+                                var adminEmail = new MailMessage
+                                {
+                                    From = new MailAddress(smtpUser),
+                                    Subject = ResolveConfigReferences(config.notification.contact_response.admin_subject, new RequestData(contactRequest, null!, _database)),
+                                    Body = ResolveConfigReferences(config.notification.contact_response.admin_body, new RequestData(contactRequest, null!, _database)),
+                                };
+                                adminEmail.To.Add(adminEmailAddress);
 
-                            var adminEmail = new MailMessage
-                            {
-                                From = new MailAddress(smtpUser),
-                                Subject = "New contact request message",
-                                Body = $"A new contact request has been received from {contactRequest.first_name} {contactRequest.last_name} ({contactRequest.email}).\n\nSubject: {contactRequest.title}\n\nMessage:\n{contactRequest.body}",
-                            };
-                            adminEmail.To.Add(adminEmailAddress);
+                                try
+                                {
+                                    await smtpClient.SendMailAsync(userEmail);
+                                    Util.Log("Confirmation email sent.", LogLevel.Ok);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                    context.Response.StatusCode = 500;
+                                    await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Email sending failed: " + ex.Message + "\"}"));
+                                    return;
+                                }
 
-                            try
-                            {
-                                await smtpClient.SendMailAsync(userEmail);
-                                Util.Log("Confirmation email sent.", LogLevel.Ok);
+                                if (config.notification.enable_admin_notifications)
+                                {
+                                    try
+                                    {
+                                        await smtpClient.SendMailAsync(adminEmail);
+                                        Util.Log("Admin notification email sent.", LogLevel.Ok);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                        return;
+                                    }
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
-                                context.Response.StatusCode = 500;
-                                await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Email sending failed: " + ex.Message + "\"}"));
-                                return;
-                            }
-
-                            try
-                            {
-                                await smtpClient.SendMailAsync(adminEmail);
-                                Util.Log("Admin notification email sent.", LogLevel.Ok);
-                            }
-                            catch (Exception ex)
-                            {
-                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
-                                return;
-                            }
-
 
                             context.Response.StatusCode = 200;
                             await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"status\":\"Message received\"}"));
@@ -296,57 +301,59 @@ namespace server
                         {
                             context.Response.StatusCode = 200;
 
-                            string smtpDomain = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_dom.txt"));
-                            string smtpUser = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_usr.txt"));
-                            string smtpPassword = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "smtp_pwd.txt"));
-                            string adminEmailAddress = await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "admin_email.txt"));
-
-                            var smtpClient = new SmtpClient(smtpDomain)
+                            if (config.notification.enable_notifications)
                             {
-                                Port = 587,
-                                Credentials = new NetworkCredential(smtpUser, smtpPassword),
-                                EnableSsl = true,
-                            };
 
-                            var userEmail = new MailMessage
-                            {
-                                From = new MailAddress(smtpUser),
-                                Subject = "Ich habe Deine Anfrage erhalten",
-                                Body = $"Hey {lessonRequest.first_name} {lessonRequest.last_name},\n\nvielen Dank für Deine Anfrage. Ich werde mich so schnell wie möglich bei Dir melden.\n\nMit freundlichen Grüßen,\nMarkus Harnusek",
-                            };
-                            userEmail.To.Add(lessonRequest.email);
+                                var smtpClient = new SmtpClient(smtpDomain)
+                                {
+                                    Port = 587,
+                                    Credentials = new NetworkCredential(smtpUser, smtpPassword),
+                                    EnableSsl = true,
+                                };
+
+                                var userEmail = new MailMessage
+                                {
+                                    From = new MailAddress(smtpUser),
+                                    Subject = ResolveConfigReferences(config.notification.lesson_request_response.user_subject, new RequestData(null!, lessonRequest, _database)),
+                                    Body = ResolveConfigReferences(config.notification.lesson_request_response.user_body, new RequestData(null!, lessonRequest, _database)),
+                                };
+                                userEmail.To.Add(lessonRequest.email);
 
 
-                            var adminEmail = new MailMessage
-                            {
-                                From = new MailAddress(smtpUser),
-                                Subject = "New lesson request message",
-                                Body = $"A new lesson request has been received from {lessonRequest.first_name} {lessonRequest.last_name} ({lessonRequest.email}).\n",
-                            };
-                            adminEmail.To.Add(adminEmailAddress);
+                                var adminEmail = new MailMessage
+                                {
+                                    From = new MailAddress(smtpUser),
+                                    Subject = ResolveConfigReferences(config.notification.lesson_request_response.admin_subject, new RequestData(null!, lessonRequest, _database)),
+                                    Body = ResolveConfigReferences(config.notification.lesson_request_response.admin_body, new RequestData(null!, lessonRequest, _database)),
+                                };
+                                adminEmail.To.Add(adminEmailAddress);
 
-                            try
-                            {
-                                await smtpClient.SendMailAsync(userEmail);
-                                Util.Log("Confirmation email sent.", LogLevel.Ok);
-                            }
-                            catch (Exception ex)
-                            {
-                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
-                                context.Response.StatusCode = 500;
-                                await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Email sending failed: " + ex.Message + "\"}"));
-                                return;
-                            }
+                                try
+                                {
+                                    await smtpClient.SendMailAsync(userEmail);
+                                    Util.Log("Confirmation email sent.", LogLevel.Ok);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                    context.Response.StatusCode = 500;
+                                    await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes("{\"error\":\"Email sending failed: " + ex.Message + "\"}"));
+                                    return;
+                                }
 
-                            try
-                            {
-                                await smtpClient.SendMailAsync(adminEmail);
-                                Util.Log("Admin notification email sent.", LogLevel.Ok);
-                            }
-                            catch (Exception ex)
-                            {
-                                Util.Log($"Error sending email: {ex}", LogLevel.Error);
-                                return;
+                                if (config.notification.enable_admin_notifications)
+                                {
+                                    try
+                                    {
+                                        await smtpClient.SendMailAsync(adminEmail);
+                                        Util.Log("Admin notification email sent.", LogLevel.Ok);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Util.Log($"Error sending email: {ex}", LogLevel.Error);
+                                        return;
+                                    }
+                                }
                             }
 
 
@@ -386,7 +393,7 @@ namespace server
             {
                 if (method == "POST")
                 {
-                    await _database.LoadData();
+                    await _database.LoadData(config);
 
                     // Log the contact request to the database
                     if (path == "/contact" && contactRequest != null)
@@ -490,6 +497,65 @@ namespace server
 
             bool isPrivate = localIp.StartsWith("10.") || localIp.StartsWith("192.168.") || (localIp.StartsWith("172.") && int.Parse(localIp.Split('.')[1]) is >= 16 and <= 31);
             return isPrivate && localIp != publicIp;
+        }
+
+        /// <summary>
+        /// Resolves configuration references in the input string
+        /// </summary>
+        /// <param name="input">The string to resolve</param>
+        /// <returns></returns>
+        private static string ResolveConfigReferences(string input, RequestData requestData)
+        {
+            string resolved = "";
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '$')
+                {
+                    i++;
+
+                    switch (input[i])
+                    {
+                        case '0':
+                            resolved += requestData.first_name;
+                            break;
+
+                        case '1':
+                            resolved += requestData.last_name;
+                            break;
+
+                        case '2':
+                            resolved += requestData.email;
+                            break;
+
+                        case '3':
+                            resolved += requestData.student_class;
+                            break;
+
+                        case '4':
+                            resolved += requestData.subject;
+                            break;
+
+                        case '5':
+                            resolved += requestData.date.ToString("dd.MM.yyyy");
+                            break;
+
+                        case '6':
+                            resolved += requestData.start_time.time;
+                            break;
+
+                        default:
+                            Util.Log($"Unknown configuration reference ${input[i]}.", LogLevel.Warning);
+                            break;
+                    }
+                }
+                else
+                {
+                    resolved += input[i];
+                }
+            }
+
+            return resolved;
         }
     }
 }

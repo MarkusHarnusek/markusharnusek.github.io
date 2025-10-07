@@ -22,21 +22,21 @@ cat > $CFG_FILE << EOL
     "enable_admin_notifications": true,
     "contact_response": {
       "user_subject": "User Subject",
-      "admin_message": "Admin Message",
+      "admin_subject": "Admin Subject",
       "user_body": "User Body",
-      "admin_subject": "Admin Subject"
+      "admin_body": "Admin Body"
     },
     "lesson_request_response": {
       "user_subject": "Lesson Request Subject",
-      "admin_message": "Lesson Request Admin Message",
+      "admin_subject": "Lesson Request Admin Subject",
       "user_body": "Lesson Request User Body",
-      "admin_subject": "Lesson Request Admin Subject"
+      "admin_body": "Lesson Request Admin Body"
     },
     "lesson_acceptance_response": {
       "user_subject": "Lesson Acceptance Subject",
-      "admin_message": "Lesson Acceptance Admin Message",
+      "admin_subject": "Lesson Acceptance Admin Subject",
       "user_body": "Lesson Acceptance User Body",
-      "admin_subject": "Lesson Acceptance Admin Subject"
+      "admin_body": "Lesson Acceptance Admin Body"
     }
   },
   "startTimes": [

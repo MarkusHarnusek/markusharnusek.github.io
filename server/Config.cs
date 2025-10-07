@@ -55,7 +55,7 @@ public class Config
         try
         {
             string json = File.ReadAllText(path);
-            Util.Log("Config file loaded successfully.", LogLevel.Ok);
+            Util.Log("Config file loaded.", LogLevel.Ok);
             return JsonSerializer.Deserialize<Config>(json)!;
         }
         catch (Exception ex)

@@ -73,33 +73,11 @@ CREATE TABLE START_TIME (
     time TEXT NOT NULL
 );
 
--- Insert default data for SUBJECT
-INSERT INTO SUBJECT (name, short, teacher, description) VALUES
-    ('Angewandte Mathematik', 'AM', 'POVACZ Katharina', 'Ich helfe dir, mathematische Konzepte - ob Mengenlehre, Lineare Algebra oder Gleichungen - zu verstehen und anzuwenden.'),
-    ('Physik', 'NWP', 'GRUBER Markus', 'Physik ist die Grundlage für viele technische Fächer. Ich unterstütze dich dabei die Theorie zu verstehen und sie in praktischen Anwendungen und Aufgaben umzusetzen um dich bestmöglich auf die Prüfungen vorzubereiten.'),
-    ('Programmieren und Software Engineering', 'POSE', 'KERN Adrian', 'Programmieren ist meine Leidenschaft. Seit kleinauf beschäftige ich mich mit Softwareentwicklung und bringe dir die Konzepte verständlich näher.'),
-    ('Rechnungswesen', 'BWMRW', 'ARZT Miriam', 'Rechnungswesen ist ein wichtiges Fach für die wirtschaftliche Ausbildung. Ob einfache Haushaltsbücher, über Belege, bis hin zur doppelten Buchhaltung, helfe ich dir beim Lernen.'),
-    ('Betriebsorganisation', 'BWMBO', 'ARZT Miriam', 'Betriebsorganisation ist entscheidend für das Verständnis von Unternehmensstrukturen. Ich unterstütze dich dabei, die Abläufe - Von den Grundlagen bis zu komplexeren Themen wie Arbeitsverträgen - zu verstehen.');
-
 -- Insert default data for STATUS
 INSERT INTO STATUS (name) VALUES
     ('free'),
     ('pending'),
     ('accepted');
-
--- Insert default data for START_TIME
-INSERT INTO START_TIME (time) VALUES
-    ('08:00'),
-    ('08:55'),
-    ('10:00'),
-    ('10:55'),
-    ('11:50'),
-    ('12:45'),
-    ('13:40'),
-    ('14:35'),
-    ('15:30'),
-    ('16:25');
-
 EOF
 
 echo "Database $DB_FILE created successfully with all tables and default data."

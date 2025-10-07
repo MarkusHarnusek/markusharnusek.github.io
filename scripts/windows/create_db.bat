@@ -72,32 +72,12 @@ echo     id INTEGER PRIMARY KEY AUTOINCREMENT,>> temp.sql
 echo     time TEXT NOT NULL>> temp.sql
 echo );>> temp.sql
 echo.>> temp.sql
-echo -- Insert default data for SUBJECT>> temp.sql
-echo INSERT INTO SUBJECT (name, short, teacher, description) VALUES>> temp.sql
-echo     ('Angewandte Mathematik', 'AM', 'POVACZ Katharina', 'Ich helfe dir, mathematische Konzepte - ob Mengenlehre, Lineare Algebra oder Gleichungen - zu verstehen und anzuwenden.'),>> temp.sql
-echo     ('Physik', 'NWP', 'GRUBER Markus', 'Physik ist die Grundlage fur viele technische Facher. Ich unterstutze dich dabei die Theorie zu verstehen und sie in praktischen Anwendungen und Aufgaben umzusetzen um dich bestmoglich auf die Prufungen vorzubereiten.'),>> temp.sql
-echo     ('Programmieren und Software Engineering', 'POSE', 'KERN Adrian', 'Programmieren ist meine Leidenschaft. Seit kleinauf beschaftige ich mich mit Softwareentwicklung und bringe dir die Konzepte verstandlich naher.'),>> temp.sql
-echo     ('Rechnungswesen', 'BWMRW', 'ARZT Miriam', 'Rechnungswesen ist ein wichtiges Fach fur die wirtschaftliche Ausbildung. Ob einfache Haushaltsbucher, uber Belege, bis hin zur doppelten Buchhaltung, helfe ich dir beim Lernen.'),>> temp.sql
-echo     ('Betriebsorganisation', 'BWMBO', 'ARZT Miriam', 'Betriebsorganisation ist entscheidend fur das Verstandnis von Unternehmensstrukturen. Ich unterstutze dich dabei, die Ablaufe - Von den Grundlagen bis zu komplexeren Themen wie Arbeitsvertragen - zu verstehen.');>> temp.sql
-echo.>> temp.sql
 echo -- Insert default data for STATUS>> temp.sql
 echo INSERT INTO STATUS (name) VALUES>> temp.sql
 echo     ('free'),>> temp.sql
 echo     ('pending'),>> temp.sql
 echo     ('accepted');>> temp.sql
 echo.>> temp.sql
-echo -- Insert default data for START_TIME>> temp.sql
-echo INSERT INTO START_TIME (time) VALUES>> temp.sql
-echo     ('08:00'),>> temp.sql
-echo     ('08:55'),>> temp.sql
-echo     ('10:00'),>> temp.sql
-echo     ('10:55'),>> temp.sql
-echo     ('11:50'),>> temp.sql
-echo     ('12:45'),>> temp.sql
-echo     ('13:40'),>> temp.sql
-echo     ('14:35'),>> temp.sql
-echo     ('15:30'),>> temp.sql
-echo     ('16:25');>> temp.sql
 
 :: Execute the SQL commands
 sqlite3 "%DB_FILE%" < temp.sql

@@ -103,19 +103,22 @@ namespace server
         /// Loads the data from the database.
         /// </summary>
         /// <returns></returns>
-        public async Task LoadData()
+        public async Task LoadData(Config config)
         {
             DatabaseExistAction();
             await ConnectToDatabase();
             ClearData();
 
-            await LoadStartTimes();
+            // First load data from the database
             await LoadStatuses();
-            await LoadSubjects();
             await LoadStudents();
             await LoadLessons();
             await LoadMessages();
-            await LoadRequests();
+
+            // Then load configuration data
+            await ApplyStartTimesFromConfig(config);
+            await ApplySubjectsFromConfig(config);
+
             Util.Log("Data loaded from the database.", LogLevel.Ok);
         }
 
@@ -268,9 +271,66 @@ namespace server
             await cmd.ExecuteNonQueryAsync();
         }
 
+        /// <summary>
+        /// Inserts a new start time into the database.
+        /// </summary>
+        /// <param name="startTime">The start time object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertStartTime(StartTime startTime)
+        {
+            // await ConnectToDatabase();
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO START_TIME (time) VALUES ($time)";
+            cmd.Parameters.AddWithValue("$time", startTime.time);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Inserts a new subject into the database.
+        /// </summary>
+        /// <param name="subject">The subject object to be inserted.</param>
+        /// <returns></returns>
+        public async Task InsertSubject(Subject subject)
+        {
+            // await ConnectToDatabase();
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "INSERT INTO SUBJECT (name, short, teacher, description) VALUES ($name, $short, $teacher, $description)";
+            cmd.Parameters.AddWithValue("$name", subject.name);
+            cmd.Parameters.AddWithValue("$short", subject.shortcut);
+            cmd.Parameters.AddWithValue("$teacher", subject.teacher);
+            cmd.Parameters.AddWithValue("$description", subject.description);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
         #endregion
 
         #region  Data Retrieval Methods
+
+        /// <summary>
+        /// Loads all start times from the configuration into the in-memory list.
+        /// </summary>
+        /// <param name="config">The configuration object containing start times.</param>
+        private async Task ApplyStartTimesFromConfig(Config config)
+        {
+            foreach (var time in config.startTimes)
+            {
+                StartTime newStartTime = new StartTime(time.id, time.time);
+                start_times.Add(newStartTime);
+                await InsertStartTime(newStartTime);
+            }
+        }
+
+        private async Task ApplySubjectsFromConfig(Config config)
+        {
+            foreach (var subject in config.subjects)
+            {
+                Subject newSubject = new Subject(subject.id, subject.name, subject.shortcut, subject.teacher, subject.description);
+                subjects.Add(newSubject);
+                await InsertSubject(newSubject);
+            }
+        }
 
         /// <summary>
         /// Loads all lessons from the database into the in-memory list.
