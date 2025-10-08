@@ -94,7 +94,7 @@ let subjectsAvailable = true;
 let currentPage;
 
 // Server ip address
-const serverLocation = "https://localhost:8443";
+const serverLocation = "http://localhost:8443";
 
 document.addEventListener("DOMContentLoaded", async function () {
     // Set up and fetch data

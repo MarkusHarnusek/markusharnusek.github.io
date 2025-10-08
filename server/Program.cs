@@ -25,7 +25,7 @@
             await database.LoadData(config);
 
             // Initialize the HTTP server
-            var network = new Network([ $"https://localhost:8443/" ], database);
+            var network = new Network([ $"http://localhost:8443/" ], database);
             await network.StartAsync(config);
         }
     }
