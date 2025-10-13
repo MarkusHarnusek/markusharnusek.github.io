@@ -533,7 +533,7 @@ namespace server
                             break;
 
                         case '4':
-                            resolved += requestData.subject;
+                            resolved += requestData.body;
                             break;
 
                         case '5':

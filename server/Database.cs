@@ -280,7 +280,6 @@ namespace server
         /// <returns></returns>
         public async Task InsertStartTime(StartTime startTime)
         {
-            Util.Log($"Inserting start time: {startTime.time}", LogLevel.Debug);
             // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "INSERT INTO START_TIME (time) VALUES ($time)";
@@ -332,11 +331,6 @@ namespace server
                         StartTime updatedStartTime = new StartTime(configStartTime.id, configStartTime.time);
                         start_times.Add(updatedStartTime);
                         await UpdateStartTime(updatedStartTime);
-                        Util.Log($"Updated start time ID {configStartTime.id}: {configStartTime.time}", LogLevel.Debug);
-                    }
-                    else
-                    {
-                        Util.Log("Found existing start time", LogLevel.Debug);
                     }
                 }
                 else
@@ -344,7 +338,6 @@ namespace server
                     StartTime newStartTime = new StartTime(configStartTime.id, configStartTime.time);
                     start_times.Add(newStartTime);
                     await InsertStartTime(newStartTime);
-                    Util.Log("Found new start time", LogLevel.Debug);
                 }
             }
 
@@ -359,8 +352,6 @@ namespace server
 
             if (startTimesToRemove.Count > 0)
             {
-                Util.Log("Found remaining start times", LogLevel.Debug);
-
                 foreach (var startTimeToRemove in startTimesToRemove)
                 {
                     start_times.Remove(startTimeToRemove);
@@ -426,11 +417,6 @@ namespace server
                         Subject updatedSubject = new Subject(configSubject.id, configSubject.name, configSubject.shortcut, configSubject.teacher, configSubject.description);
                         subjects.Add(updatedSubject);
                         await UpdateSubject(updatedSubject);
-                        Util.Log($"Updated subject ID {configSubject.id}: {configSubject.name}", LogLevel.Debug);
-                    }
-                    else
-                    {
-                        Util.Log("Found existing subject", LogLevel.Debug);
                     }
                 }
                 else
@@ -438,7 +424,6 @@ namespace server
                     Subject newSubject = new Subject(configSubject.id, configSubject.name, configSubject.shortcut, configSubject.teacher, configSubject.description);
                     subjects.Add(newSubject);
                     await InsertSubject(newSubject);
-                    Util.Log("Found new subject", LogLevel.Debug);
                 }
             }
 
@@ -453,8 +438,6 @@ namespace server
 
             if (subjectsToRemove.Count > 0)
             {
-                Util.Log("Found remaining subjects", LogLevel.Debug);
-
                 foreach (var subjectToRemove in subjectsToRemove)
                 {
                     subjects.Remove(subjectToRemove);
@@ -510,8 +493,6 @@ namespace server
             cmd.Parameters.AddWithValue("$tableName", tableName);
 
             await cmd.ExecuteNonQueryAsync();
-
-            Util.Log($"Reset auto-increment counter for table {tableName}", LogLevel.Debug);
         }
 
         /// <summary>
