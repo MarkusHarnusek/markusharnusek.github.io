@@ -109,13 +109,15 @@ namespace server
             await ConnectToDatabase();
             ClearData();
 
-            // First load data from the database
+            // Load data from the database
             await LoadStatuses();
             await LoadStudents();
+            await LoadStartTimes();
+            await LoadSubjects();
             await LoadLessons();
             await LoadMessages();
 
-            // Then load configuration data
+            // Load configuration data
             await ApplyStartTimesFromConfig(config);
             await ApplySubjectsFromConfig(config);
 
@@ -278,6 +280,7 @@ namespace server
         /// <returns></returns>
         public async Task InsertStartTime(StartTime startTime)
         {
+            Util.Log($"Inserting start time: {startTime.time}", LogLevel.Debug);
             // await ConnectToDatabase();
             var cmd = connection!.CreateCommand();
             cmd.CommandText = "INSERT INTO START_TIME (time) VALUES ($time)";
@@ -309,27 +312,206 @@ namespace server
         #region  Data Retrieval Methods
 
         /// <summary>
-        /// Loads all start times from the configuration into the in-memory list.
+        /// Loads all start times from the configuration into the in-memory list and database.
         /// </summary>
         /// <param name="config">The configuration object containing start times.</param>
         private async Task ApplyStartTimesFromConfig(Config config)
         {
-            foreach (var time in config.startTimes)
+            List<StartTime> startTimesToRemove = new List<StartTime>();
+
+            foreach (var configStartTime in config.startTimes)
             {
-                StartTime newStartTime = new StartTime(time.id, time.time);
-                start_times.Add(newStartTime);
-                await InsertStartTime(newStartTime);
+                var existingStartTime = start_times.FirstOrDefault(st => st.id == configStartTime.id);
+                if (existingStartTime != null)
+                {
+                    // Check if the time has changed
+                    if (existingStartTime.time != configStartTime.time)
+                    {
+                        // Replace the existing start time object
+                        start_times.Remove(existingStartTime);
+                        StartTime updatedStartTime = new StartTime(configStartTime.id, configStartTime.time);
+                        start_times.Add(updatedStartTime);
+                        await UpdateStartTime(updatedStartTime);
+                        Util.Log($"Updated start time ID {configStartTime.id}: {configStartTime.time}", LogLevel.Debug);
+                    }
+                    else
+                    {
+                        Util.Log("Found existing start time", LogLevel.Debug);
+                    }
+                }
+                else
+                {
+                    StartTime newStartTime = new StartTime(configStartTime.id, configStartTime.time);
+                    start_times.Add(newStartTime);
+                    await InsertStartTime(newStartTime);
+                    Util.Log("Found new start time", LogLevel.Debug);
+                }
+            }
+
+            // Find start times in database that are not in config
+            foreach (var dbStartTime in start_times.ToList())
+            {
+                if (!config.startTimes.Any(st => st.id == dbStartTime.id))
+                {
+                    startTimesToRemove.Add(dbStartTime);
+                }
+            }
+
+            if (startTimesToRemove.Count > 0)
+            {
+                Util.Log("Found remaining start times", LogLevel.Debug);
+
+                foreach (var startTimeToRemove in startTimesToRemove)
+                {
+                    start_times.Remove(startTimeToRemove);
+                    await RemoveStartTimeById(startTimeToRemove.id);
+                }
+
+                await ResetAutoIncrementForTable("START_TIME");
             }
         }
 
+        /// <summary>
+        /// Updates an existing start time in the database.
+        /// </summary>
+        /// <param name="startTime">The start time object to be updated.</param>
+        /// <returns></returns>
+        private async Task UpdateStartTime(StartTime startTime)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "UPDATE START_TIME SET time = $time WHERE id = $id";
+            cmd.Parameters.AddWithValue("$time", startTime.time);
+            cmd.Parameters.AddWithValue("$id", startTime.id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Helper method to remove a start time by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the start time to remove.</param>
+        /// <returns></returns>
+        private async Task RemoveStartTimeById(int id)
+        {
+            // await ConnectToDatabase();
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "DELETE FROM START_TIME WHERE id = $id";
+            cmd.Parameters.AddWithValue("$id", id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Apply all the subjects from the configurations into the in-memory list and database.
+        /// </summary>
+        /// <param name="config">The configuration object containing the subjects</param>
+        /// <returns></returns>
         private async Task ApplySubjectsFromConfig(Config config)
         {
-            foreach (var subject in config.subjects)
+            List<Subject> subjectsToRemove = new List<Subject>();
+
+            foreach (var configSubject in config.subjects)
             {
-                Subject newSubject = new Subject(subject.id, subject.name, subject.shortcut, subject.teacher, subject.description);
-                subjects.Add(newSubject);
-                await InsertSubject(newSubject);
+                var existingSubject = subjects.FirstOrDefault(s => s.id == configSubject.id);
+                if (existingSubject != null)
+                {
+                    // Check if any properties have changed
+                    if (existingSubject.name != configSubject.name ||
+                        existingSubject.shortcut != configSubject.shortcut ||
+                        existingSubject.teacher != configSubject.teacher ||
+                        existingSubject.description != configSubject.description)
+                    {
+                        // Replace the existing subject object
+                        subjects.Remove(existingSubject);
+                        Subject updatedSubject = new Subject(configSubject.id, configSubject.name, configSubject.shortcut, configSubject.teacher, configSubject.description);
+                        subjects.Add(updatedSubject);
+                        await UpdateSubject(updatedSubject);
+                        Util.Log($"Updated subject ID {configSubject.id}: {configSubject.name}", LogLevel.Debug);
+                    }
+                    else
+                    {
+                        Util.Log("Found existing subject", LogLevel.Debug);
+                    }
+                }
+                else
+                {
+                    Subject newSubject = new Subject(configSubject.id, configSubject.name, configSubject.shortcut, configSubject.teacher, configSubject.description);
+                    subjects.Add(newSubject);
+                    await InsertSubject(newSubject);
+                    Util.Log("Found new subject", LogLevel.Debug);
+                }
             }
+
+            // Find subjects in database that are not in config
+            foreach (var dbSubject in subjects.ToList())
+            {
+                if (!config.subjects.Any(s => s.id == dbSubject.id))
+                {
+                    subjectsToRemove.Add(dbSubject);
+                }
+            }
+
+            if (subjectsToRemove.Count > 0)
+            {
+                Util.Log("Found remaining subjects", LogLevel.Debug);
+
+                foreach (var subjectToRemove in subjectsToRemove)
+                {
+                    subjects.Remove(subjectToRemove);
+                    await RemoveSubjectById(subjectToRemove.id);
+                }
+
+                await ResetAutoIncrementForTable("SUBJECT");
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing subject in the database.
+        /// </summary>
+        /// <param name="subject">The subject object to be updated.</param>
+        /// <returns></returns>
+        private async Task UpdateSubject(Subject subject)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "UPDATE SUBJECT SET name = $name, short = $short, teacher = $teacher, description = $description WHERE id = $id";
+            cmd.Parameters.AddWithValue("$name", subject.name);
+            cmd.Parameters.AddWithValue("$short", subject.shortcut);
+            cmd.Parameters.AddWithValue("$teacher", subject.teacher);
+            cmd.Parameters.AddWithValue("$description", subject.description);
+            cmd.Parameters.AddWithValue("$id", subject.id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Helper method to remove a subject by its shortcut.
+        /// </summary>
+        /// <param name="id">The ID of the subject to remove.</param>
+        /// <returns></returns>
+        private async Task RemoveSubjectById(int id)
+        {
+            // await ConnectToDatabase();
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "DELETE FROM SUBJECT WHERE id = $id";
+            cmd.Parameters.AddWithValue("$id", id);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// Resets the auto-increment counter for a specified table.
+        /// </summary>
+        /// <param name="tableName">The name of the table to reset.</param>
+        /// <returns></returns>
+        private async Task ResetAutoIncrementForTable(string tableName)
+        {
+            var cmd = connection!.CreateCommand();
+            cmd.CommandText = "DELETE FROM sqlite_sequence WHERE name = $tableName";
+            cmd.Parameters.AddWithValue("$tableName", tableName);
+
+            await cmd.ExecuteNonQueryAsync();
+
+            Util.Log($"Reset auto-increment counter for table {tableName}", LogLevel.Debug);
         }
 
         /// <summary>
@@ -480,11 +662,11 @@ namespace server
                 {
                     int id = reader.GetInt32(0);
                     string name = reader.GetString(1);
-                    string description = reader.GetString(2);
-                    string level = reader.GetString(3);
-                    string image = reader.GetString(4);
+                    string shortcut = reader.GetString(2);
+                    string teacher = reader.GetString(3);
+                    string description = reader.GetString(4);
 
-                    subjects.Add(new Subject(id, name, description, level, image));
+                    subjects.Add(new Subject(id, name, description, teacher, shortcut));
                 }
             }
         }

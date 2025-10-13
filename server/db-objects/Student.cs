@@ -12,19 +12,19 @@ public class Student
     /// <summary>
     /// The first name of the student.
     /// </summary>
-    public string first_name { get; }
+    public string first_name { get; set; }
     /// <summary>
     /// The last name of the student.
     /// </summary>
-    public string last_name { get; }
+    public string last_name { get; set; }
     /// <summary>
     /// The class or grade level of the student.
     /// </summary>
-    public string student_class { get; }
+    public string student_class { get; set; }
     /// <summary>
     /// The email address of the student.
     /// </summary>
-    public string email_address { get; }
+    public string email_address { get; set; }
     /// <summary>
     /// Initializes a new instance of the <see cref="Student"/> class with the specified details.
     /// </summary>

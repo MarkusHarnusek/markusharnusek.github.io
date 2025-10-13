@@ -13,7 +13,7 @@ public class StartTime
     /// <summary>
     /// The time in HH:mm format.
     /// </summary>
-    public string time { get; }
+    public string time { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StartTime"/> class with the specified details.
