@@ -76,7 +76,10 @@ section {
 
 .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
 
@@ -91,6 +94,41 @@ section {
 .project h3 {
     margin-top: 0;
     font-weight: 300;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.image {
+    background-color: #e0e0e0;
+    justify-content: center;
+    margin: 10px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: #888888 0px 0px 10px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.image-desc {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+code {
+    font-size: larger;
+    background-color: #EFEFEF;
+    border-radius: 2px;
+    color: #e9aa62;
 }
 
 /* Footer Styles */
