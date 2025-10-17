@@ -47,7 +47,7 @@ section {
     opacity: 0;
     animation: fadeIn 1s ease-in forwards;
 }
-
+    
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -116,12 +116,14 @@ header {
     margin-bottom: -2.5%;
     animation: flyInFromLeft 0.6s ease-in-out forwards;
     opacity: 0; 
+    margin-top: 3%;
 }
 
 .hero-name {
     color: var(--text-primary);
     font-size: 4rem;
     margin-left: 8%;
+    margin-top: 4%;
     position: relative;
     text-align: left;
     animation: flyInFromLeft 0.8s ease-in-out forwards;
@@ -145,6 +147,7 @@ header {
 .hero-desc {
     color: var(--text-secondary);
     margin-left: 2%;
+    margin-top: 4%;
     font-size: 2rem;
     animation: flyInFromLeft 1s ease-in-out forwards;
     opacity: 0;
@@ -182,7 +185,6 @@ nav ul li a:hover {
     margin: 0 auto;
 }
 
-/* About Section */
 #about {
     background-color: var(--background-white);
     border-radius: 10px;
@@ -195,7 +197,6 @@ nav ul li a:hover {
     padding-left: 20px;
 }
 
-/* Portfolio Section */
 #portfolio {
     background: linear-gradient(to bottom, var(--background-light), var(--background-gradient-light));
     animation-delay: 0.6s;
@@ -261,7 +262,6 @@ nav ul li a:hover {
     padding-left: 20px;
 }
 
-/* Contact Section */
 #contact {
     text-align: center;
     background-color: var(--background-white);
@@ -270,13 +270,69 @@ nav ul li a:hover {
     animation-delay: 0.8s;
 }
 
-/* Footer */
 footer {
     text-align: center;
     padding: 20px;
     background-color: var(--background-gradient-light);
     color: var(--text-muted);
     font-size: 0.9em;
+}
+
+#things-i-do {
+    margin-right: 4%;
+    padding: 20px;
+    max-width: 800px;
+    margin: 5% 5%;
+    opacity: 1; 
+    animation: none; 
+}
+
+.things-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.things-list li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: var(--text-primary);
+}
+
+.things-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.hero-separator {
+    width: 100%;
+    height: 5px;
+    margin-top: 4%;
+    background: linear-gradient(to right, var(--primary-color), 25%, var(--background-light));
+    border-radius: 2px;
+    opacity: 1;
+    transform: translateX(-100vw) scaleX(0);
+    animation: fadeInSeparator 1.4s cubic-bezier(0.77,0,0.175,1) forwards;
+}
+
+@keyframes fadeInSeparator {
+    from {
+        opacity: 1;
+        transform: translateX(-100vw) scaleX(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scaleX(1);
+    }
 }
 
 /* Responsive Design */
@@ -305,14 +361,12 @@ footer {
     }
 }
 
-/* Hide hero-name::before on small screens */
 @media (max-width: 850px) {
     .hero-name::before {
         display: none;
     }
 }
 
-/* Add fly-in and fade-in animation for hero-header, hero-name, and hero-name::before */
 @keyframes flyInFromLeft {
     from {
         opacity: 0;
