@@ -475,3 +475,39 @@ footer {
         font-size: 1.6em;
     }
 }
+
+/* Credits page design */
+.credits-container {
+    text-align: center;
+    margin: 60px auto;
+    background: var(--background-white);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px var(--shadow-light);
+    padding: 40px 30px;
+    width: 80%;
+}
+
+.credits-container h1 {
+    font-size: 3em;
+    margin-bottom: 30px;
+}
+
+.credits-container h2 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.credits-container ul {
+    font-size: 1.2em;
+}
+
+.credits-container a {
+    color: var(--primary-color);
+}   
+
+.back-to-index {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
