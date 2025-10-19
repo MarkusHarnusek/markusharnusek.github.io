@@ -281,22 +281,29 @@ footer {
     padding: 20px;
     max-width: 800px;
     margin: 5% 5%;
-    opacity: 1; 
-    animation: none; 
+    opacity: 1;
+    animation: none;
 }
 
 .things-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    position: relative;
 }
 
 .things-list li {
+    display: flex;
+    align-items: center;
     position: relative;
-    padding-left: 30px;
-    margin-bottom: 10px;
-    font-size: 1.2em;
+    padding-left: 40px;
+    margin-bottom: 60px;
+    font-size: 2em;
     color: var(--text-primary);
+}
+
+.things-list li:last-child {
+    margin-bottom: 0;
 }
 
 .things-list li::before {
@@ -305,10 +312,23 @@ footer {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
+    width: 18px;
+    height: 18px;
     background-color: var(--primary-color);
     border-radius: 50%;
+    z-index: 2;
+}
+
+.things-list li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: calc(50% + 18px / 2 + 8px); 
+    margin-top: 8px;
+    width: 2px;
+    height: 44px;
+    background: var(--primary-color);
+    z-index: 1;
 }
 
 .hero-separator {
@@ -510,4 +530,41 @@ footer {
     margin-bottom: 20px;
     font-size: 1.5em;
     color: var(--primary-color);
+}
+
+/* Style SVG icons in the things-list */
+.things-list svg {
+    fill: #fff;
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-left: -2px;
+    display: inline-block;
+}
+
+.things-list li {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 60px;
+    font-size: 2em;
+    color: var(--text-primary);
+}
+
+.things-list li:last-child {
+    margin-bottom: 0;
+}
+
+.things-list li span {
+    display: flex;
+    align-items: center;
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 10px;
+    margin-left: -2px;
+    vertical-align: middle;
+    display: inline-block;
+    filter: brightness(0) invert(1);
 }
