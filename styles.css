@@ -276,61 +276,6 @@ footer {
     font-size: 0.9em;
 }
 
-#things-i-do {
-    margin-right: 4%;
-    padding: 20px;
-    max-width: 800px;
-    margin: 5% 5%;
-    opacity: 1;
-    animation: none;
-}
-
-.things-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    position: relative;
-}
-
-.things-list li {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-left: 40px;
-    margin-bottom: 60px;
-    font-size: 2em;
-    color: var(--text-primary);
-}
-
-.things-list li:last-child {
-    margin-bottom: 0;
-}
-
-.things-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    background-color: var(--primary-color);
-    border-radius: 50%;
-    z-index: 2;
-}
-
-.things-list li:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: calc(50% + 18px / 2 + 8px); 
-    margin-top: 8px;
-    width: 2px;
-    height: 44px;
-    background: var(--primary-color);
-    z-index: 1;
-}
-
 .hero-separator {
     width: 100%;
     height: 5px;
@@ -353,7 +298,6 @@ footer {
     }
 }
 
-/* Decorative shapes next to hero */
 .hero-decor {
     position: absolute;
     top: 8%;
@@ -417,8 +361,13 @@ footer {
     }
 }
 
-/* Responsive: hide decor on small screens */
 @media (max-width: 850px) {
+    .hero-decor {
+        display: none;
+    }
+}
+
+@media (min-width: 3500px) {
     .hero-decor {
         display: none;
     }
@@ -496,7 +445,6 @@ footer {
     }
 }
 
-/* Credits page design */
 .credits-container {
     text-align: center;
     margin: 60px auto;
@@ -532,8 +480,8 @@ footer {
     color: var(--primary-color);
 }
 
-/* Style SVG icons in the things-list */
-.things-list svg {
+
+.icon {
     fill: #fff;
     width: 1.2em;
     height: 1.2em;
@@ -567,4 +515,58 @@ footer {
     vertical-align: middle;
     display: inline-block;
     filter: brightness(0) invert(1);
+}
+
+#things-i-do {
+    margin-right: 4%;
+    padding: 20px;
+    max-width: 800px;
+    margin: 5% 5%;
+    opacity: 1;
+    animation: none;
+}
+
+.things-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+.things-list li {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 60px;
+    font-size: 2em;
+    color: var(--text-primary);
+}
+
+.things-list li:last-child {
+    margin-bottom: 0;
+}
+
+.things-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.things-list li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    margin-top: 13%;
+    width: 2px;
+    height: 44px;
+    background: var(--primary-color);
+    z-index: 1;
 }
