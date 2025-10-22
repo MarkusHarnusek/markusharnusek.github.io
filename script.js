@@ -240,10 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateFullscreenImage() {
         const imageData = allImages[currentImageIndex];
+        
+        fullscreenImage.classList.remove('animate-zoom');
+        
+        void fullscreenImage.offsetWidth;
+        
         fullscreenImage.src = imageData.src;
         fullscreenImage.alt = imageData.alt;
         fullscreenCaption.textContent = imageData.caption;
         fullscreenCounter.textContent = `${currentImageIndex + 1} / ${allImages.length}`;
+
+        fullscreenImage.classList.add('animate-zoom');
 
         prevBtn.style.opacity = currentImageIndex === 0 ? '0.5' : '1';
         nextBtn.style.opacity = currentImageIndex === allImages.length - 1 ? '0.5' : '1';
