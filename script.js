@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
             dot.classList.toggle('active', index === currentIndex);
         });
 
-        prevButton.disabled = currentIndex === 0;
-        nextButton.disabled = currentIndex === projects.length - 1;
+        prevButton.disabled = false;
+        nextButton.disabled = false;
     }
 
     function goToSlide(index) {
@@ -61,17 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function nextSlide() {
-        if (currentIndex < projects.length - 1) {
-            currentIndex++;
-            updateCarousel();
+        currentIndex++;
+        if (currentIndex >= projects.length) {
+            currentIndex = 0;
         }
+        updateCarousel();
     }
 
     function prevSlide() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCarousel();
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = projects.length - 1;
         }
+        updateCarousel();
     }
 
     nextButton.addEventListener('click', nextSlide);
@@ -121,10 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const threshold = projectsContainer.offsetWidth * 0.3;
 
-        if (movedBy < -threshold && currentIndex < projects.length - 1) {
+        if (movedBy < -threshold) {
             currentIndex++;
-        } else if (movedBy > threshold && currentIndex > 0) {
+            if (currentIndex >= projects.length) {
+                currentIndex = 0;
+            }
+        } else if (movedBy > threshold) {
             currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = projects.length - 1;
+            }
         }
 
         setPositionByIndex();
