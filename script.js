@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const prevButton = document.createElement('button');
     prevButton.className = 'carousel-button carousel-prev';
-    prevButton.innerHTML = '&#8249;';
+    prevButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     prevButton.setAttribute('aria-label', 'Vorheriges Projekt');
 
     const nextButton = document.createElement('button');
     nextButton.className = 'carousel-button carousel-next';
-    nextButton.innerHTML = '&#8250;';
+    nextButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     nextButton.setAttribute('aria-label', 'Nächstes Projekt');
 
     navContainer.appendChild(prevButton);
@@ -170,5 +170,122 @@ document.addEventListener('DOMContentLoaded', () => {
         resizeTimer = setTimeout(() => {
             setPositionByIndex();
         }, 250);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const projectImages = document.querySelectorAll('.project .image img');
+    
+    if (!projectImages.length) {
+        return;
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'fullscreen-overlay';
+    overlay.innerHTML = `
+        <div class="fullscreen-container">
+            <button class="fullscreen-close" aria-label="Schließen">&times;</button>
+            <button class="fullscreen-nav fullscreen-prev" aria-label="Vorheriges Bild">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="fullscreen-nav fullscreen-next" aria-label="Nächstes Bild">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <img class="fullscreen-image" src="" alt="">
+            <div class="fullscreen-caption"></div>
+            <div class="fullscreen-counter"></div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const fullscreenImage = overlay.querySelector('.fullscreen-image');
+    const fullscreenCaption = overlay.querySelector('.fullscreen-caption');
+    const fullscreenCounter = overlay.querySelector('.fullscreen-counter');
+    const closeBtn = overlay.querySelector('.fullscreen-close');
+    const prevBtn = overlay.querySelector('.fullscreen-prev');
+    const nextBtn = overlay.querySelector('.fullscreen-next');
+
+    let currentImageIndex = 0;
+    let allImages = [];
+
+    projectImages.forEach((img, index) => {
+        allImages.push({
+            src: img.src,
+            alt: img.alt,
+            caption: img.parentElement.querySelector('.image-desc')?.textContent || ''
+        });
+
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.preventDefault();
+            openFullscreen(index);
+        });
+    });
+
+    function openFullscreen(index) {
+        currentImageIndex = index;
+        updateFullscreenImage();
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeFullscreen() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function updateFullscreenImage() {
+        const imageData = allImages[currentImageIndex];
+        fullscreenImage.src = imageData.src;
+        fullscreenImage.alt = imageData.alt;
+        fullscreenCaption.textContent = imageData.caption;
+        fullscreenCounter.textContent = `${currentImageIndex + 1} / ${allImages.length}`;
+
+        prevBtn.style.opacity = currentImageIndex === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = currentImageIndex === allImages.length - 1 ? '0.5' : '1';
+    }
+
+    function showPreviousImage() {
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateFullscreenImage();
+        }
+    }
+
+    function showNextImage() {
+        if (currentImageIndex < allImages.length - 1) {
+            currentImageIndex++;
+            updateFullscreenImage();
+        }
+    }
+
+    closeBtn.addEventListener('click', closeFullscreen);
+    prevBtn.addEventListener('click', showPreviousImage);
+    nextBtn.addEventListener('click', showNextImage);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeFullscreen();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!overlay.classList.contains('active')) return;
+
+        switch(e.key) {
+            case 'Escape':
+                closeFullscreen();
+                break;
+            case 'ArrowLeft':
+                showPreviousImage();
+                break;
+            case 'ArrowRight':
+                showNextImage();
+                break;
+        }
     });
 });
