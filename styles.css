@@ -331,10 +331,110 @@ nav ul li a:hover {
 
 #contact {
     text-align: center;
-    background-color: var(--background-white);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px var(--shadow-light);
+    background: linear-gradient(135deg, var(--background-white), var(--background-gradient-light));
+    border-radius: 20px;
+    box-shadow: 0 8px 30px var(--shadow-medium);
     animation-delay: 0.8s;
+    border: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+#contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+    animation: slideIn 1s ease-out forwards;
+    transform: translateX(-100%);
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+    }
+}
+
+.contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-intro {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.contact-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    background: var(--background);
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.contact-card:last-child {
+    margin-bottom: 0;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-dark);
+    border-color: var(--primary-color);
+}
+
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(253, 114, 91, 0.3);
+}
+
+.contact-icon svg,
+.contact-icon img {
+    width: 30px;
+    height: 30px;
+    color: var(--text-primary);
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.contact-details h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.4em;
+    color: var(--text-primary);
+}
+
+.contact-link {
+    font-size: 1.1em;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    word-break: break-all;
+}
+
+.contact-link:hover {
+    color: var(--primary-hover);
+    transform: translateX(5px);
 }
 
 footer {
@@ -942,6 +1042,25 @@ footer {
 
     .horizontal-list-item-text {
         font-size: 1.2em;
+    }
+
+    .contact-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 25px 15px;
+    }
+
+    .contact-details h3 {
+        font-size: 1.2em;
+    }
+
+    .contact-link {
+        font-size: 1em;
+    }
+
+    .contact-intro {
+        font-size: 1.1em;
     }
 }
 
