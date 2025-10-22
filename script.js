@@ -155,7 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setPositionByIndex() {
-        currentTranslate = currentIndex * -projectsContainer.offsetWidth;
+        const slideWidth = projectsContainer.offsetWidth;
+        currentTranslate = currentIndex * -slideWidth;
         prevTranslate = currentTranslate;
         updateCarousel();
     }
