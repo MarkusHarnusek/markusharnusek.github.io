@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Markus Harnúšek</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="styles.css" />
         <script src="script.js"></script>
     </head>
     <body>
@@ -35,46 +35,70 @@
                 <span class="decor-triangle" style="margin-left: 20%; margin-top: -15%"></span>
             </div>
             <div class="content-wrapper">
-                <div id="things-i-do">
-                    <ul class="things-list">
-                        <li>
-                            <img
-                                class="icon"
-                                src="assets/icons/desktop-dev.svg"
-                                alt="Desktop Programmierung Icon"
-                            >Desktop Programmierung
-                        </li>
-                        <li>
-                            <img class="icon" src="assets/icons/web-dev.svg" alt="Webentwicklung Icon">Webentwicklung
-                        </li>
-                        <li>
-                            <img
-                                class="icon"
-                                src="assets/icons/microcontrolle-dev.svg"
-                                alt="Microcontroller Programmierung Icon"
-                            >Microcontroller Programmierung und Elektronik
-                        </li>
-                    </ul>
-                </div>
-                <section id="about-me" class="responsive-container">
-                    <h2>Über mich</h2>
-                    <p>
-                        Ich bin Schüler 16 Jahre alt und gehe in die HTL Leonding. Softwareentwicklung ist meine
-                        Leidenschaft. Bereits mit 8 Jahren habe ich mit dem Programmieren begonnen und seitdem hat mich
-                        mein Interesse an Technologie und Innovation begleitet. Primär entwickle ich in C# mit Fokus auf WPF und Backend‑Logik, dennoch liebe ich es auch, mich in neue Technologien und Programmiersprachen einzuarbeiten. 
-                    </p>
-                    <div class="horizontal-list">
-                        <div class="horizontal-list-item">
-                            <p class="horizontal-list-item-header">20+</p>
-                            <p class="horizontal-list-item-text">Public Repositories</p>
+                <section id="things-i-do">
+                    <h2>Was ich mache</h2>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <div class="skill-icon-wrapper">
+                                <img src="assets/icons/desktop-dev.svg" alt="Desktop Programmierung Icon" />
+                            </div>
+                            <h3>Desktop Programmierung</h3>
+                            <p>
+                                Entwicklung leistungsstarker Desktop-Anwendungen mit modernen Frameworks wie WPF und
+                                .NET
+                            </p>
                         </div>
-                        <div class="horizontal-list-item">
-                            <p class="horizontal-list-item-header">6+</p>
-                            <p class="horizontal-list-item-text">Programmiersprachen</p>
+                        <div class="skill-card">
+                            <div class="skill-icon-wrapper">
+                                <img src="assets/icons/web-dev.svg" alt="Webentwicklung Icon" />
+                            </div>
+                            <h3>Webentwicklung</h3>
+                            <p>Gestaltung responsiver Websites und Webanwendungen mit HTML, CSS und JavaScript</p>
                         </div>
-                        <div class="horizontal-list-item">
-                            <p class="horizontal-list-item-header">600+</p>
-                            <p class="horizontal-list-item-text">Commits dieses Jahr</p>
+                        <div class="skill-card">
+                            <div class="skill-icon-wrapper">
+                                <img src="assets/icons/microcontrolle-dev.svg" alt="Microcontroller Icon" />
+                            </div>
+                            <h3>Embedded & Elektronik</h3>
+                            <p>Programmierung von Mikrocontrollern und Entwicklung elektronischer Schaltungen</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="about-me">
+                    <div class="about-content">
+                        <div class="about-text-card">
+                            <div class="about-intro">
+                                <h2>Über mich</h2>
+                                <p>
+                                    16-jähriger Schüler an der HTL Leonding mit einer Leidenschaft für
+                                    Softwareentwicklung. Bereits mit 8 Jahren habe ich mit dem Programmieren begonnen –
+                                    seitdem begleitet mich mein Interesse an Technologie und Innovation täglich.
+                                </p>
+                                <p>
+                                    Primär entwickle ich in C# mit Fokus auf WPF und Backend-Logik. Dennoch liebe ich
+                                    es, mich in neue Technologien und Programmiersprachen einzuarbeiten und ständig
+                                    dazuzulernen.
+                                </p>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number" data-target="20">20+</div>
+                                    <div class="stat-label">Public Repositories</div>
+                                    <div class="stat-bar"><div class="stat-bar-fill" style="width: 80%"></div></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" data-target="6">6+</div>
+                                    <div class="stat-label">Programmiersprachen</div>
+                                    <div class="stat-bar"><div class="stat-bar-fill" style="width: 60%"></div></div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" data-target="600">600+</div>
+                                    <div class="stat-label">Commits dieses Jahr</div>
+                                    <div class="stat-bar"><div class="stat-bar-fill" style="width: 90%"></div></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -83,70 +107,70 @@
                 <h2>Erfahrungen mit digitalen Technologien</h2>
                 <div class="languages-container">
                     <div class="language-card">
-                        <img src="assets/icons/c-sharp.svg" alt="C# Icon">
+                        <img src="assets/icons/c-sharp.svg" alt="C# Icon" />
                         <p>C#</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 85%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/c.svg" alt="C Icon">
+                        <img src="assets/icons/c.svg" alt="C Icon" />
                         <p>C</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 20%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/cpp.svg" alt="C++ Icon">
+                        <img src="assets/icons/cpp.svg" alt="C++ Icon" />
                         <p>C++</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 30%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/ts.svg" alt="TypeScript">
+                        <img src="assets/icons/ts.svg" alt="TypeScript" />
                         <p>TypeScript</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 55%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/js.svg" alt="JavaScript Icon">
+                        <img src="assets/icons/js.svg" alt="JavaScript Icon" />
                         <p>JavaScript</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 50%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/html.svg" alt="HTML / CSS Icon">
+                        <img src="assets/icons/html.svg" alt="HTML / CSS Icon" />
                         <p>HTML / CSS</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 80%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/python.svg" alt="Python Icon">
+                        <img src="assets/icons/python.svg" alt="Python Icon" />
                         <p>Python</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 15%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/database.svg" alt="SQLite Icon">
+                        <img src="assets/icons/database.svg" alt="SQLite Icon" />
                         <p>SQLite</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 45%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/git.svg" alt="Git Icon">
+                        <img src="assets/icons/git.svg" alt="Git Icon" />
                         <p>Git</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 65%"></div>
                         </div>
                     </div>
                     <div class="language-card">
-                        <img src="assets/icons/ps.svg" alt="Adobe Photoshop">
+                        <img src="assets/icons/ps.svg" alt="Adobe Photoshop" />
                         <p>Adobe Photoshop</p>
                         <div class="language-level">
                             <div class="language-level-fill" style="width: 60%"></div>
@@ -163,14 +187,15 @@
                         <p>Erstellung 3D-Höhenmodelle aus Luftbildaufnahmen</p>
                         <p>
                             Umfangreiche Dokumentation zum eigenständigen Bau von Drohnen, zur Datenerfassung und zur
-                            automatisierten Generierung von 3D-Höhenkarten mit der bereitgestellten Software. Die Anleitung
-                            enthält Berechnungen, Software-Tools, detaillierte Teilelisten, Schritt-für-Schritt-Aufbauten sowie
-                            KI-gestützte Verarbeitungs- und Analyseverfahren.
+                            automatisierten Generierung von 3D-Höhenkarten mit der bereitgestellten Software. Die
+                            Anleitung enthält Berechnungen, Software-Tools, detaillierte Teilelisten,
+                            Schritt-für-Schritt-Aufbauten sowie KI-gestützte Verarbeitungs- und Analyseverfahren.
                         </p>
                         <p>
-                            Die Inhalte basieren auf einer modularen, eigenen Dokumentationsvorlage mit Seitenerstellung mithilfe von MarkDown Dateien.
+                            Die Inhalte basieren auf einer modularen, eigenen Dokumentationsvorlage mit Seitenerstellung
+                            mithilfe von MarkDown Dateien.
                         </p>
-                        <img src="assets/showcase/drone-project.png" alt="Dokumentation Home View">
+                        <img src="assets/showcase/drone-project.png" alt="Dokumentation Home View" />
                         <h4>Technische Details</h4>
                         <ul>
                             <li>Programmiersprache: <code>JavaScript</code></li>
@@ -190,11 +215,11 @@
                             werden.
                         </p>
                         <div class="image">
-                            <img src="assets/showcase/palette-picker-home.png" alt="Palette Picker Palette View">
+                            <img src="assets/showcase/palette-picker-home.png" alt="Palette Picker Palette View" />
                             <p class="image-desc">Palette Picker Hauptansicht</p>
                         </div>
                         <div class="image">
-                            <img src="assets/showcase/color-picker.png" alt="Palette Picker Color Picker">
+                            <img src="assets/showcase/color-picker.png" alt="Palette Picker Color Picker" />
                             <p class="image-desc">Palette Picker Farbwähler</p>
                         </div>
                         <h4>Technische Details</h4>
@@ -209,23 +234,26 @@
                             <li>Übersetzung in 7 Sprachen</li>
                             <li>Übersetzungen basierend auf <code>Resource-Dictionaries</code></li>
                         </ul>
-                        <a target="_blank" href="https://github.com/MarkusHarnusek/Palette-Picker">Link zur GitHub Repository</a>
+                        <a target="_blank" href="https://github.com/MarkusHarnusek/Palette-Picker"
+                            >Link zur GitHub Repository</a
+                        >
                     </div>
                     <div class="project">
                         <h3>Tutoring Platform</h3>
                         <p>
-                            Tutoring Platform ist eine Anwendung um sich selbst als Nachhilfelehrer anzubieten und zu präsentieren. Interessenten können Nachhilfestunden direkt auf der Seite buchen.
+                            Tutoring Platform ist eine Anwendung um sich selbst als Nachhilfelehrer anzubieten und zu
+                            präsentieren. Interessenten können Nachhilfestunden direkt auf der Seite buchen.
                         </p>
                         <div class="image">
-                            <img src="assets/showcase/tutoring.png" alt="Tutoring Platform Home Screen">
+                            <img src="assets/showcase/tutoring.png" alt="Tutoring Platform Home Screen" />
                             <p class="image-desc">Tutoring Website Hauptansicht</p>
                         </div>
                         <div class="image">
-                            <img src="assets/showcase/subjects.png" alt="Tutoring Platform Subject Screen">
+                            <img src="assets/showcase/subjects.png" alt="Tutoring Platform Subject Screen" />
                             <p class="image-desc">Fächerübersicht der Tutoring Website</p>
                         </div>
                         <div class="image">
-                            <img src="assets/showcase/booking.png" alt="Tutoring Platform Booking Screen">
+                            <img src="assets/showcase/booking.png" alt="Tutoring Platform Booking Screen" />
                             <p class="image-desc">Buchungsformular der Tutoring Website</p>
                         </div>
                         <h4>Technische Details</h4>
@@ -239,7 +267,9 @@
                             <li>Automatische Bestätigungsmails</li>
                             <li>Dark und Light Mode</li>
                         </ul>
-                        <a target="_blank" href="https://github.com/MarkusHarnusek/Tutoring-Platform">Link zur GitHub Repository</a>
+                        <a target="_blank" href="https://github.com/MarkusHarnusek/Tutoring-Platform"
+                            >Link zur GitHub Repository</a
+                        >
                     </div>
                     <div class="project">
                         <h3>TCPChat</h3>
@@ -256,7 +286,7 @@
                             Nachrichten versenden.
                         </p>
                         <div class="image">
-                            <img src="assets/showcase/tcpchat-showcase.png" alt="TCPChat Showcase">
+                            <img src="assets/showcase/tcpchat-showcase.png" alt="TCPChat Showcase" />
                             <p class="image-desc">
                                 Eine Ansicht zweier TCPChat Clients und eines Servers auf dem Port 8080
                             </p>
@@ -266,7 +296,9 @@
                             <li>Programmiersprache: <code>C</code></li>
                             <li>Netzwerkprotokoll: <code>TCP</code></li>
                         </ul>
-                        <a target="_blank" href="https://github.com/MarkusHarnusek/TCPChat">Link zur GitHub Repository</a>
+                        <a target="_blank" href="https://github.com/MarkusHarnusek/TCPChat"
+                            >Link zur GitHub Repository</a
+                        >
                     </div>
                     <div class="project">
                         <h3>USRTG</h3>
@@ -292,31 +324,28 @@
                 <h2>Kontakt</h2>
                 <div class="contact-content">
                     <p class="contact-intro">
-                        Ich freue mich über Ihre Nachricht! Kontaktieren Sie mich gerne bei weiteren Fragen oder einfach zum Austausch über Technologie und Softwareentwicklung.
+                        Ich freue mich über Ihre Nachricht! Kontaktieren Sie mich gerne bei weiteren Fragen oder einfach
+                        zum Austausch über Technologie und Softwareentwicklung.
                     </p>
                     <a href="mailto:m.harnusek@student.htl-leonding.ac.at" class="contact-card-link">
                         <div class="contact-card">
                             <div class="contact-icon">
-                                <img src="assets/icons/mail.svg" alt="E-Mail Icon">
+                                <img src="assets/icons/mail.svg" alt="E-Mail Icon" />
                             </div>
                             <div class="contact-details">
                                 <h3>E-Mail</h3>
-                                <span class="contact-link">
-                                    m.harnusek@student.htl-leonding.ac.at
-                                </span>
+                                <span class="contact-link"> m.harnusek@student.htl-leonding.ac.at </span>
                             </div>
                         </div>
                     </a>
                     <a href="https://github.com/MarkusHarnusek" target="_blank" class="contact-card-link">
                         <div class="contact-card">
                             <div class="contact-icon">
-                                <img src="assets/icons/github.svg" alt="GitHub Icon">
+                                <img src="assets/icons/github.svg" alt="GitHub Icon" />
                             </div>
                             <div class="contact-details">
                                 <h3>GitHub</h3>
-                                <span class="contact-link">
-                                    github.com/MarkusHarnusek
-                                </span>
+                                <span class="contact-link"> github.com/MarkusHarnusek </span>
                             </div>
                         </div>
                     </a>
