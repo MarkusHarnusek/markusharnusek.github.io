@@ -1,12 +1,12 @@
 :root {
-    --primary-color: #fd725b;
-    --primary-hover: #f46d5a;
+    --primary-color: #4b9fe9;
+    --primary-hover: #8cb7e4;
     --secondary-color: #8b9196;
-    --background: #17252f;
-    --background-white: #121f28;
-    --background-gradient-light: rgb(38, 48, 54);
+    --background: #131313;
+    --background-white: #1d1d1d;
+    --background-gradient-light: var(--background);
     --text-primary: #f9fafa;
-    --border: #32393e;
+    --border: #232323;
     --text-secondary: #eeeeee;
     --text-muted: #dedede;
     --shadow-light: rgba(0, 0, 0, 0.05);
