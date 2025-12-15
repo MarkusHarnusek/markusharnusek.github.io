@@ -1459,7 +1459,7 @@ footer {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(253, 114, 91, 0.8);
+    background: var(--primary-color);
     border: none;
     color: var(--text-primary);
     font-size: 3em;
