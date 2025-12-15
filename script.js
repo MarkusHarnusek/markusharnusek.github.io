@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const movedBy = currentTranslate - prevTranslate;
 
-        const threshold = projectsContainer.offsetWidth * 0.3;
+        const threshold = projectsContainer.offsetWidth * 0.5;
 
         if (movedBy < -threshold) {
             currentIndex++;
