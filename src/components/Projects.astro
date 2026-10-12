@@ -1,0 +1,306 @@
+---
+import { projects } from "../data/projects";
+const featured = projects.find((p) => p.featured)!;
+const rest = projects.filter((p) => !p.featured);
+---
+
+<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="projects__head">
+    <p class="section__label" id="projects-title">Projects</p>
+    <p class="projects__intro">
+      A mix of open-source, work, and side — not four identical cards. Featured
+      first, then compact. Adding a fifth is one entry in <code>data/projects.ts</code>.
+    </p>
+  </div>
+
+  <!-- featured -->
+  <article class="project project--featured" aria-labelledby={`proj-${featured.slug}`}>
+    <div class="project__media" aria-hidden="true">
+      <div class="tape-mini">
+        <div class="tape-mini__bar mono"><span>● crdt-tapes</span><span>replay · seed 0x4a3f</span></div>
+        <pre class="tape-mini__pre mono"><span class="dim">seed rng(42) →</span> ops: 12k · peers: 3 · diverges: 7 → <span class="hl">converged</span> ✓
+<span class="dim">snapshots →</span> 00 01 02 03 04 05 06 07 — <span class="hl2">payload 2.1 → 1.1 kB</span></pre>
+      </div>
+    </div>
+    <div class="project__body">
+      <div class="project__meta mono">
+        <span>{featured.year} · open source</span>
+        <span class="project__featured-badge">Featured</span>
+      </div>
+      <h3 id={`proj-${featured.slug}`} class="project__title">{featured.name}</h3>
+      <p class="project__problem">{featured.problem}</p>
+      <p class="project__role mono">{featured.role}</p>
+      <ul class="stack" role="list">
+        {featured.stack.map((s) => <li class="stack__pill mono">{s}</li>)}
+      </ul>
+      {featured.highlight && <p class="project__highlight mono">{featured.highlight}</p>}
+      <div class="project__links">
+        {featured.links?.repo && <a href={featured.links.repo}>Repo</a>}
+        {featured.links?.demo && <a href={featured.links.demo}>Demo</a>}
+        {featured.links?.writeup && <a href={featured.links.writeup}>Write-up</a>}
+      </div>
+    </div>
+  </article>
+
+  <div class="projects__rest">
+    {
+      rest.map((p) => (
+        <article class="project project--compact" aria-labelledby={`proj-${p.slug}`}>
+          <div class="project__meta mono">
+            <span>{p.year}</span>
+            <span class="project__year-line" aria-hidden="true" />
+            <span>{p.stack[0]}</span>
+          </div>
+          <h3 id={`proj-${p.slug}`} class="project__title project__title--sm">
+            {p.name}
+          </h3>
+          <p class="project__problem project__problem--sm">{p.problem}</p>
+          <p class="project__role mono">{p.role}</p>
+          {p.highlight && <p class="project__highlight project__highlight--sm mono">{p.highlight}</p>}
+          <ul class="stack stack--sm" role="list">
+            {p.stack.map((s) => (
+              <li class="stack__pill mono">{s}</li>
+            ))}
+          </ul>
+          {(p.links?.repo || p.links?.demo || p.links?.writeup) && (
+            <div class="project__links project__links--sm">
+              {p.links.repo && <a href={p.links.repo}>Repo</a>}
+              {p.links.demo && <a href={p.links.demo}>Demo</a>}
+              {p.links.writeup && <a href={p.links.writeup}>Notes</a>}
+            </div>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .projects__head {
+    margin-bottom: var(--space-m);
+  }
+
+  .projects__intro {
+    max-width: 36rem;
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: var(--leading-loose);
+  }
+
+  .projects__intro code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    padding: 0.08em 0.35em;
+    border-radius: var(--radius-xs);
+  }
+
+  /* featured */
+  .project--featured {
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  @media (min-width: 56rem) {
+    .project--featured {
+      grid-template-columns: 1.05fr 1fr;
+    }
+  }
+
+  .project__media {
+    background: var(--color-ink);
+    padding: var(--space-s);
+    display: grid;
+    place-items: center;
+    min-height: 100%;
+  }
+
+  .tape-mini {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-ink) 94%, black);
+  }
+
+  .tape-mini__bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.45em 0.7em;
+    font-size: var(--step--2);
+    color: rgba(246, 243, 238, 0.65);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .tape-mini__pre {
+    margin: 0;
+    padding: 0.9em 0.7em;
+    font-size: var(--step--2);
+    line-height: 1.7;
+    color: var(--color-surface);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .tape-mini__pre .dim {
+    color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  }
+  .tape-mini__pre .hl {
+    color: var(--color-accent-2);
+  }
+  .tape-mini__pre .hl2 {
+    color: var(--color-accent);
+  }
+
+  .project__body {
+    padding: var(--space-m);
+  }
+
+  .project__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .project__featured-badge {
+    margin-left: auto;
+    background: var(--color-accent);
+    color: white;
+    padding: 0.18em 0.55em;
+    border-radius: 999px;
+    font-size: var(--step--2);
+    letter-spacing: 0.04em;
+  }
+
+  .project__title {
+    margin-top: var(--space-2xs);
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .project__title--sm {
+    font-size: var(--step-1);
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .project__problem {
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-soft);
+    line-height: var(--leading-normal);
+    font-size: var(--step-0);
+  }
+
+  .project__problem--sm {
+    font-size: var(--step--1);
+    color: var(--color-muted);
+  }
+
+  .project__role {
+    margin-top: var(--space-xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-xs);
+  }
+
+  .stack--sm {
+    margin-top: var(--space-2xs);
+  }
+
+  .stack__pill {
+    padding: 0.28em 0.55em;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    font-size: var(--step--2);
+    color: var(--color-ink-soft);
+  }
+
+  .project__highlight {
+    margin-top: var(--space-xs);
+    padding: var(--space-2xs) var(--space-xs);
+    border-left: 3px solid var(--color-accent-2);
+    background: color-mix(in srgb, var(--color-accent-2) 8%, transparent);
+    color: var(--color-ink-soft);
+    font-size: var(--step--2);
+    line-height: 1.5;
+  }
+
+  .project__highlight--sm {
+    padding: var(--space-3xs) var(--space-2xs);
+    font-size: var(--step--2);
+  }
+
+  .project__links {
+    display: flex;
+    gap: var(--space-s);
+    margin-top: var(--space-s);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .project__links--sm {
+    margin-top: var(--space-xs);
+    font-size: var(--step--2);
+  }
+
+  .project__links a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1px;
+  }
+
+  .project__links a:hover {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* rest grid — auto-fit intrinsic */
+  .projects__rest {
+    display: grid;
+    gap: var(--space-s);
+    margin-top: var(--space-s);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .project--compact {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    padding: var(--space-s);
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project--compact .project__year-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+    margin-inline: var(--space-2xs);
+  }
+
+  /* small variation: second compact gets teal top edge */
+  .project--compact:nth-child(2) {
+    border-top-color: var(--color-accent-2);
+    border-top-width: 2px;
+  }
+</style>

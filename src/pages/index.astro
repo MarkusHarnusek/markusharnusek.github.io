@@ -1,0 +1,102 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Skills from "../components/Skills.astro";
+import Projects from "../components/Projects.astro";
+import Experience from "../components/Experience.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Markus Harnúšek - Software Engineering Student"
+  description="I, Markus Harnúšek, am a Upper Austrian Software Engineering Student at HTL Leonding"
+>
+  <div class="shell">
+    <div class="site">
+      <!-- desktop spine -->
+      <aside class="spine" aria-label="Site navigation">
+        <div class="spine__inner">
+          <div class="spine__mark">
+            Portfolio - 2026
+            <strong>Markus Harnúšek</strong>
+            Software Engineering Student
+          </div>
+          <nav class="spine__nav" aria-label="Primary">
+            <a href="#about">About</a>
+            <a href="#skills">Stack</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <div class="spine__foot">
+            <p><a href="mailto:m.harnusek@students.htl-leonding.ac.at">m.harnusek@students.htl-leonding.ac.at</a></p>
+            <button
+              type="button"
+              id="theme-toggle"
+              class="spine__theme mono"
+              aria-pressed="false"
+              aria-label="Toggle dark mode"
+              onclick="window.__toggleTheme()">
+              Toggle theme
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- main -->
+      <div class="site__main">
+        <!-- mobile header -->
+        <header class="m-header" aria-label="Mobile navigation">
+          <a class="m-header__wordmark" href="#">Markus Harnúšek <span>· SE Student</span></a>
+          <nav class="m-header__nav" aria-label="Mobile primary">
+            <a href="#projects">Work</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </header>
+
+        <main id="main" tabindex="-1">
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Experience />
+          <Contact />
+          <Footer />
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .site__main {
+      min-width: 0;
+    }
+
+    .spine__theme {
+      margin-top: var(--space-xs);
+      font-size: var(--step--2);
+      padding: 0.3em 0.6em;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: var(--color-muted);
+      border-radius: var(--radius-xs);
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition:
+        background var(--duration-s) var(--ease-out),
+        color var(--duration-s) var(--ease-out),
+        border-color var(--duration-s) var(--ease-out),
+        transform var(--duration-s) var(--ease-out);
+    }
+
+    .spine__theme:hover {
+      border-color: var(--color-ink);
+      color: var(--color-fg);
+      background: var(--color-surface-2);
+      transform: translateY(-1px);
+    }
+  </style>
+</Base>

@@ -1,0 +1,101 @@
+---
+import { skills } from "../data/skills";
+---
+
+<section id="skills" class="section" aria-labelledby="skills-title">
+  <p class="section__label" id="skills-title">Stack</p>
+  <p class="skills__intro">
+    Grouped by how I actually reach for them — not a tag cloud, not a star
+    rating. If it’s under “learning,” I’ll tell you exactly where I am.
+  </p>
+
+  <div class="skills__grid">
+    {
+      skills.map((group) => (
+        <div class="skill-group">
+          <h3 class="skill-group__title">
+            {group.label}
+            {group.note && <span class="skill-group__note mono">· {group.note}</span>}
+          </h3>
+          <ul class="skill-group__list" role="list">
+            {group.items.map((s) => (
+              <li class="skill-pill mono">{s}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .skills__intro {
+    max-width: 36rem;
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: var(--leading-loose);
+    margin-bottom: var(--space-m);
+  }
+
+  .skills__grid {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  @media (min-width: 44rem) {
+    .skills__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-m) var(--space-l);
+    }
+  }
+
+  .skill-group {
+    padding: var(--space-s);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface);
+  }
+
+  .skill-group__title {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-xs);
+    color: var(--color-fg);
+  }
+
+  .skill-group__note {
+    font-weight: 400;
+    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .skill-group__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+    list-style: none;
+    padding: 0;
+  }
+
+  .skill-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.32em 0.6em;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-ink-soft);
+    font-size: var(--step--2);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* first group gets accent left edge */
+  .skill-group:first-child {
+    border-left-color: var(--color-accent);
+    border-left-width: 3px;
+  }
+</style>

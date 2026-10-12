@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Silas Varga — Multiplayer is the easy part. Sync is the hard part.">
+  <rect width="1200" height="630" fill="#F6F3EE"/>
+  <rect x="40" y="40" width="1120" height="550" rx="12" fill="none" stroke="#D9D1C7" stroke-width="1.5"/>
+  <text x="64" y="84" font-family="IBM Plex Mono, monospace" font-size="16" letter-spacing="3" fill="#6B6560">BERLIN · REAL-TIME INFRA · 2026</text>
+  <text x="64" y="220" font-family="Instrument Serif, Georgia, serif" font-size="84" fill="#12141A">Multiplayer is</text>
+  <text x="64" y="310" font-family="Instrument Serif, Georgia, serif" font-size="84" fill="#12141A">the easy part.</text>
+  <text x="64" y="400" font-family="Instrument Serif, Georgia, serif" font-size="84" font-style="italic" fill="#E85D3F">Sync is the hard part.</text>
+  <text x="64" y="470" font-family="IBM Plex Sans, sans-serif" font-size="20" fill="#1E232E">Silas Varga — CRDTs · WebSockets · WebRTC · Berlin</text>
+  <rect x="64" y="510" width="420" height="1" fill="#D9D1C7"/>
+  <text x="64" y="540" font-family="IBM Plex Mono, monospace" font-size="14" fill="#6B6560">silas@varga.build · crdt-tapes · 1.8k★</text>
+  <circle cx="1080" cy="78" r="8" fill="#E85D3F"/>
+  <circle cx="1056" cy="78" r="8" fill="#2FAA8C" opacity="0.9"/>
+</svg>

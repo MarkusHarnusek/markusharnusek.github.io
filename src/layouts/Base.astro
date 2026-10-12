@@ -1,0 +1,87 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.site?.toString() ?? "https://silasvarga.build",
+} = Astro.props;
+
+const ogImage = "/og.svg";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f3ee" />
+
+    <!-- self-hosted fonts: Instrument Serif + IBM Plex Sans/Mono via Google fallback for now, swapped to woff2 subsets later -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- no-flash theme script: must run before paint -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light" || t === "dark")
+            document.documentElement.setAttribute("data-theme", t);
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+
+    <script is:inline>
+      // theme toggle helper exposed globally
+      window.__toggleTheme = function () {
+        var cur =
+          document.documentElement.getAttribute("data-theme") ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        var nxt = cur === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", nxt);
+        try {
+          localStorage.setItem("theme", nxt);
+        } catch {}
+        var btn = document.getElementById("theme-toggle");
+        if (btn) btn.setAttribute("aria-pressed", String(nxt === "dark"));
+      };
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import "../styles/tokens.css";
+  @import "../styles/base.css";
+  @import "../styles/layout.css";
+</style>

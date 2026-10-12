@@ -1,0 +1,100 @@
+---
+import { experience } from "../data/experience";
+---
+
+<section id="experience" class="section" aria-labelledby="exp-title">
+  <p class="section__label" id="exp-title">Experience</p>
+
+  <div class="timeline" role="list">
+    {
+      experience.map((role) => (
+        <article class="role" role="listitem" aria-label={`${role.title} at ${role.company}`}>
+          <div class="role__head">
+            <h3 class="role__title">
+              {role.title} <span class="role__at">at</span> {role.company}
+            </h3>
+            <p class="role__meta mono">
+              <time>{role.range}</time>
+              <span aria-hidden="true"> · </span>
+              <span>{role.location}</span>
+            </p>
+          </div>
+          <ul class="role__bullets">
+            {role.bullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .timeline {
+    display: grid;
+    gap: var(--space-l);
+    position: relative;
+    padding-left: var(--space-m);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .role {
+    position: relative;
+  }
+
+  .role::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--space-m) * -1 - 5px);
+    top: 0.55em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-accent);
+  }
+
+  .role:first-child::before {
+    background: var(--color-accent);
+  }
+
+  .role__title {
+    font-size: var(--step-1);
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: var(--leading-snug);
+  }
+
+  .role__at {
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
+  .role__meta {
+    margin-top: var(--space-3xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+  }
+
+  .role__bullets {
+    margin-top: var(--space-xs);
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--space-2xs);
+    color: var(--color-ink-soft);
+    font-size: var(--step--1);
+    line-height: var(--leading-loose);
+  }
+
+  .role__bullets li::marker {
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 56rem) {
+    .timeline {
+      gap: var(--space-xl);
+    }
+  }
+</style>

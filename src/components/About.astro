@@ -1,0 +1,132 @@
+---
+import { profile } from "../data/profile";
+---
+
+<section id="about" class="section" aria-labelledby="about-title">
+  <p class="section__label" id="about-title">About</p>
+  <div class="about__grid">
+    <div class="prose">
+      <p class="about__lead">
+        Real-time systems are polite until they’re not. Then a cursor jumps,
+        a comment duplicates, or a knob snaps back — and someone says “it’s
+        just eventual consistency.”
+      </p>
+      <p>{profile.bio}</p>
+      <p>
+        I work best with teams that have a real sync problem hiding behind a
+        feature request — “add live cursors” that’s actually a partitioning
+        problem, “add offline” that’s actually a storage-format problem. If that
+        sounds familiar, we’ll get along.
+      </p>
+    </div>
+
+    <aside class="about__aside" aria-label="Currently">
+      <h3 class="about__aside-title mono">Currently</h3>
+      <dl class="about__dl">
+        {
+          profile.currently.map((c) => (
+            <div class="about__row">
+              <dt>{c.label}</dt>
+              <dd>{c.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <div class="about__callout">
+        <p class="mono">Outside code</p>
+        <p>
+          Like to spend time in the mountains hiking, trailrunning, climbing and skiing. Also big into motorsports including karting and sim racing.
+        </p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about__grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .about__grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(240px, 0.85fr);
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+  }
+
+  .about__lead {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--color-fg);
+  }
+
+  .about__aside {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    padding: var(--space-s);
+    background: var(--color-surface-2);
+  }
+
+  .about__aside-title {
+    font-size: var(--step--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: var(--space-xs);
+  }
+
+  .about__dl {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .about__row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: var(--space-xs);
+    padding-block: var(--space-3xs);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+
+  .about__row:last-child {
+    border-bottom: none;
+  }
+
+  .about__row dt {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+    padding-top: 0.15em;
+  }
+
+  .about__row dd {
+    color: var(--color-fg);
+  }
+
+  .about__callout {
+    margin-top: var(--space-s);
+    padding-top: var(--space-s);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about__callout .mono {
+    font-size: var(--step--2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: var(--space-3xs);
+  }
+
+  .about__callout p:last-child {
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+    color: var(--color-ink-soft);
+  }
+</style>
