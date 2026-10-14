@@ -2,45 +2,42 @@ export type Role = {
   company: string;
   title: string;
   range: string;
-  location: string;
   active: boolean;
   bullets: string[];
 };
 
 export const experience: Role[] = [
   {
-    company: "Independent",
-    title: "Real-time Collaboration Consultant",
-    range: "2023 — present",
-    location: "Berlin · remote",
+    company: "HTL Leonding",
+    title: "Software Engineering Student",
+    range: "2024 - present",
     active: true,
     bullets: [
-      "Advising 5 product teams on sync architecture (Yjs / Automerge / custom CRDTs); most common outcome is ‘you don’t need a CRDT here, you need a better lock’.",
-      "Led LiveView → WebRTC migration for a collaborative whiteboard (12k MAU): cut p95 stroke latency 180 ms → 38 ms, kept WebSocket relay as graceful fallback.",
-      "Built crdt-tapes — deterministic merge harness now used in two university courses; seeded RNG + snapshot replay caught three payload-inflation regressions pre-merge.",
+      "Support classmates in Mathematics and Programming by explaining concepts, troubleshooting problems, and sharing learning resources.",
+      "Lead guide for Erasmus+ School Exchange Program. Accompanied group of 13 Czech exchange students on a 3 day exchange, guiding them trough lessons at our school and organised a day trip to Linz in May 2026.",
+      "Successfully tutored multiple students in Programming, Mathematics, and Physics through HTL Leonding’s tutoring platform.",
     ],
   },
   {
-    company: "Figurative",
-    title: "Staff Engineer, Realtime",
-    range: "2019 — 2023",
-    location: "Berlin · hybrid",
+    company: "HTL Leonding",
+    title: "\"Embedded Systems\" Club President",
+    range: "2026 - present",
     active: true,
     bullets: [
-      "Owned presence & cursor fanout for 50k+ concurrent editors; moved from Redis pub/sub to sharded Durable-Object fanout — −60% origin traffic, p95 presence delta 42 ms → 18 ms.",
-      "Designed conflict UI that made OT vs. CRDT tradeoffs visible to PMs (‘who wins when two people bold the same word?’) — reduced sync-related support tickets by ~40%.",
-      "Mentored 4 engineers; introduced TLA+ light specs for the sync core — one spec found a liveness bug three weeks before it would have hit prod.",
+      "Organize and lead monthly club meetups and the clubs participation school events like HTL Leonding's Open House and Club Convention Day.",
+      "Manage project's participation in programs like Smart Sport Assistance at the University of Vienna.",
+      "Maintain club's outside appearance and the club's area and equipment",
     ],
   },
   {
-    company: "SoundCloud",
-    title: "Backend Engineer, Live Features",
-    range: "2016 — 2019",
-    location: "Berlin",
+    company: "BMD",
+    title: "Software Engineering Internship",
+    range: "August 2026",
     active: false,
     bullets: [
-      "Built live timestamped commenting pipeline (Go + Kafka + Postgres) handling ~2k comments/s at peak; added idempotent replay after a double-post incident during a Boiler Room stream.",
-      "Prototyped browser synth patch sharing that started the whole multiplayer obsession — never shipped, never forgotten.",
+      "Contributed to the development and refinement of an automated project scheduling tool at BMD, integrating project data and employee calendars through the BMD API to enable efficient and rule-based appointment planning.",
+      "Improved the scheduling algorithm by troubleshooting appointment placement issues and automating the transfer of generated appointments into the BMD calendar software, gaining practical experience in API integration, software testing, and algorithm development.",
+      "Developed the backend using Java and Spring Boot and built the frontend with HTML, CSS, and JavaScript.",
     ],
   },
 ];
