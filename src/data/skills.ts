@@ -6,44 +6,68 @@ export type SkillGroup = {
 
 export const skills: SkillGroup[] = [
   {
-    label: "Daily drivers",
-    note: "reach for without thinking",
+    label: "Core Skills",
+    note: "well-practiced, confident & capable",
     items: [
-      "TypeScript",
-      "Rust (sync cores → WASM)",
-      "WebSockets / WebRTC",
-      "Yjs / Automerge / CRDTs",
-      "Node.js",
-      "Postgres",
-      "Redis / Streams",
-      "Cloudflare Workers & Durable Objects",
+        "C",
+        "C#",
+        "HTML",
+        "CSS",
+        "WPF",
+        "Arduino Framework"
     ],
   },
   {
-    label: "Comfortable",
-    note: "can lead, will ask good questions",
+    label: "Proficient",
+    note: "experienced, comfortable building with",
     items: [
-      "Elixir",
-      "Go",
-      "ProseMirror / TipTap",
-      "Partykit",
-      "Kafka",
-      "TLA+ (light)",
-      "WASM",
+        "C++",
+        "TypeScripts",
+        "JavaScript",
+        "Vue.js",
+        "WinForms",
+        "PlatformIO"
     ],
   },
   {
-    label: "Learning / exploring",
+    label: "Familiar",
+    note: "used before, still building confidence",
     items: [
-      "Automerge 2.0 internals",
-      "RP2040 / C (hardware sequencer)",
-      "Formal verification",
-      "OT history & tradeoffs",
+        "Java",
+        "Python",
+        "PowerShell",
+        "Astro",
+        "SQL",
+        "sqlite"
     ],
   },
   {
-    label: "Studio",
-    note: "the other workbench",
-    items: ["Ableton Live", "Max/MSP", "Soldering (through-hole)", "DX7 repair", "Juno-60"],
+    label: "Exploring",
+    note: "just getting started",
+    items: [
+        "Bash",
+        "Spring Boot",
+        "FreeRTOS"
+    ],
+  },
+  {
+    label: "Embedded Development",
+    note: "hardware & low-level",
+    items: [
+        "Through-Hole soldering",
+        "Laser cutting",
+        "3D-printing",
+        "Slicing (Creality Print)",
+        "3D-modeling (FreeCAD, TinkerCAD)"
+    ],
+  },
+  {
+    label: "Creative Tools",
+    note: "miscellaneous skills",
+    items: [
+      "Adobe Photoshop",
+      "Adobe Lightroom",
+      "Canva"
+    ],
   },
 ];

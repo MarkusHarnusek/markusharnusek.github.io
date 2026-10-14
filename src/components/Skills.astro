@@ -5,8 +5,8 @@ import { skills } from "../data/skills";
 <section id="skills" class="section" aria-labelledby="skills-title">
   <p class="section__label" id="skills-title">Stack</p>
   <p class="skills__intro">
-    Grouped by how I actually reach for them — not a tag cloud, not a star
-    rating. If it’s under “learning,” I’ll tell you exactly where I am.
+    Grouped by how I actually reach for them - not a tag, not a star
+    rating.
   </p>
 
   <div class="skills__grid">
@@ -15,7 +15,7 @@ import { skills } from "../data/skills";
         <div class="skill-group">
           <h3 class="skill-group__title">
             {group.label}
-            {group.note && <span class="skill-group__note mono">· {group.note}</span>}
+            {group.note && <span class="skill-group__note mono"> · {group.note}</span>}
           </h3>
           <ul class="skill-group__list" role="list">
             {group.items.map((s) => (
