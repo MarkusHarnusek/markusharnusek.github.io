@@ -7,17 +7,11 @@ import { profile } from "../data/profile";
   <div class="about__grid">
     <div class="prose">
       <p class="about__lead">
-        Real-time systems are polite until they’re not. Then a cursor jumps,
-        a comment duplicates, or a knob snaps back — and someone says “it’s
-        just eventual consistency.”
+        Embedded systems are predictable until you put them under real conditions.
+        Then an ISR takes too long or a perfectly valid piece of code gets 
+        blamed for a hardware fault - and suddenly you're debugging two worlds at once.
       </p>
-      <p>{profile.bio}</p>
-      <p>
-        I work best with teams that have a real sync problem hiding behind a
-        feature request — “add live cursors” that’s actually a partitioning
-        problem, “add offline” that’s actually a storage-format problem. If that
-        sounds familiar, we’ll get along.
-      </p>
+      <p class="about__bio">{profile.bio}</p>
     </div>
 
     <aside class="about__aside" aria-label="Currently">
@@ -35,7 +29,7 @@ import { profile } from "../data/profile";
       <div class="about__callout">
         <p class="mono">Outside code</p>
         <p>
-          Like to spend time in the mountains hiking, trailrunning, climbing and skiing. Also big into motorsports including karting and sim racing.
+          Like to spend time in the mountains hiking, trailrunning, climbing and skiing. Also big into motorsports including karting and sim racing. And a little bit of photography accompanying all of the before mentioned.
         </p>
       </div>
     </aside>
@@ -57,10 +51,14 @@ import { profile } from "../data/profile";
   }
 
   .about__lead {
-    font-family: var(--font-display);
+    font-family: var(--font-display),serif;
     font-size: var(--step-1);
     line-height: var(--leading-snug);
     color: var(--color-fg);
+  }
+
+  .about__bio {
+    white-space: pre-line;
   }
 
   .about__aside {
