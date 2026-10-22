@@ -44,7 +44,7 @@ export const projects: Project[] = [
     stack: ["HTML", "JavaScript", "CSS"],
     year: 2025,
     highlight: "Calculation Blocks · Warning, Error, Info & more custom callouts · Image Scaling",
-    links: { repo: "https://github.com/silasvarga/patchwork" },
+    links: { repo: "https://github.com/MarkusHarnusek/MarkDownConverter" },
     featured: false,
   },
   {
