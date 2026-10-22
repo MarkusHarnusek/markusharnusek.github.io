@@ -13,10 +13,10 @@ import { skills } from "../data/skills";
     {
       skills.map((group) => (
         <div class="skill-group">
-          <h3 class="skill-group__title">
+          <h1 class="skill-group__title">
             {group.label}
             {group.note && <span class="skill-group__note mono"> · {group.note}</span>}
-          </h3>
+          </h1>
           <ul class="skill-group__list" role="list">
             {group.items.map((s) => (
               <li class="skill-pill mono">{s}</li>

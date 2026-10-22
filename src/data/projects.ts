@@ -6,23 +6,22 @@ export type Project = {
   stack: string[];
   year: number;
   highlight?: string;
-  links?: { repo?: string; demo?: string; writeup?: string };
+  links?: { repo?: string; demo?: string; usage?: string };
   featured: boolean;
 };
 
 export const projects: Project[] = [
   {
-    slug: "crdt-tapes",
-    name: "crdt-tapes",
-    problem: "Teams argue about merge semantics without a reproducible harness.",
-    role: "Sole author · open source",
-    stack: ["Rust", "WASM", "TypeScript", "Vitest"],
-    year: 2024,
-    highlight: "1.8k★ · used in 2 university courses · seeded RNG + snapshot replay",
+    slug: "md-doc",
+    name: "MarkDown Doc",
+    problem: "An easy to build, modular documentation suite.",
+    role: "Duo · Support Project",
+    stack: ["HTML", "CSS", "JavaScript"],
+    year: 2025,
+    highlight: "Config-driven nav & categories · Full-text search & sidebar heading scroll · Simple Translation · Used by GoalFinder for it's documentation",
     links: {
-      repo: "https://github.com/silasvarga/crdt-tapes",
-      demo: "#",
-      writeup: "#writing",
+      repo: "https://github.com/MarkusHarnusek/MarkDownDoc",
+      usage: "https://goalfinder.github.io/documentation",
     },
     featured: true,
   },
