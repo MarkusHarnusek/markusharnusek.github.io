@@ -35,9 +35,9 @@ const rest = projects.filter((p) => !p.featured);
       </ul>
       {featured.highlight && <p class="project__highlight mono">{featured.highlight}</p>}
       <div class="project__links">
-        {featured.links?.repo && <a href={featured.links.repo}>Repo</a>}
-        {featured.links?.demo && <a href={featured.links.demo}>Demo</a>}
-        {featured.links?.writeup && <a href={featured.links.writeup}>Write-up</a>}
+        {featured.links?.repo && <a href={featured.links.repo} target="_blank">Repo</a>}
+        {featured.links?.demo && <a href={featured.links.demo} target="_blank">Demo</a>}
+        {featured.links?.writeup && <a href={featured.links.writeup} target="_blank">Write-up</a>}
       </div>
     </div>
   </article>
@@ -64,9 +64,9 @@ const rest = projects.filter((p) => !p.featured);
           </ul>
           {(p.links?.repo || p.links?.demo || p.links?.writeup) && (
             <div class="project__links project__links--sm">
-              {p.links.repo && <a href={p.links.repo}>Repo</a>}
-              {p.links.demo && <a href={p.links.demo}>Demo</a>}
-              {p.links.writeup && <a href={p.links.writeup}>Notes</a>}
+              {p.links.repo && <a href={p.links.repo} target="_blank">Repo</a>}
+              {p.links.demo && <a href={p.links.demo} target="_blank">Demo</a>}
+              {p.links.writeup && <a href={p.links.writeup} target="_blank">Notes</a>}
             </div>
           )}
         </article>

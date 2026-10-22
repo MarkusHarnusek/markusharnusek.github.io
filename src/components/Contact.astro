@@ -7,11 +7,9 @@ import { profile } from "../data/profile";
 
   <div class="contact__grid">
     <div class="contact__main">
-      <h2 class="contact__heading">Let’s talk about your sync problem.</h2>
+      <h2 class="contact__heading">Get in touch to learn more about me and my work.</h2>
       <p class="contact__sub">
-        Best way is email — I read everything, reply within 48h. If it’s a
-        good fit I’ll send a Cal link and a one-page scoping note. No recruiters
-        for full-time roles, please.
+        Email is the best way to reach me. I'd love to hear from you.
       </p>
 
       <div class="contact__email">
@@ -37,23 +35,6 @@ import { profile } from "../data/profile";
         }
       </div>
     </div>
-
-    <form
-      class="contact__form"
-      aria-label="Contact form (demo — no backend)"
-      onsubmit="return false"
-    >
-      <label class="field">
-        <span class="field__label mono">Your email</span>
-        <input type="email" name="email" placeholder="you@team.co" required autocomplete="email" />
-      </label>
-      <label class="field">
-        <span class="field__label mono">What are you building?</span>
-        <textarea name="message" rows="4" placeholder="A collaborative editor that… / We’re hitting fanout limits at…"></textarea>
-      </label>
-      <button type="submit" class="field__submit mono">Send — I’ll reply within 48h</button>
-      <p class="field__note mono">Form is a placeholder — it shows an inline confirmation. Email is the real channel.</p>
-    </form>
   </div>
 </section>
 
@@ -223,44 +204,19 @@ import { profile } from "../data/profile";
 <script>
   const btn = document.querySelector<HTMLButtonElement>("[data-copy]");
   const hint = document.getElementById("copy-hint");
-  const form = document.querySelector<HTMLFormElement>(".contact__form");
-  const submit = form?.querySelector<HTMLButtonElement>(".field__submit");
 
   btn?.addEventListener("click", async () => {
     const email = btn.getAttribute("data-copy");
     if (!email) return;
     try {
       await navigator.clipboard.writeText(email);
-      if (hint) hint.textContent = "Copied — " + email;
       btn.textContent = "Copied ✓";
       setTimeout(() => {
         if (hint) hint.textContent = "";
         btn.textContent = "Copy";
       }, 2200);
     } catch {
-      // fallback: select via mailto
       window.location.href = "mailto:" + email;
-    }
-  });
-
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const data = new FormData(form);
-    const email = String(data.get("email") || "").trim();
-    if (!email) return;
-    if (submit) {
-      const prev = submit.textContent;
-      submit.textContent = "Sent — check your email (demo)";
-      submit.disabled = true;
-      setTimeout(() => {
-        submit.textContent = prev;
-        submit.disabled = false;
-        form.reset();
-      }, 2600);
-    }
-    if (hint) {
-      hint.textContent = "Demo — email " + email + " would be sent. Use " + (btn?.getAttribute("data-copy") || "") + " for real.";
-      hint.style.color = "var(--color-muted)";
     }
   });
 </script>

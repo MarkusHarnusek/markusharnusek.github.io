@@ -42,6 +42,7 @@ export const profile: Profile = {
   email: "m.harnusek@students.htl-leonding.ac.at",
   socials: [
     { label: "GitHub", href: "https://github.com/markusharnusek", handle: "@markusharnusek" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/markus-harn%C3%BA%C5%A1ek-807b363b3/", handle: "@markus-harnúšek" }
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/markus-harn%C3%BA%C5%A1ek-807b363b3/", handle: "@markus-harnúšek" },
+    { label: "Discord", href: "https://www.discord.gg", handle: "@markus_harnusek" }
   ],
 };

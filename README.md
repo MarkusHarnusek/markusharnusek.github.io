@@ -30,11 +30,8 @@ src/
     profile.ts     # name, bio, currently, socials
     projects.ts    # Project[] — add one entry → new card, no markup
     experience.ts  # Role[]
-    skills.ts      # grouped, honest
-    writing.ts     # Post[]
-  components/      # presentational only — props in, HTML out
+    skills.ts      # grouped, ho  components/      # presentational only — props in, HTML out
     Hero.astro     # includes tape canvas + script (progressive enhancement)
-    About.astro / Skills.astro / Projects.astro / Experience.astro / Writing.astro / Contact.astro / Footer.astro
   layouts/
     Base.astro     # <head>, meta, OG, skip-link, theme script
   styles/
