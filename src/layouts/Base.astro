@@ -5,13 +5,16 @@ interface Props {
   canonical?: string;
 }
 
+const siteUrl = Astro.site ?? new URL("https://markusharnusek.github.io");
+
 const {
   title,
   description,
-  canonical = Astro.site?.toString() ?? "https://markusharnusek.github.io",
+  canonical = new URL(Astro.url.pathname, siteUrl).toString(),
 } = Astro.props;
 
-const ogImage = "/og.svg";
+// Social previews require an absolute URL and a raster image (a 1200×630 PNG at public/og.png).
+const ogImage = new URL("/og.png", siteUrl).toString();
 ---
 
 <!doctype html>
@@ -23,7 +26,6 @@ const ogImage = "/og.svg";
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
