@@ -31,7 +31,7 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: var(--tracking-display);
     line-height: var(--leading-tight);
     text-wrap: balance;

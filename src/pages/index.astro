@@ -83,16 +83,42 @@ import Footer from "../components/Footer.astro";
       });
     };
 
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries.filter((e) => e.isIntersecting);
-          if (visible.length) setCurrent(visible[0].target.id);
-        },
-        { rootMargin: "-30% 0px -60% 0px" },
-      );
-      sections.forEach((s) => observer.observe(s));
-    }
+    // current = last section whose top has passed 35% of the viewport;
+    // at the very bottom of the page the last section always wins
+    // (it is too short to ever reach the 35% line on its own).
+    const update = () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      let current = "";
+      if (atBottom) {
+        current = sections[sections.length - 1].id;
+      } else {
+        const line = window.innerHeight * 0.35;
+        for (const s of sections) {
+          if (s.getBoundingClientRect().top <= line) current = s.id;
+        }
+      }
+      setCurrent(current);
+    };
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update);
+    links.forEach((a) =>
+      a.addEventListener("click", () => setCurrent((a.getAttribute("href") ?? "").slice(1))),
+    );
+    update();
   </script>
 
   <style>

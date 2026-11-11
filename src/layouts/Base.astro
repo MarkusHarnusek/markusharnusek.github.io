@@ -18,7 +18,7 @@ const ogImage = new URL("/og.png", siteUrl).toString();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,14 +36,14 @@ const ogImage = new URL("/og.png", siteUrl).toString();
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f6f3ee" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0b0b" />
 
-    <!-- self-hosted fonts: Instrument Serif + IBM Plex Sans/Mono via Google fallback for now, swapped to woff2 subsets later -->
+    <!-- self-hosted fonts: Hanken Grotesk + Spline Sans Mono via Google fallback for now, swapped to woff2 subsets later -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
@@ -67,9 +67,7 @@ const ogImage = new URL("/og.png", siteUrl).toString();
       function currentTheme() {
         return (
           document.documentElement.getAttribute("data-theme") ||
-          (window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light")
+          "dark"
         );
       }
       // reflect the real starting theme on the toggle

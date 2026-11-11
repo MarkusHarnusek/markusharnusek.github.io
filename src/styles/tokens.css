@@ -1,20 +1,20 @@
 @layer tokens {
   :root {
-    /* — surface / ink — */
-    --color-surface: #f6f3ee;
-    --color-surface-2: #ece7df;
-    --color-ink: #12141a;
-    --color-ink-soft: #1e232e;
-    --color-muted: #6b6560;
-    --color-line: #d9d1c7;
-    --color-line-strong: #c2b8aa;
+    /* — surface / ink (dark by default) — */
+    --color-surface: #0b0b0b;
+    --color-surface-2: #151515;
+    --color-ink: #e6e6e6;
+    --color-ink-soft: #c4c4c4;
+    --color-muted: #8a8a8a;
+    --color-line: #262626;
+    --color-line-strong: #3a3a3a;
 
-    /* — accents (oscilloscope + fader) — */
-    --color-accent: #e85d3f; /* vermillion — record LED */
-    --color-accent-hover: #d14e33;
-    --color-accent-2: #2faa8c; /* phosphor teal — trace */
-    --color-accent-2-hover: #25947a;
-    --color-warn: #d9a441;
+    /* — single accent: light blue — */
+    --color-accent: #7cc0f5;
+    --color-accent-hover: #a3d4fa;
+    --color-accent-2: var(--color-accent);
+    --color-accent-2-hover: var(--color-accent-hover);
+    --color-warn: #7cc0f5;
 
     /* — semantic aliases — */
     --color-bg: var(--color-surface);
@@ -36,9 +36,9 @@
     --space-4xl: 8rem;
 
     /* — type — */
-    --font-display: "Instrument Serif", Georgia, serif;
-    --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-    --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", monospace;
+    --font-display: "Spline Sans Mono", ui-monospace, "Cascadia Code", monospace;
+    --font-body: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    --font-mono: "Spline Sans Mono", ui-monospace, "Cascadia Code", monospace;
 
     /* fluid steps — minor third 1.2 → clamped */
     --step--2: clamp(0.7rem, 0.68rem + 0.12vw, 0.78rem);
@@ -56,7 +56,7 @@
     --leading-normal: 1.55;
     --leading-loose: 1.7;
 
-    --tracking-display: -0.02em;
+    --tracking-display: -0.03em;
     --tracking-mono: -0.01em;
 
     /* — radii — restrained, not everything is pill-shaped — */
@@ -77,46 +77,16 @@
     --gutter: var(--space-m);
   }
 
-  /* dark mode — same accents, flipped surface/ink */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-surface: #12141a;
-      --color-surface-2: #1a1e27;
-      --color-ink: #f6f3ee;
-      --color-ink-soft: #e8e2d9;
-      --color-muted: #9a9590;
-      --color-line: #2a2e38;
-      --color-line-strong: #343a4a;
-      --color-bg: var(--color-surface);
-      --color-fg: var(--color-ink);
-      --color-border: var(--color-line);
-    }
-  }
-
-  /* explicit toggle overrides auto */
   [data-theme="light"] {
-    --color-surface: #f6f3ee;
-    --color-surface-2: #ece7df;
-    --color-ink: #12141a;
-    --color-ink-soft: #1e232e;
-    --color-muted: #6b6560;
-    --color-line: #d9d1c7;
-    --color-line-strong: #c2b8aa;
-    --color-bg: var(--color-surface);
-    --color-fg: var(--color-ink);
-    --color-border: var(--color-line);
-  }
-
-  [data-theme="dark"] {
-    --color-surface: #12141a;
-    --color-surface-2: #1a1e27;
-    --color-ink: #f6f3ee;
-    --color-ink-soft: #e8e2d9;
-    --color-muted: #9a9590;
-    --color-line: #2a2e38;
-    --color-line-strong: #343a4a;
-    --color-bg: var(--color-surface);
-    --color-fg: var(--color-ink);
-    --color-border: var(--color-line);
+    --color-surface: #fafafa;
+    --color-surface-2: #f4f4f4;
+    --color-ink: #111111;
+    --color-ink-soft: #2b2b2b;
+    --color-muted: #666666;
+    --color-line: #d4d4d4;
+    --color-line-strong: #b5b5b5;
+    --color-accent: #1a6fb8;
+    --color-accent-hover: #12558f;
+    --color-warn: #1a6fb8;
   }
 }
