@@ -18,7 +18,7 @@ export const projects: Project[] = [
     role: "Duo · Support Project",
     stack: ["HTML", "CSS", "JavaScript"],
     year: 2025,
-    highlight: "Config-driven nav & categories · Full-text search & sidebar heading scroll · Simple Translation · Used by GoalFinder for it's documentation",
+    highlight: "Config-driven nav & categories · Full-text search & sidebar heading scroll · Simple Translation · Used for GoalFinder's documentation",
     links: {
       repo: "https://github.com/MarkusHarnusek/MarkDownDoc",
       usage: "https://goalfinder.github.io/documentation",

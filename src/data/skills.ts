@@ -22,7 +22,7 @@ export const skills: SkillGroup[] = [
     note: "experienced, comfortable building with",
     items: [
         "C++",
-        "TypeScripts",
+        "TypeScript",
         "JavaScript",
         "Vue.js",
         "WinForms",

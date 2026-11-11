@@ -9,14 +9,14 @@ const rest = projects.filter((p) => !p.featured);
   <div class="projects__head">
     <p class="section__label" id="projects-title">Projects</p>
     <p class="projects__intro">
-      A selection of a few of my smaller projects. Mostly some simple Web Dev Projects and C# utilities.
+      A selection of my smaller projects: embedded, web tools and C# desktop utilities.
     </p>
   </div>
 
   <!-- featured -->
   <article class="project project--featured" aria-labelledby={`proj-${featured.slug}`}>
     <div class="project__media" aria-hidden="true">
-      <img src={mdDoc.src} alt="image showcasing markdown doc" />
+      <img src={mdDoc.src} alt="Screenshot of MarkDown Doc showing its sidebar navigation and documentation page" />
     </div>
     <div class="project__body">
       <div class="project__meta mono">
@@ -32,7 +32,7 @@ const rest = projects.filter((p) => !p.featured);
       <div class="project__links">
         {featured.links?.repo && <a href={featured.links.repo} target="_blank">Repo</a>}
         {featured.links?.demo && <a href={featured.links.demo} target="_blank">Demo</a>}
-        {featured.links?.usage && <a href={featured.links.usage} target="_blank">Usage</a>}
+        {featured.links?.usage && <a href={featured.links.usage} target="_blank">See it in use</a>}
       </div>
     </div>
   </article>
@@ -61,7 +61,7 @@ const rest = projects.filter((p) => !p.featured);
             <div class="project__links project__links--sm">
               {p.links.repo && <a href={p.links.repo} target="_blank">Repo</a>}
               {p.links.demo && <a href={p.links.demo} target="_blank">Demo</a>}
-              {p.links.usage && <a href={p.links.usage} target="_blank">Usage</a>}
+              {p.links.usage && <a href={p.links.usage} target="_blank">See it in use</a>}
             </div>
           )}
         </article>
