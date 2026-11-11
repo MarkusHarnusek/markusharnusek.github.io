@@ -69,6 +69,32 @@ import Footer from "../components/Footer.astro";
     </div>
   </div>
 
+  <script>
+    // mark the nav link for the section currently in view
+    const links = document.querySelectorAll<HTMLAnchorElement>(".spine__nav a");
+    const sections = Array.from(links)
+      .map((a) => document.querySelector<HTMLElement>(a.getAttribute("href") ?? ""))
+      .filter((s): s is HTMLElement => s !== null);
+
+    const setCurrent = (id: string) => {
+      links.forEach((a) => {
+        if (a.getAttribute("href") === `#${id}`) a.setAttribute("aria-current", "location");
+        else a.removeAttribute("aria-current");
+      });
+    };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter((e) => e.isIntersecting);
+          if (visible.length) setCurrent(visible[0].target.id);
+        },
+        { rootMargin: "-30% 0px -60% 0px" },
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+  </script>
+
   <style>
     .site__main {
       min-width: 0;

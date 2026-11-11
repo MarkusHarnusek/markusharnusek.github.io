@@ -64,12 +64,21 @@ const ogImage = new URL("/og.png", siteUrl).toString();
 
     <script is:inline>
       // theme toggle helper exposed globally
-      window.__toggleTheme = function () {
-        var cur =
+      function currentTheme() {
+        return (
           document.documentElement.getAttribute("data-theme") ||
           (window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
-            : "light");
+            : "light")
+        );
+      }
+      // reflect the real starting theme on the toggle
+      var initialBtn = document.getElementById("theme-toggle");
+      if (initialBtn)
+        initialBtn.setAttribute("aria-pressed", String(currentTheme() === "dark"));
+
+      window.__toggleTheme = function () {
+        var cur = currentTheme();
         var nxt = cur === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", nxt);
         try {

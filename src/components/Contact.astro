@@ -3,11 +3,11 @@ import { profile } from "../data/profile";
 ---
 
 <section id="contact" class="section" aria-labelledby="contact-title">
-  <p class="section__label" id="contact-title">Contact</p>
+  <h2 class="section__label" id="contact-title">Contact</h2>
 
   <div class="contact__grid">
     <div class="contact__main">
-      <h2 class="contact__heading">Get in touch to learn more about me and my work.</h2>
+      <h3 class="contact__heading">Get in touch to learn more about me and my work.</h3>
       <p class="contact__sub">
         Email is the best way to reach me. I'd love to hear from you.
       </p>
@@ -53,6 +53,9 @@ import { profile } from "../data/profile";
   }
 
   .contact__heading {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: var(--tracking-display);
     font-size: var(--step-2);
     line-height: var(--leading-snug);
     max-width: 22ch;
@@ -211,12 +214,13 @@ import { profile } from "../data/profile";
     try {
       await navigator.clipboard.writeText(email);
       btn.textContent = "Copied ✓";
+      if (hint) hint.textContent = "Email address copied to clipboard.";
       setTimeout(() => {
         if (hint) hint.textContent = "";
         btn.textContent = "Copy";
       }, 2200);
     } catch {
-      window.location.href = "mailto:" + email;
+      if (hint) hint.textContent = "Couldn't copy automatically. Select the address above or use the link.";
     }
   });
 </script>

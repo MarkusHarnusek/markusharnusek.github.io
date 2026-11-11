@@ -7,7 +7,7 @@ const rest = projects.filter((p) => !p.featured);
 
 <section id="projects" class="section" aria-labelledby="projects-title">
   <div class="projects__head">
-    <p class="section__label" id="projects-title">Projects</p>
+    <h2 class="section__label" id="projects-title">Projects</h2>
     <p class="projects__intro">
       A selection of my smaller projects: embedded, web tools and C# desktop utilities.
     </p>
@@ -15,14 +15,14 @@ const rest = projects.filter((p) => !p.featured);
 
   <!-- featured -->
   <article class="project project--featured" aria-labelledby={`proj-${featured.slug}`}>
-    <div class="project__media" aria-hidden="true">
-      <img src={mdDoc.src} alt="Screenshot of MarkDown Doc showing its sidebar navigation and documentation page" />
+    <div class="project__media">
+      <img src={mdDoc.src} alt="Screenshot of the MarkDown Doc documentation site" width={mdDoc.width} height={mdDoc.height} loading="lazy" decoding="async" />
     </div>
     <div class="project__body">
       <div class="project__meta mono">
         <span>{featured.year} · open source</span>
       </div>
-      <h1 id={`proj-${featured.slug}`} class="project__title bold">{featured.name}</h1>
+      <h3 id={`proj-${featured.slug}`} class="project__title bold">{featured.name}</h3>
       <p class="project__problem">{featured.problem}</p>
       <p class="project__role mono">{featured.role}</p>
       <ul class="stack" role="list">
@@ -46,9 +46,9 @@ const rest = projects.filter((p) => !p.featured);
             <span class="project__year-line" aria-hidden="true" />
             <span>{p.stack[0]}</span>
           </div>
-          <h1 id={`proj-${p.slug}`} class="project__title project__title--sm">
+          <h3 id={`proj-${p.slug}`} class="project__title project__title--sm">
             {p.name}
-          </h1>
+          </h3>
           <p class="project__problem project__problem--sm">{p.problem}</p>
           <p class="project__role mono">{p.role}</p>
           {p.highlight && <p class="project__highlight project__highlight--sm mono">{p.highlight}</p>}

@@ -84,7 +84,7 @@
     }
 
     .spine__nav a:hover,
-    .spine__nav a[aria-current="page"] {
+    .spine__nav a[aria-current="location"] {
       color: var(--color-fg);
       border-left-color: var(--color-accent);
     }
@@ -174,6 +174,8 @@
 
   .section__label {
     font-family: var(--font-mono);
+    font-weight: 400;
+    line-height: var(--leading-normal);
     font-size: var(--step--2);
     letter-spacing: 0.09em;
     text-transform: uppercase;
