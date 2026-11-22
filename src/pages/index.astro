@@ -69,57 +69,7 @@ import Footer from "../components/Footer.astro";
     </div>
   </div>
 
-  <script>
-    // mark the nav link for the section currently in view
-    const links = document.querySelectorAll<HTMLAnchorElement>(".spine__nav a");
-    const sections = Array.from(links)
-      .map((a) => document.querySelector<HTMLElement>(a.getAttribute("href") ?? ""))
-      .filter((s): s is HTMLElement => s !== null);
-
-    const setCurrent = (id: string) => {
-      links.forEach((a) => {
-        if (a.getAttribute("href") === `#${id}`) a.setAttribute("aria-current", "location");
-        else a.removeAttribute("aria-current");
-      });
-    };
-
-    // current = last section whose top has passed 35% of the viewport;
-    // at the very bottom of the page the last section always wins
-    // (it is too short to ever reach the 35% line on its own).
-    const update = () => {
-      const atBottom =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-      let current = "";
-      if (atBottom) {
-        current = sections[sections.length - 1].id;
-      } else {
-        const line = window.innerHeight * 0.35;
-        for (const s of sections) {
-          if (s.getBoundingClientRect().top <= line) current = s.id;
-        }
-      }
-      setCurrent(current);
-    };
-
-    let ticking = false;
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          update();
-          ticking = false;
-        });
-      },
-      { passive: true },
-    );
-    window.addEventListener("resize", update);
-    links.forEach((a) =>
-      a.addEventListener("click", () => setCurrent((a.getAttribute("href") ?? "").slice(1))),
-    );
-    update();
-  </script>
+  <!-- active-section nav indicator lives in src/scripts/motion.ts -->
 
   <style>
     .site__main {
@@ -144,11 +94,12 @@ import Footer from "../components/Footer.astro";
         transform var(--duration-s) var(--ease-out);
     }
 
-    .spine__theme:hover {
+    .spine__theme:hover,
+    .spine__theme:focus-visible {
       border-color: var(--color-ink);
       color: var(--color-fg);
       background: var(--color-surface-2);
-      transform: translateY(-1px);
+      transform: translateY(var(--nudge));
     }
   </style>
 </Base>

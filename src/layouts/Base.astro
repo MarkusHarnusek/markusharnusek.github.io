@@ -57,6 +57,19 @@ const ogImage = new URL("/og.png", siteUrl).toString();
         } catch {}
       })();
     </script>
+
+    <!-- motion gate: reveal hidden states only apply under .js. If the motion
+         script hasn't run within 2.5s (blocked, failed), drop the gate so no
+         content can stay hidden. -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add("js");
+        setTimeout(function () {
+          if (!d.classList.contains("motion")) d.classList.remove("js");
+        }, 2500);
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -86,6 +99,10 @@ const ogImage = new URL("/og.png", siteUrl).toString();
         if (btn) btn.setAttribute("aria-pressed", String(nxt === "dark"));
       };
     </script>
+
+    <script>
+      import "../scripts/motion";
+    </script>
   </body>
 </html>
 
@@ -93,4 +110,5 @@ const ogImage = new URL("/og.png", siteUrl).toString();
   @import "../styles/tokens.css";
   @import "../styles/base.css";
   @import "../styles/layout.css";
+  @import "../styles/motion.css";
 </style>

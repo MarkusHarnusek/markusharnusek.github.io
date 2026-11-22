@@ -3,8 +3,8 @@ import { skills } from "../data/skills";
 ---
 
 <section id="skills" class="section" aria-labelledby="skills-title">
-  <h2 class="section__label" id="skills-title">Stack</h2>
-  <p class="skills__intro">
+  <h2 class="section__label" id="skills-title" data-reveal>Stack</h2>
+  <p class="skills__intro" data-reveal>
     Grouped by how I actually reach for them - not a tag, not a star
     rating.
   </p>
@@ -12,7 +12,7 @@ import { skills } from "../data/skills";
   <div class="skills__grid">
     {
       skills.map((group) => (
-        <div class="skill-group">
+        <div class="skill-group" data-reveal>
           <h3 class="skill-group__title">
             {group.label}
             {group.note && <span class="skill-group__note mono"> · {group.note}</span>}

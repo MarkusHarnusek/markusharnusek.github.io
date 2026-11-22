@@ -3,10 +3,10 @@ import { profile } from "../data/profile";
 ---
 
 <section id="contact" class="section" aria-labelledby="contact-title">
-  <h2 class="section__label" id="contact-title">Contact</h2>
+  <h2 class="section__label" id="contact-title" data-reveal>Contact</h2>
 
   <div class="contact__grid">
-    <div class="contact__main">
+    <div class="contact__main" data-reveal>
       <h3 class="contact__heading">Get in touch to learn more about me and my work.</h3>
       <p class="contact__sub">
         Email is the best way to reach me. I'd love to hear from you.
@@ -93,9 +93,11 @@ import { profile } from "../data/profile";
     border-radius: var(--radius-xs);
     cursor: pointer;
     color: var(--color-fg);
+    transition: border-color var(--duration-s) var(--ease-out);
   }
 
-  .contact__copy:hover {
+  .contact__copy:hover,
+  .contact__copy:focus-visible {
     border-color: var(--color-ink);
   }
 
@@ -118,9 +120,13 @@ import { profile } from "../data/profile";
     text-decoration: none;
     color: var(--color-muted);
     border-bottom: 1px solid var(--color-border);
+    transition:
+      color var(--duration-s) var(--ease-out),
+      border-color var(--duration-s) var(--ease-out);
   }
 
-  .contact__links a:hover {
+  .contact__links a:hover,
+  .contact__links a:focus-visible {
     color: var(--color-fg);
     border-bottom-color: var(--color-accent);
   }

@@ -71,6 +71,16 @@
     --duration-m: 400ms;
     --duration-l: 650ms;
 
+    /* — motion tuning: entrances, reveals, hover — */
+    --ease-entrance: cubic-bezier(0.22, 1, 0.36, 1);
+    --duration-reveal: 600ms; /* scroll reveals + hero stagger */
+    --duration-hide: 300ms; /* scroll reveals fading back out */
+    --duration-signature: 700ms; /* hero name mask reveal */
+    --stagger: 70ms; /* delay between items revealed together */
+    --stagger-max: 4; /* cap: never wait more than 4 × stagger */
+    --reveal-distance: 14px; /* travel of reveals */
+    --nudge: -1px; /* button hover lift */
+
     /* — layout — */
     --content-max: 72rem; /* 1152 */
     --spine-w: 14rem;
@@ -88,5 +98,13 @@
     --color-accent: #1a6fb8;
     --color-accent-hover: #12558f;
     --color-warn: #1a6fb8;
+  }
+
+  /* reduced motion: nothing travels, only instant state changes */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --reveal-distance: 0px;
+      --nudge: 0px;
+    }
   }
 }

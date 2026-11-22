@@ -70,6 +70,7 @@
     }
 
     .spine__nav a {
+      position: relative;
       font-family: var(--font-mono);
       font-size: var(--step--1);
       text-decoration: none;
@@ -78,15 +79,32 @@
       border-left: 2px solid transparent;
       padding-left: var(--space-xs);
       margin-left: calc(var(--space-xs) * -1 - 2px);
-      transition:
-        color var(--duration-s) var(--ease-out),
-        border-color var(--duration-s) var(--ease-out);
+      transition: color var(--duration-s) var(--ease-out);
+    }
+
+    /* indicator bar: sits over the transparent border, grows from its centre */
+    .spine__nav a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -2px;
+      width: 2px;
+      background: var(--color-accent);
+      transform: scaleY(0);
+      transition: transform var(--duration-s) var(--ease-out);
     }
 
     .spine__nav a:hover,
+    .spine__nav a:focus-visible,
     .spine__nav a[aria-current="location"] {
       color: var(--color-fg);
-      border-left-color: var(--color-accent);
+    }
+
+    .spine__nav a:hover::before,
+    .spine__nav a:focus-visible::before,
+    .spine__nav a[aria-current="location"]::before {
+      transform: scaleY(1);
     }
 
     .spine__foot {
@@ -146,8 +164,43 @@
   }
 
   .m-header__nav a {
+    position: relative;
     text-decoration: none;
     color: var(--color-muted);
+    transition: color var(--duration-s) var(--ease-out);
+  }
+
+  .m-header__nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.3em;
+    height: 1px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-s) var(--ease-out);
+  }
+
+  .m-header__nav a:focus-visible,
+  .m-header__nav a[aria-current="location"] {
+    color: var(--color-fg);
+  }
+
+  .m-header__nav a:focus-visible::after,
+  .m-header__nav a[aria-current="location"]::after {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) {
+    .m-header__nav a:hover {
+      color: var(--color-fg);
+    }
+
+    .m-header__nav a:hover::after {
+      transform: scaleX(1);
+    }
   }
 
   /* main flow */
@@ -166,6 +219,15 @@
   .section {
     padding-block: var(--space-2xl);
     border-top: 1px solid var(--color-border);
+    /* anchor jumps: keep the label clear of the sticky mobile header
+       (~65px, ~93px when the wordmark wraps on narrow phones) */
+    scroll-margin-top: var(--space-2xl);
+  }
+
+  @media (min-width: 64rem) {
+    .section {
+      scroll-margin-top: 0;
+    }
   }
 
   .section:first-of-type {

@@ -7,14 +7,14 @@ const rest = projects.filter((p) => !p.featured);
 
 <section id="projects" class="section" aria-labelledby="projects-title">
   <div class="projects__head">
-    <h2 class="section__label" id="projects-title">Projects</h2>
-    <p class="projects__intro">
+    <h2 class="section__label" id="projects-title" data-reveal>Projects</h2>
+    <p class="projects__intro" data-reveal>
       A selection of my smaller projects: embedded, web tools and C# desktop utilities.
     </p>
   </div>
 
   <!-- featured -->
-  <article class="project project--featured" aria-labelledby={`proj-${featured.slug}`}>
+  <article class="project project--featured" aria-labelledby={`proj-${featured.slug}`} data-reveal>
     <div class="project__media">
       <img src={mdDoc.src} alt="Screenshot of the MarkDown Doc documentation site" width={mdDoc.width} height={mdDoc.height} loading="lazy" decoding="async" />
     </div>
@@ -40,7 +40,7 @@ const rest = projects.filter((p) => !p.featured);
   <div class="projects__rest">
     {
       rest.map((p) => (
-        <article class="project project--compact" aria-labelledby={`proj-${p.slug}`}>
+        <article class="project project--compact" aria-labelledby={`proj-${p.slug}`} data-reveal>
           <div class="project__meta mono">
             <span>{p.year}</span>
             <span class="project__year-line" aria-hidden="true" />
@@ -235,9 +235,11 @@ const rest = projects.filter((p) => !p.featured);
     text-decoration: none;
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 1px;
+    transition: border-color var(--duration-s) var(--ease-out);
   }
 
-  .project__links a:hover {
+  .project__links a:hover,
+  .project__links a:focus-visible {
     border-bottom-color: var(--color-accent);
   }
 

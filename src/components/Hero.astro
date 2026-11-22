@@ -6,8 +6,8 @@ import { profile } from "../data/profile";
   <div class="hero__main">
     <p class="hero__kicker mono">Software Engineering Student · Upper Austria</p>
     <h1 id="hero-title" class="hero__title">
-      Markus<br />
-      <em>Harnúšek</em>
+      <span class="hero__line"><span class="hero__line-inner">Markus</span></span>{" "}
+      <span class="hero__line"><em class="hero__line-inner">Harnúšek</em></span>
     </h1>
     <p class="hero__sub">
       I'm a 17-year-old software engineering student at HTL Leonding, building embedded systems and desktop software. I run the school's Embedded Systems Club and interned at BMD, and I've been programming since I was seven.
@@ -44,6 +44,20 @@ import { profile } from "../data/profile";
     font-style: normal;
     font-weight: inherit;
     color: inherit;
+  }
+
+  /* each name line is its own mask; the padding/negative-margin pair gives
+     the accents (ú, š) room inside the clip without changing line spacing */
+  .hero__line {
+    display: block;
+    overflow: hidden;
+    overflow: clip;
+    padding-block: 0.2em;
+    margin-block: -0.2em;
+  }
+
+  .hero__line-inner {
+    display: inline-block;
   }
 
   .hero__sub {
@@ -85,10 +99,11 @@ import { profile } from "../data/profile";
     border-color: var(--color-ink);
   }
 
-  .btn--primary:hover {
+  .btn--primary:hover,
+  .btn--primary:focus-visible {
     background: var(--color-ink-soft);
     color: var(--color-surface);
-    transform: translateY(-1px);
+    transform: translateY(var(--nudge));
   }
 
   .btn--ghost {
@@ -97,7 +112,8 @@ import { profile } from "../data/profile";
     border-color: var(--color-border);
   }
 
-  .btn--ghost:hover {
+  .btn--ghost:hover,
+  .btn--ghost:focus-visible {
     border-color: var(--color-ink);
     background: var(--color-surface-2);
   }
@@ -120,36 +136,49 @@ import { profile } from "../data/profile";
     flex-shrink: 0;
   }
 
-  /* load-in clip wipe — orchestrated moment */
+  /* load-in: kicker → name (line by line, masked) → sub → CTAs.
+     Pure CSS: runs and finishes without JS. */
   @media (prefers-reduced-motion: no-preference) {
-    .hero__title {
-      animation: wipe var(--duration-l) var(--ease-out) both;
-    }
+    .hero__kicker,
     .hero__sub,
-    .hero__ctas,
-    .hero__meta {
-      animation: rise var(--duration-m) var(--ease-out) both;
-      animation-delay: 180ms;
+    .hero__ctas {
+      animation: hero-rise var(--duration-reveal) var(--ease-entrance) both;
+    }
+
+    .hero__line-inner {
+      animation: hero-mask var(--duration-signature) var(--ease-entrance) both;
+    }
+
+    .hero__line:nth-child(1) .hero__line-inner {
+      animation-delay: var(--stagger);
+    }
+    .hero__line:nth-child(2) .hero__line-inner {
+      animation-delay: calc(var(--stagger) * 2);
+    }
+    .hero__sub {
+      animation-delay: calc(var(--stagger) * 3);
+    }
+    .hero__ctas {
+      animation-delay: calc(var(--stagger) * 4);
     }
   }
 
-  @keyframes wipe {
-    from {
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  @keyframes rise {
+  @keyframes hero-rise {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(var(--reveal-distance));
     }
-    to {
+  }
+
+  /* slides up from behind the line mask; the quick fade hides any
+     glyph edge the mask can't fully cover at the start */
+  @keyframes hero-mask {
+    from {
+      opacity: 0;
+      transform: translateY(110%);
+    }
+    40% {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 </style>

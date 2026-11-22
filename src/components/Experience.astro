@@ -3,12 +3,12 @@ import { experience } from "../data/experience";
 ---
 
 <section id="experience" class="section" aria-labelledby="exp-title">
-  <h2 class="section__label" id="exp-title">Experience</h2>
+  <h2 class="section__label" id="exp-title" data-reveal>Experience</h2>
 
   <ol class="timeline">
     {
       experience.map((role) => (
-        <li class={role.active ? "role-active" : "role"}>
+        <li class={role.active ? "role-active" : "role"} data-reveal>
           <div class="role__head">
             <h3 class="role__title">
               {role.title} <span class="role__at">at</span> {role.company}

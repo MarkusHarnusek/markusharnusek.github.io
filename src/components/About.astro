@@ -3,9 +3,9 @@ import { profile } from "../data/profile";
 ---
 
 <section id="about" class="section" aria-labelledby="about-title">
-  <h2 class="section__label" id="about-title">About</h2>
+  <h2 class="section__label" id="about-title" data-reveal>About</h2>
   <div class="about__grid">
-    <div class="prose">
+    <div class="prose" data-reveal>
       <p class="about__lead">
         Embedded systems are predictable until you put them under real conditions.
         Then an ISR takes too long or a perfectly valid piece of code gets 
@@ -14,7 +14,7 @@ import { profile } from "../data/profile";
       <p class="about__bio">{profile.bio}</p>
     </div>
 
-    <aside class="about__aside" aria-label="Currently">
+    <aside class="about__aside" aria-label="Currently" data-reveal>
       <h3 class="about__aside-title mono">Currently</h3>
       <dl class="about__dl">
         {
