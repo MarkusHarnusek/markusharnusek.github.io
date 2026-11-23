@@ -1,5 +1,16 @@
+import type { ImageMetadata } from "astro";
+import bmdLogo from "../../img/BMD-Logo-2024-Quadrat-PPT_Web.webp";
+import esLogo from "../../img/es-logo-transparent.webp";
+import htlLogo from "../../img/htlleonding-only.webp";
+
+export type Logo = {
+  src: ImageMetadata;
+  alt: string;
+};
+
 export type Role = {
   company: string;
+  logo?: Logo;
   title: string;
   range: string;
   active: boolean;
@@ -9,6 +20,7 @@ export type Role = {
 export const experience: Role[] = [
   {
     company: "BMD",
+    logo: { src: bmdLogo, alt: "BMD logo" },
     title: "Software Engineering Internship",
     range: "August 2026",
     active: false,
@@ -20,6 +32,7 @@ export const experience: Role[] = [
   },
   {
     company: "HTL Leonding",
+    logo: { src: esLogo, alt: "Embedded Systems Club logo" },
     title: "\"Embedded Systems\" Club President",
     range: "2026 – present",
     active: true,
@@ -31,6 +44,7 @@ export const experience: Role[] = [
   },
   {
     company: "HTL Leonding",
+    logo: { src: htlLogo, alt: "HTL Leonding logo" },
     title: "Software Engineering Student",
     range: "2024 – present",
     active: true,

@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { goalfinder as gf } from "../data/goalfinder";
+import hoopPhoto from "../../img/goalfinder.webp";
 ---
 
 <section id="goalfinder" class="section section--sub" aria-labelledby="gf-title">
@@ -23,6 +25,22 @@ import { goalfinder as gf } from "../data/goalfinder";
         <a href={gf.links.docs} target="_blank">Documentation</a>
       </div>
     </header>
+
+    <figure class="gf__figure" data-reveal>
+      <div class="gf__photo">
+        <Image
+          src={hoopPhoto}
+          alt="A basketball hoop in a school gym with GoalFinder mounted on it, its LED strip glowing purple around the backboard square."
+          widths={[480, 800, 1200, 1600, 2400]}
+          sizes="(min-width: 72rem) 55rem, (min-width: 56rem) calc(100vw - 20rem), calc(100vw - 3rem)"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <figcaption class="gf__caption mono">
+        GoalFinder on the hoop. The LED strip helps locate the basket and provides feedback on hits and misses.
+      </figcaption>
+    </figure>
 
     <div class="gf__grid">
       <div class="gf__prose" data-reveal>
@@ -160,6 +178,41 @@ import { goalfinder as gf } from "../data/goalfinder";
   .gf__m-link:hover,
   .gf__m-link:focus-visible {
     border-bottom-color: var(--color-accent);
+  }
+
+  /* photo */
+  .gf__figure {
+    margin: var(--space-xl) 0 0;
+  }
+
+  .gf__photo {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-surface-2);
+    aspect-ratio: 4 / 3;
+  }
+
+  .gf__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* keep the hoop and net centred when cropped on narrow screens */
+    object-position: 52% 50%;
+  }
+
+  @media (min-width: 40rem) {
+    .gf__photo {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .gf__caption {
+    margin-top: var(--space-2xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    line-height: var(--leading-normal);
   }
 
   /* sub headings */
