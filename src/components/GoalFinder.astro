@@ -1,0 +1,325 @@
+---
+import { goalfinder as gf } from "../data/goalfinder";
+---
+
+<section id="goalfinder" class="section" aria-labelledby="gf-title">
+  <h2 class="section__label" id="gf-title" data-reveal>GoalFinder</h2>
+
+  <article class="gf" aria-labelledby="gf-name">
+    <header class="gf__head" data-reveal>
+      <p class="gf__meta mono">
+        <span>{gf.range}</span>
+        <span class="gf__meta-line" aria-hidden="true"></span>
+        <span>Open source · Assistive tech</span>
+      </p>
+      <h3 id="gf-name" class="gf__title">Basketball for blind and visually impaired players</h3>
+      <p class="gf__lead">{gf.lead}</p>
+      <p class="gf__role mono">{gf.role}</p>
+      <div class="gf__links">
+        <a href={gf.links.site} target="_blank">Website</a>
+        <a href={gf.links.repo} target="_blank">Repo</a>
+        <a href={gf.links.docs} target="_blank">Documentation</a>
+      </div>
+    </header>
+
+    <div class="gf__grid">
+      <div class="gf__prose" data-reveal>
+        <h4 class="gf__sub mono">How it works</h4>
+        {gf.how.map((p) => <p>{p}</p>)}
+        <h4 class="gf__sub mono">Taking it over</h4>
+        <p>{gf.takeover}</p>
+      </div>
+
+      <aside class="gf__used" aria-labelledby="gf-used-title" data-reveal>
+        <h4 id="gf-used-title" class="gf__sub mono">Out in the world</h4>
+        <ol class="gf__timeline" role="list">
+          {
+            gf.milestones.map((m) => (
+              <li class="gf__milestone">
+                <p class="gf__when mono">{m.when}</p>
+                <p class="gf__m-title">{m.title}</p>
+                <p class="gf__place">{m.place}</p>
+                <p class="gf__m-text">{m.text}</p>
+                {m.link && (
+                  <a class="gf__m-link mono" href={m.link.href} target="_blank">
+                    {m.link.label}
+                  </a>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </aside>
+    </div>
+
+    <div class="gf__work">
+      {
+        gf.work.map((area) => (
+          <div class="gf__area" data-reveal>
+            <h4 class="gf__sub mono">{area.title}</h4>
+            <ul class="gf__bullets">
+              {area.bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <dl class="gf__stack" data-reveal>
+      {
+        gf.stack.map((g) => (
+          <div class="gf__stack-row">
+            <dt class="mono">{g.label}</dt>
+            <dd>
+              <ul class="stack" role="list">
+                {g.items.map((s) => (
+                  <li class="stack__pill mono">{s}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </article>
+</section>
+
+<style>
+  .gf__grid,
+  .gf__work,
+  .gf__stack {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-l);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* head */
+  .gf__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .gf__meta-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .gf__title {
+    margin-top: var(--space-xs);
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    text-wrap: balance;
+  }
+
+  .gf__lead {
+    margin-top: var(--space-s);
+    max-width: 40rem;
+    color: var(--color-ink-soft);
+    font-size: var(--step-0);
+    line-height: var(--leading-normal);
+  }
+
+  .gf__role {
+    margin-top: var(--space-xs);
+    color: var(--color-muted);
+    font-size: var(--step--2);
+  }
+
+  .gf__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-top: var(--space-s);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  .gf__links a,
+  .gf__m-link {
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1px;
+    transition: border-color var(--duration-s) var(--ease-out);
+  }
+
+  .gf__links a:hover,
+  .gf__links a:focus-visible,
+  .gf__m-link:hover,
+  .gf__m-link:focus-visible {
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* sub headings */
+  .gf__sub {
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* prose + timeline */
+  .gf__grid {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  @media (min-width: 56rem) {
+    .gf__grid {
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  .gf__prose p {
+    margin-top: var(--space-2xs);
+    color: var(--color-ink-soft);
+    font-size: var(--step--1);
+    line-height: var(--leading-loose);
+    max-width: 40rem;
+  }
+
+  .gf__prose .gf__sub:not(:first-child) {
+    margin-top: var(--space-m);
+  }
+
+  .gf__timeline {
+    list-style: none;
+    margin: var(--space-xs) 0 0;
+    padding: 0 0 0 var(--space-s);
+    display: grid;
+    gap: var(--space-m);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .gf__milestone {
+    position: relative;
+  }
+
+  .gf__milestone::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--space-s) * -1 - 5px);
+    top: 0.35em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid var(--color-accent);
+  }
+
+  .gf__milestone:first-child::before {
+    background: var(--color-accent);
+  }
+
+  .gf__when {
+    color: var(--color-muted);
+    font-size: var(--step--2);
+  }
+
+  .gf__m-title {
+    margin-top: var(--space-3xs);
+    font-weight: 600;
+    font-size: var(--step-0);
+    letter-spacing: -0.01em;
+  }
+
+  .gf__place {
+    color: var(--color-ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .gf__m-text {
+    margin-top: var(--space-3xs);
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+  }
+
+  .gf__m-link {
+    display: inline-block;
+    margin-top: var(--space-2xs);
+    font-size: var(--step--2);
+  }
+
+  /* work areas */
+  .gf__work {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .gf__bullets {
+    margin-top: var(--space-2xs);
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--space-2xs);
+    color: var(--color-ink-soft);
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+  }
+
+  .gf__bullets li::marker {
+    color: var(--color-muted);
+  }
+
+  /* stack */
+  .gf__stack {
+    display: grid;
+    gap: var(--space-xs);
+    margin-bottom: 0;
+  }
+
+  .gf__stack-row {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  @media (min-width: 40rem) {
+    .gf__stack-row {
+      grid-template-columns: 7rem 1fr;
+      align-items: baseline;
+      gap: var(--space-s);
+    }
+  }
+
+  .gf__stack dt {
+    color: var(--color-muted);
+    font-size: var(--step--2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .gf__stack dd {
+    margin: 0;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .stack__pill {
+    padding: 0.28em 0.55em;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    font-size: var(--step--2);
+    color: var(--color-ink-soft);
+  }
+</style>
