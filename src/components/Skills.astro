@@ -9,23 +9,25 @@ import { skills } from "../data/skills";
     rating.
   </p>
 
-  <div class="skills__grid">
+  <ol class="tiers" role="list">
     {
-      skills.map((group) => (
-        <div class="skill-group" data-reveal>
-          <h3 class="skill-group__title">
-            {group.label}
-            {group.note && <span class="skill-group__note mono"> · {group.note}</span>}
-          </h3>
-          <ul class="skill-group__list" role="list">
-            {group.items.map((s) => (
-              <li class="skill-pill mono">{s}</li>
+      skills.map((group, i) => (
+        <li class:list={["tier", { "tier--core": i === 0 }]} data-reveal>
+          <div class="tier__head">
+            <h3 class="tier__title mono">{group.label}</h3>
+            {group.note && <p class="tier__note mono">{group.note}</p>}
+          </div>
+          <ul class="tier__list" role="list">
+            {group.items.map((s, j) => (
+              <li class="skill-pill mono" style={`--p: ${j}`}>
+                {s}
+              </li>
             ))}
           </ul>
-        </div>
+        </li>
       ))
     }
-  </div>
+  </ol>
 </section>
 
 <style>
@@ -34,50 +36,99 @@ import { skills } from "../data/skills";
     color: var(--color-muted);
     font-size: var(--step--1);
     line-height: var(--leading-loose);
-    margin-bottom: var(--space-m);
+    margin-bottom: var(--space-l);
   }
 
-  .skills__grid {
+  /* — timeline — same rail + node geometry as Experience / GoalFinder — */
+  .tiers {
+    --rail: var(--space-m); /* rail → content distance */
+    --tier-gap: var(--space-m);
+    --dot: 9px;
+    --dot-top: 0.3em; /* aligns the node with the title's first line */
+
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--rail);
     display: grid;
-    gap: var(--space-m);
+    gap: var(--tier-gap);
+  }
+
+  .tier {
+    position: relative;
+    display: grid;
+    gap: var(--space-2xs);
+    font-size: var(--step--1);
   }
 
   @media (min-width: 44rem) {
-    .skills__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-m) var(--space-l);
+    .tiers {
+      --tier-gap: var(--space-l);
+    }
+
+    .tier {
+      grid-template-columns: 15rem 1fr;
+      align-items: baseline;
+      gap: var(--space-m);
     }
   }
 
-  .skill-group {
-    padding: var(--space-s);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-m);
+  /* node */
+  .tier::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: calc(var(--rail) * -1 - var(--dot) / 2);
+    top: var(--dot-top);
+    width: var(--dot);
+    height: var(--dot);
+    border-radius: 50%;
     background: var(--color-surface);
+    border: 2px solid var(--color-accent);
   }
 
-  .skill-group__title {
-    font-family: var(--font-mono);
+  /* rail segment: from this node down to the next one */
+  .tier:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--rail) * -1 - 1px);
+    top: calc(var(--dot-top) + var(--dot) / 2);
+    width: 1px;
+    height: calc(100% + var(--tier-gap));
+    background: var(--color-border);
+    transform-origin: top;
+  }
+
+  /* core: filled node, rail fades from blue into the plain rail */
+  .tier--core::before {
+    background: var(--color-accent);
+  }
+
+  .tier--core:not(:last-child)::after {
+    background: linear-gradient(var(--color-accent), var(--color-border));
+  }
+
+  .tier__title {
     font-size: var(--step--1);
     font-weight: 600;
     letter-spacing: -0.01em;
-    margin-bottom: var(--space-xs);
+    line-height: var(--leading-snug);
     color: var(--color-fg);
   }
 
-  .skill-group__note {
-    font-weight: 400;
+  .tier__note {
+    margin-top: var(--space-3xs);
     color: var(--color-muted);
-    letter-spacing: 0;
-    text-transform: none;
+    font-size: var(--step--2);
+    line-height: var(--leading-normal);
   }
 
-  .skill-group__list {
+  .tier__list {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3xs);
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
   .skill-pill {
@@ -93,9 +144,63 @@ import { skills } from "../data/skills";
     white-space: nowrap;
   }
 
-  /* first group gets accent left edge */
-  .skill-group:first-child {
-    border-left-color: var(--color-accent);
-    border-left-width: 3px;
+  /*
+   * Motion. The row itself uses the shared [data-reveal] fade/slide
+   * (motion.css); on top of that, once a row is revealed its node pops
+   * in, its rail segment draws down towards the next tier, and its
+   * pills follow left to right. Everything waits for the row's own
+   * stagger slot (--i, set by motion.ts) so a batch of rows cascades
+   * as one continuous line. Exits are immediate and fast.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .tier {
+      --row-delay: calc(min(var(--i, 0), var(--stagger-max)) * var(--stagger));
+    }
+
+    :global(.js) .tier::before {
+      scale: 0;
+      transition: scale var(--duration-hide) var(--ease-in-out);
+    }
+
+    :global(.js) .tier::after {
+      scale: 1 0;
+      transition: scale var(--duration-hide) var(--ease-in-out);
+    }
+
+    :global(.js) .skill-pill {
+      opacity: 0;
+      translate: calc(var(--reveal-distance) * -0.5) 0;
+      transition:
+        opacity var(--duration-hide) var(--ease-in-out),
+        translate var(--duration-hide) var(--ease-in-out);
+    }
+
+    :global(.js) .tier:global(.is-revealed)::before {
+      scale: 1;
+      transition: scale var(--duration-m) var(--ease-out) var(--row-delay);
+    }
+
+    :global(.js) .tier:global(.is-revealed)::after {
+      scale: 1;
+      transition: scale 900ms var(--ease-entrance) calc(var(--row-delay) + 120ms);
+    }
+
+    :global(.js) .tier:global(.is-revealed) .skill-pill {
+      opacity: 1;
+      translate: none;
+      transition-duration: var(--duration-reveal);
+      transition-timing-function: var(--ease-entrance);
+      transition-delay: calc(var(--row-delay) + 120ms + var(--p, 0) * 35ms);
+    }
+  }
+
+  @media print {
+    .tier::before,
+    .tier::after,
+    .skill-pill {
+      scale: 1 !important;
+      opacity: 1 !important;
+      translate: none !important;
+    }
   }
 </style>

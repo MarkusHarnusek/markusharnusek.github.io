@@ -51,6 +51,16 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
+    label: "Development Tools",
+    note: "day to day software engineering skills",
+    items: [
+      "Git",
+      "GitHub",
+      "OpenCode",
+      "Claude Code"
+    ]
+  },
+  {
     label: "Embedded Development",
     note: "hardware & low-level",
     items: [
