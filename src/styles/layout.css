@@ -256,6 +256,21 @@
     flex-shrink: 0;
   }
 
+  /* sub-section: belongs to the section above it */
+  .section--sub {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .section__label--sub {
+    font-size: var(--step-0);
+  }
+
+  .section__crumb {
+    color: var(--color-muted);
+    margin-right: var(--space-3xs);
+  }
+
   /* prose width */
   .prose {
     max-width: 38rem;
