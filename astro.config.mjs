@@ -5,6 +5,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://markusharnusek.github.io',
   output: 'static',
+  devToolbar: {
+    enabled: false,
+  },
   build: {
     inlineStylesheets: 'never',
   },
