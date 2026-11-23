@@ -145,15 +145,20 @@
   .m-header__wordmark {
     font-family: var(--font-display);
     font-size: var(--step-1);
+    line-height: var(--leading-tight);
     text-decoration: none;
     color: var(--color-fg);
   }
 
+  /* subtitle always sits on its own line under the name */
   .m-header__wordmark span {
+    display: block;
+    margin-top: var(--space-3xs);
     font-family: var(--font-mono);
     font-size: var(--step--2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--color-muted);
-    margin-left: var(--space-2xs);
   }
 
   .m-header__nav {
