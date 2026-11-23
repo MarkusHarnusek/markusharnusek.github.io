@@ -94,15 +94,15 @@ export const goalfinder = {
     },
     {
       label: "Firmware",
-      items: ["C++", "Arduino", "PlatformIO", "LittleFS", "WebSockets", "ArduinoJson", "ESP8266Audio"],
+      items: ["C++", "Arduino", "PlatformIO", "LittleFS", "WebSockets", "ESP8266Audio"],
     },
     {
       label: "Web panel",
-      items: ["Vue 3", "TypeScript", "Vite", "Pinia", "Vue Router", "vue-i18n"],
+      items: ["Vue", "TypeScript", "Vite", "Pinia", "Vue Router"],
     },
     {
       label: "Tooling",
-      items: ["GitHub Actions", "Python build scripts", "KiCad"],
+      items: ["GitHub Actions", "KiCad"],
     },
   ] satisfies StackGroup[],
   links: {
