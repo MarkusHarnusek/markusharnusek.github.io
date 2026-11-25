@@ -37,6 +37,7 @@ export const skills: SkillGroup[] = [
         "Python",
         "PowerShell",
         "Astro",
+        "React",
         "SQL",
         "sqlite"
     ],
