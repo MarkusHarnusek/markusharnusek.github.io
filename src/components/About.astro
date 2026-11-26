@@ -39,6 +39,21 @@ const bioParagraphs = profile.bio
         }
       </dl>
       <div class="about__callout">
+        <p class="mono">Competitions</p>
+        <a
+          class="about__award"
+          href="https://codingcontest.org/hall-of-fame?venue=5"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="about__award-rank">3rd place</span>
+          <span class="about__award-meta">
+            Cloudflight Coding Contest, School Track 2026 <span aria-hidden="true">↗</span>
+          </span>
+          <span class="about__award-team mono">Team name: Array<wbr />Index<wbr />OutOf<wbr />Bounds<wbr />Exception</span>
+        </a>
+      </div>
+      <div class="about__callout">
         <p class="mono">Outside code</p>
         <p>
           Like to spend time in the mountains hiking, trailrunning, climbing and skiing. Also big into motorsports including karting and sim racing. And a little bit of photography accompanying all of the before mentioned.
@@ -133,6 +148,42 @@ const bioParagraphs = profile.bio
     text-transform: uppercase;
     color: var(--color-muted);
     margin-bottom: var(--space-3xs);
+  }
+
+  .about__award {
+    display: grid;
+    gap: var(--space-3xs);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .about__award-rank {
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--color-accent);
+  }
+
+  .about__award-meta {
+    font-size: var(--step--1);
+    line-height: var(--leading-normal);
+    color: var(--color-ink-soft);
+  }
+
+  .about__award-team {
+    margin-top: var(--space-3xs);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent);
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color var(--duration-s) var(--ease-out);
+  }
+
+  .about__award:hover .about__award-team,
+  .about__award:focus-visible .about__award-team {
+    text-decoration-color: var(--color-fg);
   }
 
   .about__callout p:last-child {
